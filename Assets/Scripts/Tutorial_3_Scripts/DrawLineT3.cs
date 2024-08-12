@@ -42,6 +42,12 @@ public class DrawLineT3 : MonoBehaviour
             Vector3 endPoint = initialEndPoint + new Vector3(i * 2, 0, 0);
             CreateLine(startPoint, endPoint, i);
         }
+
+        // 生成された全ての点の情報をログに出力
+        foreach (var point in points)
+        {
+            Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
+        }
     }
 
     void CreateLine(Vector3 startPoint, Vector3 endPoint, int lineIndex)
@@ -74,7 +80,9 @@ public class DrawLineT3 : MonoBehaviour
             points.Add(circleObject);
 
 
-            Debug.Log($"Line {lineNumber }: Created Circle at {circlePosition}");
+            // 番号情報を追加
+            circleObject.name = $"Circle_Line{lineIndex}_Point{i}";
+            Debug.Log($"Line {lineNumber }: Created Circle at {circlePosition} with ID ({lineIndex}, {i})");
 
 
 
@@ -84,7 +92,6 @@ public class DrawLineT3 : MonoBehaviour
                 Debug.Log($"Creating Hover Area for point pair: {points[points.Count - 2].name}, {points[points.Count - 1].name}");
                 CreateHoverArea(points[points.Count - 2], points[points.Count - 1]);
 
-                Debug.Log("we are here!");
             }
 
         }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class HoverArea : MonoBehaviour
 {
@@ -12,13 +14,26 @@ public class HoverArea : MonoBehaviour
     private GameObject tooltipInstance;
     private GameObject currentLine;
 
-    
+    public T3TLcontroller T3TLcontrollerScript; // T3TLcontrollerスクリプトの参照を格納するため
     public DrawLineT3 DrawLineT3Script; // DrawLineT3スクリプトの参照を格納するため
+
+    // 新しいフィールドを追加して、作成された横線の情報を記録します
+    private Dictionary<int, int[]> horizontalLines = new Dictionary<int, int[]>();
 
     void Start()
     {
         //スクリプトの参照を取得
-        DrawLineT3Script = FindObjectOfType<DrawLineT3>();
+
+        if(DrawLineT3Script != null)
+        {
+            DrawLineT3Script = FindObjectOfType<DrawLineT3>();
+        }
+
+        if (T3TLcontrollerScript == null)
+        {
+            T3TLcontrollerScript = FindObjectOfType<T3TLcontroller>();
+        }
+
     }
     
 
@@ -58,6 +73,8 @@ public class HoverArea : MonoBehaviour
             if (currentLine == null)
             {
                 CreateHorizontalLine();
+                Debug.Log("Horizontal line created");
+                T3TLcontrollerScript.isHorizontalLineCreated = true;
             }
         }
         else if (Input.GetMouseButtonDown(1)) // 右クリックで横線を削除
@@ -68,6 +85,7 @@ public class HoverArea : MonoBehaviour
                 currentLine = null;
 
                 Debug.Log("Horizontal line destroyed");
+                T3TLcontrollerScript.isHorizontalLineCreated = false;
             }
         }
     }
@@ -87,7 +105,11 @@ public class HoverArea : MonoBehaviour
         currentLine = lineObject;
 
         Debug.Log($"Horizontal line created between {pointA.name} and {pointB.name}");
+
+        
     }
+
+    
 
     void OnDrawGizmos()
     {
