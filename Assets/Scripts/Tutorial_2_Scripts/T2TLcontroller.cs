@@ -88,7 +88,7 @@ public class T2TLcontroller : MonoBehaviour
 
                     if (!isStoryPlaying)
                     {
-                        if(storyMessage != null)
+                        if(startMessage != null)
                         {
                             startMessage.SetActive(false);
                         }
