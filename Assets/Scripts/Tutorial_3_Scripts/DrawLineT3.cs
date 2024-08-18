@@ -28,10 +28,12 @@ public class DrawLineT3 : MonoBehaviour
     private List<GameObject> lines = new List<GameObject>(); // 線オブジェクトのリスト
     private List<GameObject> points = new List<GameObject>(); // 点オブジェクトのリスト
 
+    public Dictionary<int, Vector3> pointsDictionary;// 点とその位置情報を格納する辞書
 
     // Start is called before the first frame update
     void Start()
     {
+        pointsDictionary = new Dictionary<int, Vector3>();
         //  スクリプトの参照を取得
         //T2TLcontrollerScript = T2TLcontrollerGameObject.GetComponent<T2TLcontroller>();
 
@@ -40,13 +42,24 @@ public class DrawLineT3 : MonoBehaviour
         {
             Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // 横にオフセット
             Vector3 endPoint = initialEndPoint + new Vector3(i * 2, 0, 0);
-            CreateLine(startPoint, endPoint, i);
+            
+            pointsDictionary.Add(i, startPoint); // 点の辞書にそれぞれの線のスタート点を番号付けて位置情報を格納する
+
+            CreateLine(startPoint, endPoint, i); // CreateLine関数を実行する
+
+            pointsDictionary.Add(i + numberOfLines*(pointsPerLine+1), endPoint); // 点の辞書にそれぞれの線のエンド点を番号付けて位置情報を格納する
+
         }
 
         // 生成された全ての点の情報をログに出力
         foreach (var point in points)
         {
             Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
+        }
+
+        foreach(KeyValuePair<int,Vector3> kvp in pointsDictionary)
+        {
+            Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
         }
     }
 
@@ -78,12 +91,12 @@ public class DrawLineT3 : MonoBehaviour
             GameObject circleObject = Instantiate(circlePrefab, circlePosition, Quaternion.identity);
             circleObject.transform.parent = lineObject.transform;
             points.Add(circleObject);
-
+            
 
             // 番号情報を追加
             circleObject.name = $"Circle_Line{lineIndex}_Point{i}";
-            Debug.Log($"Line {lineNumber }: Created Circle at {circlePosition} with ID ({lineIndex}, {i})");
-
+            Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} with ID ({lineIndex}, {i})");
+            pointsDictionary.Add(lineIndex + numberOfLines, circlePosition);
 
 
             // Add hover area for each point pair
@@ -103,9 +116,22 @@ public class DrawLineT3 : MonoBehaviour
         {
             Vector3 characterPosition = startPoint + new Vector3(0, 1, -0.1f);
             GameObject characterObject = Instantiate(characterPrefabs[lineIndex], characterPosition, Quaternion.identity);
-            characterObject.transform.parent = lineObject.transform;
 
-            Debug.Log($"Line {lineNumber }: Created Character at {characterPosition}");
+            string gameObjectName = $"character{lineNumber}";
+            GameObject parentGameObject = GameObject.Find(gameObjectName);
+            if (parentGameObject != null)
+            {
+                // もし見つけたら、characterObjectのTransformを見つかられたGameObjectのTransformの子供オブジェクトに設置
+                characterObject.transform.parent = parentGameObject.transform;
+            }
+            else
+            {
+                // もし見つけられなかったら、エラーをデバッグする
+                Debug.LogError($"GameObject '{gameObjectName}' not found!");
+            }
+            characterObject.name = $"Character{lineNumber}";
+
+            Debug.Log($"Line {lineNumber }: Created {characterObject.name} at {characterPosition}");
         }
         else
         {

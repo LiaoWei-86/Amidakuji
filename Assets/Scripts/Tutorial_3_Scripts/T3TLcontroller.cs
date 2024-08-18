@@ -30,6 +30,11 @@ public class T3TLcontroller : MonoBehaviour
     public bool isKnightMoving = false; // 騎士は動いてるかどうかを示すブール値、初期値はfalse
     public bool isHunterMoving = false; // 猟師は動いてるかどうかを示すブール値、初期値はfalse
 
+    public GameObject knight;
+    public GameObject hunter;
+
+    public DrawLineT3 DrawLineT3Script; // DrawLineT3スクリプトの参照を格納するため
+
     // ゲームモードを設定し、ゲームが実行されるとこの3つのモードの間で切り替えが行われます
     private enum GameMode
     {
@@ -43,6 +48,11 @@ public class T3TLcontroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (DrawLineT3Script != null)
+        {
+            DrawLineT3Script = FindObjectOfType<DrawLineT3>();
+        }
+
         //  開始時にsecond_intro_Messageを非表示にする
         if (second_intro_Message != null)
         {
@@ -171,6 +181,12 @@ public class T3TLcontroller : MonoBehaviour
                             storyMessage.SetActive(true);
                             second_intro_MessagePlayableDirector.Play();
                             isStoryPlaying = true;
+
+                        }
+
+                        foreach (KeyValuePair<int, Vector3> kvp in DrawLineT3Script.pointsDictionary) //2024.8.17begin here!!!
+                        {
+                            Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
                         }
                     }
 
@@ -241,7 +257,34 @@ public class T3TLcontroller : MonoBehaviour
     void OnDestroy()
     {
         // イベントのサブスクライブを解除して、メモリリークを防ぐ
+        if (start_intro_MessagePlayableDirector != null)
+        {
+            start_intro_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
 
+        if (second_intro_MessagePlayableDirector != null)
+        {
+            second_intro_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
 
+        if (lineCount1_MessagePlayableDirector != null)
+        {
+            lineCount1_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
+
+        if (lineCount0_MessagePlayableDirector != null)
+        {
+            lineCount0_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
+
+        if (storyMessagePlayableDirector != null)
+        {
+            storyMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
+
+        if (endMessagePlayableDirector != null)
+        {
+            endMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
     }
 }
