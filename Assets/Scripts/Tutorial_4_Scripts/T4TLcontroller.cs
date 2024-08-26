@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class T3TLcontroller : MonoBehaviour
+
+public class T4TLcontroller : MonoBehaviour
 {
     public GameObject start_intro_Message; // ゲームオブジェクト start_intro_Message（開始メッセージ）
     public GameObject second_intro_Message; // ゲームオブジェクト second_intro_Message（開始メッセージ）
@@ -36,9 +37,9 @@ public class T3TLcontroller : MonoBehaviour
     private Coroutine knightMovementCoroutine;
     private Coroutine hunterMovementCoroutine;
 
-    public float speed = 3.0f;
+    public DrawLineT4 DrawLineT4Script;
 
-    public DrawLineT3 DrawLineT3Script; // DrawLineT3スクリプトの参照を格納するため
+    public float speed = 3.0f;
 
     // ゲームモードを設定し、ゲームが実行されるとこの3つのモードの間で切り替えが行われます
     private enum GameMode
@@ -47,15 +48,14 @@ public class T3TLcontroller : MonoBehaviour
         PlayerPlaying, // プレイヤーが操作している状態
         WaitForSceneChange // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
     }
-
     private GameMode currentGameMode = GameMode.TextPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
 
     // Start is called before the first frame update
     void Start()
     {
-        if (DrawLineT3Script != null)
+        if (DrawLineT4Script != null)
         {
-            DrawLineT3Script = FindObjectOfType<DrawLineT3>();
+            DrawLineT4Script = FindObjectOfType<DrawLineT4>();
         }
 
         //  開始時にsecond_intro_Messageを非表示にする
@@ -64,7 +64,7 @@ public class T3TLcontroller : MonoBehaviour
             second_intro_Message.SetActive(false);
         }
         //  開始時にstoryMessageを非表示にする
-        if (storyMessage != null )
+        if (storyMessage != null)
         {
             storyMessage.SetActive(false);
         }
@@ -144,7 +144,7 @@ public class T3TLcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("isHorizontalLineCreated: " +isHorizontalLineCreated);
+        //Debug.Log("isHorizontalLineCreated"+ isHorizontalLineCreated);
         if (isHorizontalLineCreated == true && !hasSecondIntroPlayed)
         {
             currentGameMode = GameMode.TextPlaying;
@@ -176,12 +176,12 @@ public class T3TLcontroller : MonoBehaviour
                     if (hasSecondIntroPlayed == true && isStoryPlaying == false)
                     {
 
-                        if(second_intro_Message != null)
+                        if (second_intro_Message != null)
                         {
                             second_intro_Message.SetActive(false);
                         }
 
-                        if(storyMessage != null && storyMessagePlayableDirector != null)
+                        if (storyMessage != null && storyMessagePlayableDirector != null)
                         {
                             storyMessage.SetActive(true);
                             storyMessagePlayableDirector.Play();
@@ -189,12 +189,12 @@ public class T3TLcontroller : MonoBehaviour
 
                         }
 
-                        foreach (KeyValuePair<int, Vector3> kvp in DrawLineT3Script.pointsDictionary) 
+                        foreach (KeyValuePair<int, Vector3> kvp in DrawLineT4Script.pointsDictionary)
                         {
                             Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
                         }
 
-                        StartMovement(new List<int> { 0,2,3,5 }, new List<int> { 1,3,2,4 });
+                        StartMovement(new List<int> { 0, 2, 3, 5, 4, 6 }, new List<int> { 1, 3, 2, 4, 5, 7 });
                     }
 
 
@@ -203,12 +203,11 @@ public class T3TLcontroller : MonoBehaviour
                 case GameMode.WaitForSceneChange:
                     // シーンを切り替える
 
-                    SceneManager.LoadScene("Tutorial_4_Scene");
+                    SceneManager.LoadScene("Tutorial_5_Scene");
                     break;
             }
         }
     }
-
 
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
@@ -216,13 +215,13 @@ public class T3TLcontroller : MonoBehaviour
         {
             lineCount1_Message.SetActive(true);
             lineCount1_MessagePlayableDirector.Play();
-            
+
             Debug.Log("start_intro_Message Timeline playback completed.");
         }
         else if (director == lineCount1_MessagePlayableDirector)
         {
             currentGameMode = GameMode.PlayerPlaying;
-            
+
 
             Debug.Log("lineCount1_Message Timeline playback completed.");
         }
@@ -293,7 +292,7 @@ public class T3TLcontroller : MonoBehaviour
     {
         foreach (int point in path)
         {
-            Vector3 targetPosition = DrawLineT3Script.pointsDictionary[point];
+            Vector3 targetPosition = DrawLineT4Script.pointsDictionary[point];
             while (knight.transform.position != targetPosition)
             {
                 knight.transform.position = Vector3.MoveTowards(knight.transform.position, targetPosition, Time.deltaTime * speed);
@@ -306,7 +305,7 @@ public class T3TLcontroller : MonoBehaviour
     {
         foreach (int point in path)
         {
-            Vector3 targetPosition = DrawLineT3Script.pointsDictionary[point];
+            Vector3 targetPosition = DrawLineT4Script.pointsDictionary[point];
             while (hunter.transform.position != targetPosition)
             {
                 hunter.transform.position = Vector3.MoveTowards(hunter.transform.position, targetPosition, Time.deltaTime * speed);

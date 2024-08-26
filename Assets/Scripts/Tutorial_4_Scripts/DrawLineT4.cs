@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawLineT3 : MonoBehaviour
+public class DrawLineT4 : MonoBehaviour
 {
     public Material lineMaterial; // 線のマテリアル
     public float lineWidth = 0.1f; // 線の幅
     public Vector3 initialStartPoint = new Vector3(0, 0, 0); // 初期の起点
     public Vector3 initialEndPoint = new Vector3(0, 5, 0); // 初期の終点
     public int numberOfLines = 2; // 線の数
-    public int pointsPerLine = 1; // 各線の点の数
+    public int pointsPerLine = 2; // 各線の点の数
 
     public GameObject circlePrefab; // 円(点)のプレハブ
     public GameObject[] characterPrefabs; // キャラクターのプレハブ
@@ -18,7 +18,8 @@ public class DrawLineT3 : MonoBehaviour
     public Transform[] plotIconPositions; // plotIconの位置
 
     private bool plotIcon0Generated = false;
-    private bool plotIcon1_3Generated = false;
+    private bool plotIcon3Generated = false;
+    private bool plotIcon1_2Generated = false;
 
     public GameObject tooltipPrefab; // 提示枠のプレハブ
     public Material horizontalLineMaterial; // 横線のマテリアル
@@ -36,14 +37,14 @@ public class DrawLineT3 : MonoBehaviour
 
     public float offset = -0.1f;
 
-    public T3TLcontroller T3TLcontrollerScript;
+    public T4TLcontroller T4TLcontrollerScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (T3TLcontrollerScript != null)
+        if (T4TLcontrollerScript != null)
         {
-            T3TLcontrollerScript = FindObjectOfType<T3TLcontroller>();
+            T4TLcontrollerScript = FindObjectOfType<T4TLcontroller>();
         }
 
         pointsDictionary = new Dictionary<int, Vector3>();
@@ -55,12 +56,12 @@ public class DrawLineT3 : MonoBehaviour
         {
             Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // 横にオフセット
             Vector3 endPoint = initialEndPoint + new Vector3(i * 2, 0, 0);
-            
+
             pointsDictionary.Add(i, startPoint); // 点の辞書にそれぞれの線のスタート点を番号付けて位置情報を格納する
+            pointsDictionary.Add(i + numberOfLines * (pointsPerLine + 1), endPoint); // 点の辞書にそれぞれの線のエンド点を番号付けて位置情報を格納する
+
 
             CreateLine(startPoint, endPoint, i); // CreateLine関数を実行する
-
-            pointsDictionary.Add(i + numberOfLines*(pointsPerLine+1), endPoint); // 点の辞書にそれぞれの線のエンド点を番号付けて位置情報を格納する
 
         }
 
@@ -70,10 +71,12 @@ public class DrawLineT3 : MonoBehaviour
             Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
         }
 
-        //foreach(KeyValuePair<int,Vector3> kvp in pointsDictionary)
-        //{
-        //    Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
-        //}
+        foreach (KeyValuePair<int, Vector3> kvp in pointsDictionary)
+        {
+            Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
+        }
+
+        DrawHorizontalLine(2, 3);
     }
 
     void CreateLine(Vector3 startPoint, Vector3 endPoint, int lineIndex)
@@ -82,7 +85,7 @@ public class DrawLineT3 : MonoBehaviour
         Debug.Log($"Creating Line: lineIndex = {lineIndex}, lineNumber = {lineNumber}");
 
         // 線のための新しい GameObject を作成
-        GameObject lineObject = new GameObject("Line" + lineNumber );
+        GameObject lineObject = new GameObject("Line" + lineNumber);
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
         // 線のマテリアルと幅を設定
@@ -97,6 +100,8 @@ public class DrawLineT3 : MonoBehaviour
 
         Debug.Log($"Line {lineNumber }: Start Point = {startPoint}, End Point = {endPoint}");
 
+        
+
         // 円（点）の位置を計算し、生成
         for (int i = 0; i < pointsPerLine; i++)
         {
@@ -104,25 +109,47 @@ public class DrawLineT3 : MonoBehaviour
             GameObject circleObject = Instantiate(circlePrefab, circlePosition, Quaternion.identity);
             circleObject.transform.parent = lineObject.transform;
             points.Add(circleObject);
-            
+
 
             // 番号情報を追加
-            circleObject.name = $"Circle_Line{lineIndex}_Point{i}";
-            Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} with ID ({lineIndex}, {i})");
-            pointsDictionary.Add(lineIndex + numberOfLines, circlePosition);
+            circleObject.name = $"Circle_Line{lineNumber}_Point{i}";
+            Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} with ID ({lineNumber}, {i})");
 
+            pointsDictionary.Add(lineIndex + (i + 1) * numberOfLines, circlePosition);
+
+            
 
             // Add hover area for each point pair
-            if (points.Count > 1)
+            if (points.Count > 3)
             {
                 Debug.Log($"Creating Hover Area for point pair: {points[points.Count - 2].name}, {points[points.Count - 1].name}");
-                CreateHoverArea(points[points.Count - 2], points[points.Count - 1]);
+                CreateHoverAreaT4(points[points.Count - 3], points[points.Count - 1]);
+                /*
+                 * "if (points.Count > 3)"----->  これらのコードを実行する時、pointの数が既に4に達しているということ
+                 * points[points.Count - 3]＝points.[1]
+                 * points[points.Count - 1]＝points.[3]
+                 
+                 * 前の線上の点を加えた後で次の線の点を追加するため、
+
+                    points.[0]→line1_point0
+                    points.[1]→line1_point1
+                    points.[2]→line2_point0
+                    points.[3]→line2_point1
+                    
+                    　　　　「騎士」0　　　　　「猟師」1
+                                ||                ||
+                    points.[0]  ○2   points.[2]  ○3
+                                ||                ||
+                    points.[1]  ○4   points.[3]  ○5
+                                ||                ||
+                　　　　　　「結末」6　　　　　「結末」7
+                */
 
             }
 
         }
 
-        
+
 
         // キャラクターを生成
         if (lineIndex < characterPrefabs.Length)
@@ -135,7 +162,7 @@ public class DrawLineT3 : MonoBehaviour
             if (parentGameObject != null)
             {
                 // もし見つけたら、characterObjectのTransformを見つかられたGameObjectのTransformの子供オブジェクトに設置
-                characterObject.transform.parent = parentGameObject.transform ;
+                characterObject.transform.parent = parentGameObject.transform;
                 characterObject.transform.position = parentGameObject.transform.position + new Vector3(0, offset, 0);
             }
             else
@@ -178,7 +205,48 @@ public class DrawLineT3 : MonoBehaviour
         lines.Add(lineObject);
     }
 
-    void CreateHoverArea(GameObject pointA, GameObject pointB)
+    private void DrawHorizontalLine(int start,int end)
+    {
+        // 線のための新しい GameObject を作成
+        GameObject lineObject = new GameObject("HorizontalLine" + 1);
+        LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
+
+        // 線のマテリアルと幅を設定
+        lineRenderer.material = lineMaterial;
+        lineRenderer.startWidth = horizontalLineWidth;
+        lineRenderer.endWidth = horizontalLineWidth;
+
+        Vector3 startPoint = new Vector3();
+        Vector3 endPoint = new Vector3();
+
+        if (pointsDictionary.TryGetValue(start, out startPoint))
+        {
+            //Key found
+            Debug.Log($"Key[{start}]Value[{startPoint}]");
+        }
+        else
+        {
+            // Key not found
+            Debug.Log($"Key[{start}]Value[startPoint] not found.");
+        }
+        if (pointsDictionary.TryGetValue(end, out endPoint))
+        {
+            //Key found
+            Debug.Log($"Key[{end}]Value[{endPoint}]");
+        }
+        else
+        {
+            // Key not found
+            Debug.Log($"Key[{end}]Value[endPoint] not found.");
+        }
+
+        //横線を描く
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, startPoint);
+        lineRenderer.SetPosition(1, endPoint);
+    }
+
+    void CreateHoverAreaT4(GameObject pointA, GameObject pointB)
     {
         Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");
 
@@ -195,8 +263,8 @@ public class DrawLineT3 : MonoBehaviour
         hoverArea.transform.position = midPoint;
         hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
-        HoverArea hoverScript = hoverArea.AddComponent<HoverArea>();
-        hoverScript.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);
+        HoverAreaT4 hoverScriptT4 = hoverArea.AddComponent<HoverAreaT4>();                    // Need changed NOTICE！
+        hoverScriptT4.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);
 
         Debug.Log($"HoverArea script added to {hoverArea.name}");
 
@@ -208,20 +276,27 @@ public class DrawLineT3 : MonoBehaviour
     {
         // デバッグログを出力
         //Debug.Log($"Update called: Number of lines = {lines.Count}, Number of points = {points.Count}");
-        // 监控骑士的位置，当满足条件时生成plotIcon
-        if (!plotIcon0Generated && Mathf.Abs(T3TLcontrollerScript.knight.transform.position.x - pointsDictionary[3].x) < 0.05f)
+
+        // watch knight's position,if it is OK, created plotIcon
+        if (!plotIcon0Generated && Mathf.Abs(T4TLcontrollerScript.knight.transform.position.x - pointsDictionary[3].x) < 0.05f)
         {
             GeneratePlotIcon(0); // 生成plotIcon0
             plotIcon0Generated = true; // 防止重复生成
         }
-
-        if (!plotIcon1_3Generated && Mathf.Abs(T3TLcontrollerScript.knight.transform.position.y - (pointsDictionary[2].y + pointsDictionary[4].y) / 2) < 0.05f)
+        // watch hunter's position,if it is OK, created plotIcon
+        if (!plotIcon3Generated && Mathf.Abs(T4TLcontrollerScript.hunter.transform.position.y - pointsDictionary[5].y) < 0.05f)
         {
-            for (int i = 1; i <= 3; i++)
+            GeneratePlotIcon(3); // 生成plotIcon0
+            plotIcon3Generated = true; // 防止重复生成
+        }
+
+        if (!plotIcon1_2Generated && Mathf.Abs(T4TLcontrollerScript.knight.transform.position.y - (pointsDictionary[2].y + pointsDictionary[4].y) / 2) < 0.05f)
+        {
+            for (int i = 1; i <= 2; i++)
             {
                 GeneratePlotIcon(i); // 生成plotIcon1-3
             }
-            plotIcon1_3Generated = true; // 防止重复生成
+            plotIcon1_2Generated = true; // 防止重复生成
         }
     }
 
