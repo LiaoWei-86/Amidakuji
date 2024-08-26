@@ -818,7 +818,7 @@ MonoBehaviour:
   startPoint: {x: -3, y: 2.7, z: -0.1}
   endPoint: {x: -3, y: -2.5, z: -0.1}
   circlePrefab: {fileID: 6085918794160018304, guid: 2e787e3cda566934891db947b2cb6096, type: 3}
-  characterPrefab: {fileID: 6535245420696423961, guid: 20939bf3b9616a042b456747bff1693a, type: 3}
+  characterPrefab: {fileID: 3548959577266132323, guid: e47132c79119bf743906239573fc3e14, type: 3}
   speed: 2
   endingPrefab: {fileID: 2450578871129653742, guid: 34bfca9e6a621cf44be60474533ec126, type: 3}
   plotIconPrefab: {fileID: 6520775435015569997, guid: 1f615a473e67bbe4f8a8f6231d2cd18a, type: 3}
