@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawLineT4 : MonoBehaviour
+public class DrawLineT5 : MonoBehaviour
 {
     public Material lineMaterial; // 線のマテリアル
     public float lineWidth = 0.1f; // 線の幅
@@ -17,15 +17,12 @@ public class DrawLineT4 : MonoBehaviour
     public GameObject[] plotIconPrefabs; // プロットアイコンのプレハブ
     public Transform[] plotIconPositions; // plotIconの位置
 
-
     public GameObject tooltipPrefab; // 提示枠のプレハブ
+    public GameObject charaInfoPrefab;
     public Material horizontalLineMaterial; // 横線のマテリアル
     public float horizontalLineWidth = 0.1f; // 横線の幅
     private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // 横線の辞書
     public float hoverAreaWidth = 0.4f; // 横線のホバーエリアの縦幅
-
-    //public GameObject T2TLcontrollerGameObject; // T2TLcontrollerスクリプトのisCharacterMovingブール値を取得するため
-    //public T2TLcontroller T2TLcontrollerScript; // T2TLcontrollerスクリプトの参照を格納するため
 
     private List<GameObject> lines = new List<GameObject>(); // 線オブジェクトのリスト
     private List<GameObject> points = new List<GameObject>(); // 点オブジェクトのリスト
@@ -34,19 +31,17 @@ public class DrawLineT4 : MonoBehaviour
 
     public float offset = -0.1f;
 
-    public T4TLcontroller T4TLcontrollerScript;
+    public T5TLcontroller T5TLcontrollerScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (T4TLcontrollerScript != null)
+        if (T5TLcontrollerScript != null)
         {
-            T4TLcontrollerScript = FindObjectOfType<T4TLcontroller>();
+            T5TLcontrollerScript = FindObjectOfType<T5TLcontroller>();
         }
 
         pointsDictionary = new Dictionary<int, Vector3>();
-        //  スクリプトの参照を取得
-        //T2TLcontrollerScript = T2TLcontrollerGameObject.GetComponent<T2TLcontroller>();
 
         // 複数の線を生成
         for (int i = 0; i < numberOfLines; i++)
@@ -60,20 +55,22 @@ public class DrawLineT4 : MonoBehaviour
 
             CreateLine(startPoint, endPoint, i); // CreateLine関数を実行する
 
-        }
+            // 生成された全ての点の情報をログに出力
+            foreach (var point in points)
+            {
+                Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
+            }
 
-        // 生成された全ての点の情報をログに出力
-        foreach (var point in points)
-        {
-            Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
-        }
+            foreach (KeyValuePair<int, Vector3> kvp in pointsDictionary)
+            {
+                Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
+            }
 
-        foreach (KeyValuePair<int, Vector3> kvp in pointsDictionary)
-        {
-            Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
+            
         }
 
         DrawHorizontalLine(2, 3);
+        DrawHorizontalLine(4, 5);
     }
 
     void CreateLine(Vector3 startPoint, Vector3 endPoint, int lineIndex)
@@ -97,7 +94,7 @@ public class DrawLineT4 : MonoBehaviour
 
         Debug.Log($"Line {lineNumber }: Start Point = {startPoint}, End Point = {endPoint}");
 
-        
+
 
         // 円（点）の位置を計算し、生成
         for (int i = 0; i < pointsPerLine; i++)
@@ -108,23 +105,22 @@ public class DrawLineT4 : MonoBehaviour
             points.Add(circleObject);
 
 
-            // 番号情報を追加
+            // 番号生成情報
             circleObject.name = $"Circle_Line{lineNumber}_Point{i}";
-            Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} with ID ({lineNumber}, {i})");
+            Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} ");
 
             pointsDictionary.Add(lineIndex + (i + 1) * numberOfLines, circlePosition);
 
-            
+
 
             // Add hover area for each point pair
-            if (points.Count > 3)
+            if (points.Count > 7)
             {
                 Debug.Log($"Creating Hover Area for point pair: {points[points.Count - 2].name}, {points[points.Count - 1].name}");
-                CreateHoverAreaT4(points[points.Count - 3], points[points.Count - 1]);
+                CreateHoverAreaT5(points[2], points[6]);
+                CreateHoverAreaT5(points[3], points[7]);
                 /*
-                 * "if (points.Count > 3)"----->  これらのコードを実行する時、pointの数が既に4に達しているということ
-                 * points[points.Count - 3]＝points[1]
-                 * points[points.Count - 1]＝points[3]
+                 * "if (points.Count > 7)"----->  これらのコードを実行する時、pointの数が既に 8 に達しているということ
                  
                  * 前の線上の点を加えた後で次の線の点を追加するため、
 
@@ -135,11 +131,15 @@ public class DrawLineT4 : MonoBehaviour
                     
                     　　　　「騎士」0　　　　　「猟師」1
                                 ||                ||
-                     points[0]  ○2    points[2]  ○3
+                    points[0]   ○2    points[4]  ○3
                                 ||                ||
-                     points[1]  ○4    points[3]  ○5
+                    points[1]   ○4    points[5]  ○5
                                 ||                ||
-                　　　　　　「結末」6　　　　　「結末」7
+                    points[2]   ○6    points[6]  ○7
+                                ||                ||
+                    points[3]   ○8    points[7]  ○9
+                                ||                ||
+                　　　　　　「結末」10　　　　　「結末」11
                 */
 
             }
@@ -161,6 +161,7 @@ public class DrawLineT4 : MonoBehaviour
                 // もし見つけたら、characterObjectのTransformを見つかられたGameObjectのTransformの子供オブジェクトに設置
                 characterObject.transform.parent = parentGameObject.transform;
                 characterObject.transform.position = parentGameObject.transform.position + new Vector3(0, offset, 0);
+                CreateHoverAreaCharacter(characterObject);
             }
             else
             {
@@ -191,21 +192,14 @@ public class DrawLineT4 : MonoBehaviour
             Debug.LogWarning($"Line {lineNumber }: No ending prefab available for line number {lineNumber}");
         }
 
-        //// プロットアイコンを生成
-        //Vector3 circleMiddlePosition = (startPoint + endPoint) / 2;
-        //Vector3 plotIconPosition = circleMiddlePosition + new Vector3(1, 0, 0);
-        //GameObject plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity);
-        //plotIconObject.transform.parent = lineObject.transform;
-        //plotIconObject.SetActive(false);
-        //Debug.Log($"Line {lineNumber }: Created Plot Icon at {plotIconPosition}");
 
         lines.Add(lineObject);
     }
 
-    private void DrawHorizontalLine(int start,int end)
+    private void DrawHorizontalLine(int start, int end)
     {
         // 線のための新しい GameObject を作成
-        GameObject lineObject = new GameObject("HorizontalLine" + 1);
+        GameObject lineObject = new GameObject($"HorizontalLine({start},{end})");
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
         // 線のマテリアルと幅を設定
@@ -219,22 +213,22 @@ public class DrawLineT4 : MonoBehaviour
         if (pointsDictionary.TryGetValue(start, out startPoint))
         {
             //Key found
-            Debug.Log($"Key[{start}]Value[{startPoint}]");
+            Debug.Log($"【DrawHorizontalLine】Key[{start}]Value[{startPoint}]");
         }
         else
         {
             // Key not found
-            Debug.Log($"Key[{start}]Value[startPoint] not found.");
+            Debug.Log($"【DrawHorizontalLine】Key[{start}]Value[startPoint] not found.");
         }
         if (pointsDictionary.TryGetValue(end, out endPoint))
         {
             //Key found
-            Debug.Log($"Key[{end}]Value[{endPoint}]");
+            Debug.Log($"【DrawHorizontalLine】Key[{end}]Value[{endPoint}]");
         }
         else
         {
             // Key not found
-            Debug.Log($"Key[{end}]Value[endPoint] not found.");
+            Debug.Log($"【DrawHorizontalLine】Key[{end}]Value[endPoint] not found.");
         }
 
         //横線を描く
@@ -243,7 +237,7 @@ public class DrawLineT4 : MonoBehaviour
         lineRenderer.SetPosition(1, endPoint);
     }
 
-    void CreateHoverAreaT4(GameObject pointA, GameObject pointB)
+    void CreateHoverAreaT5(GameObject pointA, GameObject pointB)
     {
         Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");
 
@@ -260,12 +254,25 @@ public class DrawLineT4 : MonoBehaviour
         hoverArea.transform.position = midPoint;
         hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
-        HoverAreaT4 hoverScriptT4 = hoverArea.AddComponent<HoverAreaT4>();                    // Need changed NOTICE！
-        hoverScriptT4.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);
+        HoverAreaT5 hoverScriptT5 = hoverArea.AddComponent<HoverAreaT5>();                    // Need changed NOTICE！
+        hoverScriptT5.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);
 
         Debug.Log($"HoverArea script added to {hoverArea.name}");
 
         Debug.Log($"Hover Area created at {midPoint} with size {boxCollider.size}");
+    }
+
+    void CreateHoverAreaCharacter(GameObject character)
+    {
+        Debug.Log($"CreateHoverArea called with character: {character.name}");
+
+
+        BoxCollider boxCollider = character.AddComponent<BoxCollider>();
+        boxCollider.size = new Vector3(1f, 1f, 0.1f);
+        boxCollider.isTrigger = true;
+
+        characterInfoHoverT5 characterInfoHoverT5Script = character.AddComponent<characterInfoHoverT5>();
+        characterInfoHoverT5Script.Initialize(character, charaInfoPrefab);
     }
 
     // Update is called once per frame
@@ -273,6 +280,4 @@ public class DrawLineT4 : MonoBehaviour
     {
         
     }
-
-
 }
