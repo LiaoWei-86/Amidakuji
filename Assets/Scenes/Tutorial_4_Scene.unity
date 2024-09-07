@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 252874644}
   - component: {fileID: 252874647}
   m_Layer: 0
-  m_Name: storyMessage2
+  m_Name: storyMessageT4_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,7 +303,7 @@ PlayableDirector:
   m_GameObject: {fileID: 252874643}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: e6c19707c3b21d04787215884c43e37b, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: e8eaf4362f2ddda48b2f0e83b3f2b0e5, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -312,6 +312,7 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - ad916710fb0122f43b1224e910d7d510: {fileID: 252874643}
+    - 9a012049a8869c443abd64ed92086e77: {fileID: 252874643}
 --- !u!1 &542903621
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +547,7 @@ GameObject:
   - component: {fileID: 800142277}
   - component: {fileID: 800142280}
   m_Layer: 0
-  m_Name: storyMessage3
+  m_Name: storyMessageT4_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -714,7 +715,7 @@ PlayableDirector:
   m_GameObject: {fileID: 800142276}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 00061f4be74429f4ca414ad8829c16ca, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 13b1f2380c174b745848015b16c53f00, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -723,6 +724,7 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 6f965ec67425f154a91f2390ec34dea5: {fileID: 800142276}
+    - 17996cfa8ad924444b9e25a8545e5749: {fileID: 800142276}
 --- !u!1 &807883289
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,13 +804,25 @@ MonoBehaviour:
   second_intro_Message: {fileID: 1175099406}
   lineCount1_Message: {fileID: 596920397}
   lineCount0_Message: {fileID: 2011778100}
-  storyMessage: {fileID: 1426441063}
+  storyMessages:
+  - {fileID: 1271157720}
+  - {fileID: 252874643}
+  - {fileID: 800142276}
+  - {fileID: 1206530819}
+  - {fileID: 1443067191}
+  - {fileID: 991126043}
   endMessage: {fileID: 1713597873}
   start_intro_MessagePlayableDirector: {fileID: 1057874361}
   second_intro_MessagePlayableDirector: {fileID: 1175099410}
   lineCount1_MessagePlayableDirector: {fileID: 596920401}
   lineCount0_MessagePlayableDirector: {fileID: 2011778101}
-  storyMessagePlayableDirector: {fileID: 1426441065}
+  storyMessagePlayableDirectors:
+  - {fileID: 1271157724}
+  - {fileID: 252874647}
+  - {fileID: 800142280}
+  - {fileID: 1206530823}
+  - {fileID: 1443067195}
+  - {fileID: 991126047}
   endMessagePlayableDirector: {fileID: 1713597877}
   isHorizontalLineCreated: 0
   isKnightMoving: 0
@@ -830,7 +844,7 @@ GameObject:
   - component: {fileID: 991126044}
   - component: {fileID: 991126047}
   m_Layer: 0
-  m_Name: storyMessage6
+  m_Name: storyMessageT4_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -919,7 +933,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 7.0597672, y: 2.0693429, z: 7.0869684, w: 2.0266259}
+  m_margin: {x: 7.0597672, y: 2.0693429, z: 7.0869684, w: 1.6800601}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -998,7 +1012,7 @@ PlayableDirector:
   m_GameObject: {fileID: 991126043}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 1009b2d4ee153b64b9ebc6cbce846f16, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 5434d01276daa024cbf285cac2a93bb8, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -1006,6 +1020,7 @@ PlayableDirector:
   m_SceneBindings: []
   m_ExposedReferences:
     m_References:
+    - 0fe6d47769d44254d9a75f4c14e85136: {fileID: 991126043}
     - c891982ef1e04d4448e611c82c04df53: {fileID: 991126043}
 --- !u!1 &1042976887
 GameObject:
@@ -1432,7 +1447,7 @@ GameObject:
   - component: {fileID: 1206530820}
   - component: {fileID: 1206530823}
   m_Layer: 0
-  m_Name: storyMessage4
+  m_Name: storyMessageT4_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1600,7 +1615,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1206530819}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 10384bbe37c51954599730172a4438c8, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 199b1c356f59d9e40aa6701e743ca54a, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -1609,6 +1624,7 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 182bb49ba29fdb9429afc67d4c634b13: {fileID: 1206530819}
+    - 3232e9f2d5a59af4b91dd3b72ae7ee40: {fileID: 1206530819}
 --- !u!1 &1271157720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,7 +1638,7 @@ GameObject:
   - component: {fileID: 1271157722}
   - component: {fileID: 1271157724}
   m_Layer: 0
-  m_Name: storyMessage1
+  m_Name: storyMessageT4_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1790,7 +1806,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1271157720}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: ee519e8accbae944ea82585650d62b3d, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: c496e98f6e2fbcd4799fefd42db6a8bd, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -1803,6 +1819,7 @@ PlayableDirector:
     - 2718179bb372f7940b733e863740f866: {fileID: 252874643}
     - eed110176712b7f438b595939dcd4d8f: {fileID: 1271157720}
     - f3e1a402024b7474ebe2f8c7d3ffcfe5: {fileID: 1443067191}
+    - 43280138a8772b2448680115b6b19815: {fileID: 1271157720}
     - 4123a21d5a3053642ac8843e92956175: {fileID: 1206530819}
 --- !u!1 &1426441063
 GameObject:
@@ -1813,7 +1830,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1426441064}
-  - component: {fileID: 1426441065}
   m_Layer: 0
   m_Name: storyMessage
   m_TagString: Untagged
@@ -1842,29 +1858,6 @@ Transform:
   - {fileID: 991126046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!320 &1426441065
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426441063}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 42baaf77627ac414fbb5a9adb2564a2d, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings: []
-  m_ExposedReferences:
-    m_References:
-    - 9d74a304900c4f34d9341a36a0bdbfde: {fileID: 252874643}
-    - 1e55684962ce5114f9813ded58676820: {fileID: 1271157720}
-    - 928a484215d4ab64e91a7c9da10fbfe2: {fileID: 800142276}
-    - 33be70fb3762c9b41a9c6c239ca5f6fe: {fileID: 1206530819}
-    - 1d3f558e36c47d342ab81b32d0842d55: {fileID: 991126043}
-    - 7e5ab8a9dcdb123478348e4723f783ce: {fileID: 1443067191}
 --- !u!1 &1443067191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,7 +1871,7 @@ GameObject:
   - component: {fileID: 1443067192}
   - component: {fileID: 1443067195}
   m_Layer: 0
-  m_Name: storyMessage5
+  m_Name: storyMessageT4_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2046,7 +2039,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1443067191}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 5360d527a7057e3448050d7bb6fcf92a, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 1c0ab7085a7107b429d218946d2dcd52, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -2054,6 +2047,7 @@ PlayableDirector:
   m_SceneBindings: []
   m_ExposedReferences:
     m_References:
+    - af598e9310493f74cb6a0ec5af134bdd: {fileID: 1443067191}
     - ab8f4dad03212bd4b91b77ad131f5492: {fileID: 1443067191}
 --- !u!1 &1516558346
 GameObject:

@@ -10,19 +10,28 @@ public class T3TLcontroller : MonoBehaviour
     public GameObject second_intro_Message; // ゲームオブジェクト second_intro_Message（開始メッセージ）
     public GameObject lineCount1_Message; // ゲームオブジェクト lineCount1_Message（残りの線何本メッセージ）
     public GameObject lineCount0_Message; // ゲームオブジェクト lineCount0_Message（残りの線何本メッセージ）
-    public GameObject storyMessage; // ゲームオブジェクト storyMessage（物語のメッセージ）
+
+    public List<GameObject> storyMessages; // ゲームオブジェクト storyMessage（物語のメッセージ）
+
     public GameObject endMessage; // ゲームオブジェクト endMessage（エンディングメッセージ）
     public PlayableDirector start_intro_MessagePlayableDirector; // start_intro_MessageのPlayableDirector
     public PlayableDirector second_intro_MessagePlayableDirector; // second_intro_MessageのPlayableDirector
     public PlayableDirector lineCount1_MessagePlayableDirector; // lineCount1_MessageのPlayableDirector
     public PlayableDirector lineCount0_MessagePlayableDirector; // lineCount0_MessageのPlayableDirector
-    public PlayableDirector storyMessagePlayableDirector; // storyMessageのPlayableDirector
+
+    public PlayableDirector[] storyMessagePlayableDirectors; // storyMessageのPlayableDirector
+
     public PlayableDirector endMessagePlayableDirector; // endMessageのPlayableDirector
+
+    private int currentStoryIndex = 0; // どのPlayableDirectorが再生してるかを追跡するため
 
     public bool isHorizontalLineCreated = false;
 
+
+
     private bool isStoryPlaying = false;  // storyMessageが再生中かどうかを示すブール値、初期値はfalse
     private bool isEndPlaying = false;  // endMessageが再生中かどうかを示すブール値、初期値はfalse
+    private bool hasEndPlayed = false;
 
     private bool hasSecondIntroPlayed = false;// second_intro_Messageが再生終了かどうかを示すブール値、初期値はfalse
     private bool haslineCount0_Played = false;// lineCount0_Messageが再生終了かどうかを示すブール値、初期値はfalse
@@ -64,9 +73,13 @@ public class T3TLcontroller : MonoBehaviour
             second_intro_Message.SetActive(false);
         }
         //  開始時にstoryMessageを非表示にする
-        if (storyMessage != null )
+        if (storyMessages != null)
         {
-            storyMessage.SetActive(false);
+            // storyMessagesの非表示をループで行う
+            foreach (var message in storyMessages)
+            {
+                message.SetActive(false);
+            }
         }
         //  開始時にlineCount0_Messageを非表示にする
         if (lineCount1_Message != null)
@@ -122,13 +135,17 @@ public class T3TLcontroller : MonoBehaviour
             Debug.LogWarning("lineCount1_MessagePlayableDirector is not assigned.");
         }
 
-        if (storyMessagePlayableDirector != null)
+        // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
+        for (int i = 0; i < storyMessagePlayableDirectors.Length; i++)
         {
-            storyMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
-        else
-        {
-            Debug.LogWarning("storyMessagePlayableDirector is not assigned.");
+            if (storyMessagePlayableDirectors[i] != null)
+            {
+                storyMessagePlayableDirectors[i].stopped += OnPlayableDirectorStopped;
+            }
+            else
+            {
+                Debug.LogWarning($"storyMessagePlayableDirector[{i}] is not assigned.");
+            }
         }
 
         if (endMessagePlayableDirector != null)
@@ -144,7 +161,8 @@ public class T3TLcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("isHorizontalLineCreated: " +isHorizontalLineCreated);
+
+   
         if (isHorizontalLineCreated == true && !hasSecondIntroPlayed)
         {
             currentGameMode = GameMode.TextPlaying;
@@ -167,7 +185,7 @@ public class T3TLcontroller : MonoBehaviour
             switch (currentGameMode)
             {
                 case GameMode.TextPlaying:
-
+                    
                     break;
 
                 case GameMode.PlayerPlaying:
@@ -176,53 +194,96 @@ public class T3TLcontroller : MonoBehaviour
                     if (hasSecondIntroPlayed == true && isStoryPlaying == false)
                     {
 
-                        if(second_intro_Message != null)
+                        if (second_intro_Message != null)
                         {
                             second_intro_Message.SetActive(false);
                         }
 
-                        if(storyMessage != null && storyMessagePlayableDirector != null)
-                        {
-                            storyMessage.SetActive(true);
-                            storyMessagePlayableDirector.Play();
-                            isStoryPlaying = true;
+                        PlayNextStory();
+                        
 
-                        }
-
-                        foreach (KeyValuePair<int, Vector3> kvp in DrawLineT3Script.pointsDictionary) 
+                        foreach (KeyValuePair<int, Vector3> kvp in DrawLineT3Script.pointsDictionary)
                         {
                             Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
                         }
 
-                        StartMovement(new List<int> { 0,2,3,5 }, new List<int> { 1,3,2,4 });
+                        
+                        switch (currentStoryIndex)
+                        {
+                            case 0:
+                                StartMovement(new List<int> { 0, 2, 3 }, new List<int> { 1, 3, 2 });
+                                break;
+                            case 1:
+                                StartMovement(new List<int> { 3, 3 }, new List<int> { 2, 4 });
+                                break;
+                            case 2:
+                                StartMovement(new List<int> { 3, 5 }, new List<int> { 4, 4 });
+                                break;
+                            case 3:
+                                StartMovement(new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                                break;
+                            case 4:
+                                Debug.Log("currentStoryIndex:4 but do not move");
+                                break;
+                            case 5:
+                                Debug.Log("currentStoryIndex:5 but do not move");
+                                break;
+                        }
                     }
-
+                    
 
                     break;
 
                 case GameMode.WaitForSceneChange:
                     // シーンを切り替える
-
-                    SceneManager.LoadScene("Tutorial_4_Scene");
+                    if (!isEndPlaying && hasEndPlayed == true )
+                    {
+                        SceneManager.LoadScene("Tutorial_4_Scene");
+                    }
+                    
                     break;
             }
         }
     }
 
+    private void PlayNextStory()
+    {
+        Debug.Log("PlayNextStory called, currentStoryIndex: " + currentStoryIndex);
+
+        if (currentStoryIndex < storyMessagePlayableDirectors.Length)
+        {
+            Debug.Log("Playing story message: " + currentStoryIndex);
+
+            storyMessages[currentStoryIndex].SetActive(true);
+            storyMessagePlayableDirectors[currentStoryIndex].Play();
+            GeneratePlotIcon(currentStoryIndex);
+            isStoryPlaying = true; 
+        }
+        else
+        {
+            Debug.Log("All story messages played.");
+            // Add debug here to check if it's reaching the end too early
+            Debug.Log("Switching to WaitForSceneChange mode");
+
+            Debug.Log("All story messages played.");
+        }
+    }
 
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
+        Debug.Log("PlayableDirector stopped, currentStoryIndex: " + currentStoryIndex);
+
         if (director == start_intro_MessagePlayableDirector)
         {
             lineCount1_Message.SetActive(true);
             lineCount1_MessagePlayableDirector.Play();
-            
+
             Debug.Log("start_intro_Message Timeline playback completed.");
         }
         else if (director == lineCount1_MessagePlayableDirector)
         {
             currentGameMode = GameMode.PlayerPlaying;
-            
+
 
             Debug.Log("lineCount1_Message Timeline playback completed.");
         }
@@ -242,20 +303,32 @@ public class T3TLcontroller : MonoBehaviour
 
             Debug.Log("lineCount0_Message Timeline playback completed.");
         }
-        else if (director == storyMessagePlayableDirector)
+        // もしstoryMessagePlayableDirectorの中でどちらがstopしたら
+        else if (System.Array.IndexOf(storyMessagePlayableDirectors, director) != -1)
         {
-            isStoryPlaying = false;  // 再生完了とマークする
+            Debug.Log("A story message PlayableDirector stopped, increasing currentStoryIndex.");
 
-            // storyMessageが再生完了したらすぐendMessageを再生する
-            isEndPlaying = true;
-            endMessage.SetActive(true);
-            endMessagePlayableDirector.Play();
+            currentStoryIndex++; // 再生するPlayableDirectorナンバーを更新する
+            Debug.Log("currentStoryIndex"+currentStoryIndex);
+            isStoryPlaying = false; // ストーリーメッセージは再生完了とマークする
 
-            Debug.Log("storyMessage Timeline playback completed.");
+            Debug.Log("New currentStoryIndex: " + currentStoryIndex);
+
+            // 全部のストーリーメッセージは再生されたかを確認する
+            if (currentStoryIndex >= storyMessagePlayableDirectors.Length)
+            {
+                
+                Debug.Log("All story messages played. Showing end message.");
+
+                isEndPlaying = true;
+                endMessage.SetActive(true);
+                endMessagePlayableDirector.Play();
+            }
         }
         else if (director == endMessagePlayableDirector)
         {
             isEndPlaying = false;  // 再生完了とマークする
+            hasEndPlayed = true;
             currentGameMode = GameMode.WaitForSceneChange;  //  シーン切り替え待ちモードに変更する
             Debug.Log("endMessage Timeline playback completed.");
         }
@@ -275,19 +348,22 @@ public class T3TLcontroller : MonoBehaviour
         hunterMovementCoroutine = StartCoroutine(MoveHunterCoroutine(hunterPath));
 
         // 移動完了後に入力待ち状態に戻る
-        StartCoroutine(AfterMovementCoroutine());
+        //StartCoroutine(AfterMovementCoroutine());
     }
+    /* 元々の意図は、キャラクターが終点に到達した後、waitForSceneChange状態に入り、プレイヤーがEnterキーを押すとシーンが切り替わるというものでした。
+     * しかし、現在はstoryMessageを1本ずつ再生し、最後のメッセージが再生された時点でwaitForSceneChange状態に入るように変更したため、そのロジックが使えなくなり、
+     * コードをコメントしました。*/
 
-    IEnumerator AfterMovementCoroutine()
-    {
-        yield return new WaitUntil(() => knightMovementCoroutine == null && hunterMovementCoroutine == null);
+    //IEnumerator AfterMovementCoroutine()
+    //{
+    //    yield return new WaitUntil(() => knightMovementCoroutine == null && hunterMovementCoroutine == null);
 
-        // 次の状態に移行
-        if (isHorizontalLineCreated)
-        {
-            currentGameMode = GameMode.WaitForSceneChange;
-        }
-    }
+    //    // 次の状態に移行
+    //    if (isHorizontalLineCreated)
+    //    {
+    //        currentGameMode = GameMode.WaitForSceneChange;
+    //    }
+    //}
 
     IEnumerator MoveKnightCoroutine(List<int> path)
     {
@@ -315,6 +391,18 @@ public class T3TLcontroller : MonoBehaviour
         }
     }
 
+    void GeneratePlotIcon(int index)
+    {
+        if (index < 4)
+        {
+            // 特定の位置にplotIconを置く
+            GameObject plotIcon = Instantiate(DrawLineT3Script.plotIconPrefabs[index], DrawLineT3Script.plotIconPositions[index].position, Quaternion.identity);
+            plotIcon.name = "plotIcon" + index; // plotIconの名前をつける
+            Debug.Log($"Generated {plotIcon.name} at position {plotIcon.transform.position}");
+        }
+        
+    }
+
     void OnDestroy()
     {
         // イベントのサブスクライブを解除して、メモリリークを防ぐ
@@ -338,9 +426,12 @@ public class T3TLcontroller : MonoBehaviour
             lineCount0_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (storyMessagePlayableDirector != null)
+        for (int i = 0; i < storyMessagePlayableDirectors.Length; i++)
         {
-            storyMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+            if (storyMessagePlayableDirectors[i] != null)
+            {
+                storyMessagePlayableDirectors[i].stopped -= OnPlayableDirectorStopped;
+            }
         }
 
         if (endMessagePlayableDirector != null)

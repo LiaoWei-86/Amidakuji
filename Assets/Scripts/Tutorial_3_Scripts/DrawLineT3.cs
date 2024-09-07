@@ -17,8 +17,8 @@ public class DrawLineT3 : MonoBehaviour
     public GameObject[] plotIconPrefabs; // プロットアイコンのプレハブ
     public Transform[] plotIconPositions; // plotIconの位置
 
-    private bool plotIcon0Generated = false;
-    private bool plotIcon1_3Generated = false;
+    //private bool plotIcon0Generated = false;
+    //private bool plotIcon1_3Generated = false;
 
     public GameObject tooltipPrefab; // 提示枠のプレハブ
     public Material horizontalLineMaterial; // 横線のマテリアル
@@ -206,37 +206,8 @@ public class DrawLineT3 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // デバッグログを出力
-        //Debug.Log($"Update called: Number of lines = {lines.Count}, Number of points = {points.Count}");
-        // 监控骑士的位置，当满足条件时生成plotIcon
-        if (!plotIcon0Generated && Mathf.Abs(T3TLcontrollerScript.knight.transform.position.x - pointsDictionary[3].x) < 0.05f)
-        {
-            GeneratePlotIcon(0); // 生成plotIcon0
-            plotIcon0Generated = true; // 防止重复生成
-        }
-
-        if (!plotIcon1_3Generated && Mathf.Abs(T3TLcontrollerScript.knight.transform.position.y - (pointsDictionary[2].y + pointsDictionary[4].y) / 2) < 0.05f)
-        {
-            for (int i = 1; i <= 3; i++)
-            {
-                GeneratePlotIcon(i); // 生成plotIcon1-3
-            }
-            plotIcon1_3Generated = true; // 防止重复生成
-        }
+       
     }
 
-    void GeneratePlotIcon(int index)
-    {
-        if (index < plotIconPrefabs.Length && index < plotIconPositions.Length)
-        {
-            // 在指定位置生成plotIcon
-            GameObject plotIcon = Instantiate(plotIconPrefabs[index], plotIconPositions[index].position, Quaternion.identity);
-            plotIcon.name = "plotIcon" + index; // 为plotIcon命名
-            Debug.Log($"Generated {plotIcon.name} at position {plotIcon.transform.position}");
-        }
-        else
-        {
-            Debug.LogWarning("Invalid plotIcon index or position");
-        }
-    }
+    
 }
