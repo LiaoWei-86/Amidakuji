@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.IO;
 
 public class DrawLineT5 : MonoBehaviour
 {
@@ -19,6 +21,10 @@ public class DrawLineT5 : MonoBehaviour
 
     public GameObject tooltipPrefab; // 提示枠のプレハブ
     public GameObject charaInfoPrefab;
+    //public Transform infoContainer; // 用于显示角色信息的容器
+    public Dictionary<int, string[]> characterInfoDict = new Dictionary<int, string[]>(); // 存储角色信息
+
+
     public Material horizontalLineMaterial; // 横線のマテリアル
     public float horizontalLineWidth = 0.1f; // 横線の幅
     private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // 横線の辞書
@@ -31,7 +37,12 @@ public class DrawLineT5 : MonoBehaviour
 
     public float offset = -0.1f;
 
+    //public TextAsset charaInfoFile;
+    public TMP_FontAsset dotFont;
+    //public int charaInfoIndex;
+
     public T5TLcontroller T5TLcontrollerScript;
+    public characterInfoHoverT5 characterInfoHoverT5Script;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +82,27 @@ public class DrawLineT5 : MonoBehaviour
 
         DrawHorizontalLine(2, 3);
         DrawHorizontalLine(4, 5);
+
+
+        // 读取并解析角色信息文件
+        //ReadText(charaInfoFile);
+
+        // 将角色信息传递给第二个脚本
+        // 确保 characterInfoHoverT5 是从场景中的 GameObject 获取到的实例
+        //if (characterInfoHoverT5Script == null)
+        //{
+        //    characterInfoHoverT5Script = FindObjectOfType<characterInfoHoverT5>();
+        //}
+
+        //if (characterInfoHoverT5Script != null)
+        //{
+        //    characterInfoHoverT5Script.SetCharacterInfo(characterInfoDict);
+        //}
+        //else
+        //{
+        //    Debug.LogError("CharacterInfoHoverT5 component not found.");
+        //}
+
     }
 
     void CreateLine(Vector3 startPoint, Vector3 endPoint, int lineIndex)
@@ -161,7 +193,7 @@ public class DrawLineT5 : MonoBehaviour
                 // もし見つけたら、characterObjectのTransformを見つかられたGameObjectのTransformの子供オブジェクトに設置
                 characterObject.transform.parent = parentGameObject.transform;
                 characterObject.transform.position = parentGameObject.transform.position + new Vector3(0, offset, 0);
-                CreateHoverAreaCharacter(characterObject);
+                CreateHoverAreaCharacter(characterObject,lineNumber);
             }
             else
             {
@@ -262,18 +294,42 @@ public class DrawLineT5 : MonoBehaviour
         Debug.Log($"Hover Area created at {midPoint} with size {boxCollider.size}");
     }
 
-    void CreateHoverAreaCharacter(GameObject character)
+    void CreateHoverAreaCharacter(GameObject character, int charaInfoNum)
     {
         Debug.Log($"CreateHoverArea called with character: {character.name}");
 
+        Vector3 charaInfoPosition = character.transform.position + new Vector3(-3,-1,0);
 
         BoxCollider boxCollider = character.AddComponent<BoxCollider>();
         boxCollider.size = new Vector3(1f, 1f, 0.1f);
         boxCollider.isTrigger = true;
 
         characterInfoHoverT5 characterInfoHoverT5Script = character.AddComponent<characterInfoHoverT5>();
-        characterInfoHoverT5Script.Initialize(character, charaInfoPrefab);
+        characterInfoHoverT5Script.charaInfoNum = charaInfoNum;
+        characterInfoHoverT5Script.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
+
+    //public void ReadText(TextAsset _textAsset)
+    //{
+    //    string[] lines = _textAsset.text.Split('\n');
+
+    //    for (int i = 1; i < lines.Length; i++) // 从第二行开始读取
+    //    {
+    //        string[] parts = lines[i].Split(',');
+
+    //        if (parts.Length >= 5)
+    //        {
+    //            int charaID = int.Parse(parts[0]);
+    //            string charaName = parts[1];
+    //            string[] charaInfo = new string[] { charaName, parts[2], parts[3], parts[4] };
+
+    //            // 根据ID存储角色信息
+    //            characterInfoDict[charaID] = charaInfo;
+    //        }
+    //    }
+
+    //}
+
 
     // Update is called once per frame
     void Update()

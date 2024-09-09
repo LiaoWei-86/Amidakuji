@@ -681,6 +681,8 @@ MonoBehaviour:
   horizontalLineWidth: 0.05
   hoverAreaWidth: 0.4
   offset: -0.1
+  charaInfoFile: {fileID: 4900000, guid: a5b425c291221e74f9129cde25000100, type: 3}
+  dotFont: {fileID: 11400000, guid: 40a177137a637e94caf05dfbf4153e34, type: 2}
   T5TLcontrollerScript: {fileID: 874547966}
 --- !u!4 &897521728
 Transform:
