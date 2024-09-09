@@ -185,7 +185,7 @@ public class T4TLcontroller : MonoBehaviour
                     break;
 
                 case GameMode.PlayerPlaying:
-                    //  このモードでは、プレイヤーがEnterを押すと、
+                    //  このモードでは、プレイヤーがEnterを押すと、キャラクターの移動＋プロットアイコンの生成＋ストーリーメッセージの生成を一つずつ表示される
 
                     if (hasSecondIntroPlayed == true && isStoryPlaying == false)
                     {
