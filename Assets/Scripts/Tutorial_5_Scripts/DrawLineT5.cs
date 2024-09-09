@@ -21,9 +21,6 @@ public class DrawLineT5 : MonoBehaviour
 
     public GameObject tooltipPrefab; // 提示枠のプレハブ
     public GameObject charaInfoPrefab;
-    //public Transform infoContainer; // 用于显示角色信息的容器
-    public Dictionary<int, string[]> characterInfoDict = new Dictionary<int, string[]>(); // 存储角色信息
-
 
     public Material horizontalLineMaterial; // 横線のマテリアル
     public float horizontalLineWidth = 0.1f; // 横線の幅
@@ -35,11 +32,10 @@ public class DrawLineT5 : MonoBehaviour
 
     public Dictionary<int, Vector3> pointsDictionary;// 点とその位置情報を格納する辞書
 
-    public float offset = -0.1f;
+    public float offset = -0.1f;  // キャラクターのオフセット
 
-    //public TextAsset charaInfoFile;
-    public TMP_FontAsset dotFont;
-    //public int charaInfoIndex;
+
+    public TMP_FontAsset dotFont;  // ドットフォント
 
     public T5TLcontroller T5TLcontrollerScript;
     public characterInfoHoverT5 characterInfoHoverT5Script;
@@ -72,6 +68,8 @@ public class DrawLineT5 : MonoBehaviour
                 Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
             }
 
+            // 生成された全ての点に番号付けてそれぞれの位置情報をKeyValuePair<int, Vector3>の形でディクショナリーに保存した
+            // それを確認するために、保存された点の番号と位置情報をログに出力
             foreach (KeyValuePair<int, Vector3> kvp in pointsDictionary)
             {
                 Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
@@ -80,28 +78,10 @@ public class DrawLineT5 : MonoBehaviour
             
         }
 
+        // 横線を描画
         DrawHorizontalLine(2, 3);
         DrawHorizontalLine(4, 5);
 
-
-        // 读取并解析角色信息文件
-        //ReadText(charaInfoFile);
-
-        // 将角色信息传递给第二个脚本
-        // 确保 characterInfoHoverT5 是从场景中的 GameObject 获取到的实例
-        //if (characterInfoHoverT5Script == null)
-        //{
-        //    characterInfoHoverT5Script = FindObjectOfType<characterInfoHoverT5>();
-        //}
-
-        //if (characterInfoHoverT5Script != null)
-        //{
-        //    characterInfoHoverT5Script.SetCharacterInfo(characterInfoDict);
-        //}
-        //else
-        //{
-        //    Debug.LogError("CharacterInfoHoverT5 component not found.");
-        //}
 
     }
 
@@ -228,6 +208,7 @@ public class DrawLineT5 : MonoBehaviour
         lines.Add(lineObject);
     }
 
+    // 横線を描画するメソッド
     private void DrawHorizontalLine(int start, int end)
     {
         // 線のための新しい GameObject を作成
@@ -269,66 +250,63 @@ public class DrawLineT5 : MonoBehaviour
         lineRenderer.SetPosition(1, endPoint);
     }
 
+    // 点のペアごとにホバーエリアを生成するメソッド
     void CreateHoverAreaT5(GameObject pointA, GameObject pointB)
     {
-        Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");
+        Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");   // デバッグログを出力して、点Aと点Bの情報を表示する
 
-        Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2;
-        Vector3 direction = (pointB.transform.position - pointA.transform.position).normalized;
+        Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2;   // 点Aと点Bの中間点を計算する
+        Vector3 direction = (pointB.transform.position - pointA.transform.position).normalized;   // 点Aから点Bへの方向ベクトルを計算し、正規化する
 
-        GameObject hoverArea = new GameObject("HoverArea");
-        BoxCollider boxCollider = hoverArea.AddComponent<BoxCollider>();
+        GameObject hoverArea = new GameObject("HoverArea");   // 新しい GameObject を作成し、その名前を "HoverArea" に設定する
+        BoxCollider boxCollider = hoverArea.AddComponent<BoxCollider>();   // BoxCollider コンポーネントを追加し、ホバーエリアのサイズを設定する
+
+        // 点Aと点Bの間の距離をホバーエリアの横幅に設定し、縦幅を hoverAreaWidth、厚みを 0.1f に設定する
         boxCollider.size = new Vector3(Vector3.Distance(pointA.transform.position, pointB.transform.position), hoverAreaWidth, 0.1f);
+
+        // BoxCollider をトリガーとして設定する
         boxCollider.isTrigger = true;
 
-        Debug.Log($"BoxCollider created with size: {boxCollider.size}");
+        Debug.Log($"BoxCollider created with size: {boxCollider.size}");   // BoxCollider のサイズをデバッグログで表示する
 
-        hoverArea.transform.position = midPoint;
-        hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        hoverArea.transform.position = midPoint;   // ホバーエリアの位置を中間点に設定する
+        hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);   // ホバーエリアの回転を、点Aから点Bへの方向に基づいて設定する
 
-        HoverAreaT5 hoverScriptT5 = hoverArea.AddComponent<HoverAreaT5>();                    // Need changed NOTICE！
-        hoverScriptT5.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);
+        // HoverAreaT5 スクリプトをホバーエリアに追加する
+        HoverAreaT5 hoverScriptT5 = hoverArea.AddComponent<HoverAreaT5>();         // Need changed NOTICE！
+        hoverScriptT5.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);   // HoverAreaT5 スクリプトを初期化する
 
+        // HoverAreaT5 スクリプトが追加されたことをデバッグログで表示する
         Debug.Log($"HoverArea script added to {hoverArea.name}");
 
+        // ホバーエリアが作成された位置とサイズをデバッグログで表示する
         Debug.Log($"Hover Area created at {midPoint} with size {boxCollider.size}");
     }
 
+    // キャラクターのホバーエリアを生成するメソッド
     void CreateHoverAreaCharacter(GameObject character, int charaInfoNum)
     {
+        // デバッグログを出力して、キャラクターの情報を表示する
         Debug.Log($"CreateHoverArea called with character: {character.name}");
 
+        // キャラクターの位置からオフセットを加えた位置を計算する
         Vector3 charaInfoPosition = character.transform.position + new Vector3(-3,-1,0);
 
+        // キャラクターに BoxCollider コンポーネントを追加し、ホバーエリアのサイズを設定する
         BoxCollider boxCollider = character.AddComponent<BoxCollider>();
         boxCollider.size = new Vector3(1f, 1f, 0.1f);
         boxCollider.isTrigger = true;
 
+        // characterInfoHoverT5 スクリプトをキャラクターに追加する
         characterInfoHoverT5 characterInfoHoverT5Script = character.AddComponent<characterInfoHoverT5>();
+
+        // characterInfoHoverT5 スクリプトの情報番号を設定する
         characterInfoHoverT5Script.charaInfoNum = charaInfoNum;
+
+        // characterInfoHoverT5 スクリプトを初期化する
         characterInfoHoverT5Script.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
 
-    //public void ReadText(TextAsset _textAsset)
-    //{
-    //    string[] lines = _textAsset.text.Split('\n');
-
-    //    for (int i = 1; i < lines.Length; i++) // 从第二行开始读取
-    //    {
-    //        string[] parts = lines[i].Split(',');
-
-    //        if (parts.Length >= 5)
-    //        {
-    //            int charaID = int.Parse(parts[0]);
-    //            string charaName = parts[1];
-    //            string[] charaInfo = new string[] { charaName, parts[2], parts[3], parts[4] };
-
-    //            // 根据ID存储角色信息
-    //            characterInfoDict[charaID] = charaInfo;
-    //        }
-    //    }
-
-    //}
 
 
     // Update is called once per frame

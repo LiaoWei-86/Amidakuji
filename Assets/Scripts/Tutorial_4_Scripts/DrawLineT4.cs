@@ -24,8 +24,6 @@ public class DrawLineT4 : MonoBehaviour
     private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // 横線の辞書
     public float hoverAreaWidth = 0.4f; // 横線のホバーエリアの縦幅
 
-    //public GameObject T2TLcontrollerGameObject; // T2TLcontrollerスクリプトのisCharacterMovingブール値を取得するため
-    //public T2TLcontroller T2TLcontrollerScript; // T2TLcontrollerスクリプトの参照を格納するため
 
     private List<GameObject> lines = new List<GameObject>(); // 線オブジェクトのリスト
     private List<GameObject> points = new List<GameObject>(); // 点オブジェクトのリスト
@@ -45,8 +43,6 @@ public class DrawLineT4 : MonoBehaviour
         }
 
         pointsDictionary = new Dictionary<int, Vector3>();
-        //  スクリプトの参照を取得
-        //T2TLcontrollerScript = T2TLcontrollerGameObject.GetComponent<T2TLcontroller>();
 
         // 複数の線を生成
         for (int i = 0; i < numberOfLines; i++)
@@ -191,13 +187,6 @@ public class DrawLineT4 : MonoBehaviour
             Debug.LogWarning($"Line {lineNumber }: No ending prefab available for line number {lineNumber}");
         }
 
-        //// プロットアイコンを生成
-        //Vector3 circleMiddlePosition = (startPoint + endPoint) / 2;
-        //Vector3 plotIconPosition = circleMiddlePosition + new Vector3(1, 0, 0);
-        //GameObject plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity);
-        //plotIconObject.transform.parent = lineObject.transform;
-        //plotIconObject.SetActive(false);
-        //Debug.Log($"Line {lineNumber }: Created Plot Icon at {plotIconPosition}");
 
         lines.Add(lineObject);
     }

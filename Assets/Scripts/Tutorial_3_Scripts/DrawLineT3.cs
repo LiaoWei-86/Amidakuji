@@ -167,13 +167,6 @@ public class DrawLineT3 : MonoBehaviour
             Debug.LogWarning($"Line {lineNumber }: No ending prefab available for line number {lineNumber}");
         }
 
-        //// プロットアイコンを伏撹
-        //Vector3 circleMiddlePosition = (startPoint + endPoint) / 2;
-        //Vector3 plotIconPosition = circleMiddlePosition + new Vector3(1, 0, 0);
-        //GameObject plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity);
-        //plotIconObject.transform.parent = lineObject.transform;
-        //plotIconObject.SetActive(false);
-        //Debug.Log($"Line {lineNumber }: Created Plot Icon at {plotIconPosition}");
 
         lines.Add(lineObject);
     }
