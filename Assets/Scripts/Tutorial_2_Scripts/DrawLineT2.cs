@@ -19,9 +19,9 @@ public class DrawLineT2 : MonoBehaviour
 
     public GameObject endingPrefab; //　結末アイコンのプレハブ
 
-    public GameObject plotIconPrefab; //　プロットアイコンのプレハブ
-    private Vector3 plotIconPosition; // プロットアイコンの位置
-    private GameObject plotIconObject; //　プロットアイコン用に新しく作成された GameObject
+    //public GameObject plotIconPrefab; //　プロットアイコンのプレハブ
+    //private Vector3 plotIconPosition; // プロットアイコンの位置
+    //private GameObject plotIconObject; //　プロットアイコン用に新しく作成された GameObject
 
 
     public GameObject T2TLcontrollerGameObject; // T2TLcontrollerスクリプトのisCharacterMovingブール値を取得するため
@@ -69,11 +69,11 @@ public class DrawLineT2 : MonoBehaviour
         GameObject endingObject = Instantiate(endingPrefab, endingPosition, Quaternion.identity); // 結末アイコンのための新しい GameObject を作成
         endingObject.transform.parent = lineObject.transform; // 結末アイコンを線のオブジェクトの子オブジェクトとして設定
 
-        // プロットアイコン
-        plotIconPosition = ((circlePosition + endPoint) / 2 + new Vector3(1, 0, 0)); //　プロットアイコンの位置を計算（circleと終点の中間点の右）
-        plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity); 
-        plotIconObject.transform.parent = lineObject.transform; 
-        plotIconObject.SetActive(false); // プロットアイコンを非表示にする
+        //// プロットアイコン
+        //plotIconPosition = ((circlePosition + endPoint) / 2 + new Vector3(1, 0, 0)); //　プロットアイコンの位置を計算（circleと終点の中間点の右）
+        //plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity); 
+        //plotIconObject.transform.parent = lineObject.transform; 
+        //plotIconObject.SetActive(false); // プロットアイコンを非表示にする
 
     }
 
@@ -109,15 +109,15 @@ public class DrawLineT2 : MonoBehaviour
                     T2TLcontrollerScript.isCharacterMoving = false; // 移動を停止
                 }
 
-                // キャラクターのy値がplotIconPositionのy値と等しいかどうかをチェック
-                if (Mathf.Abs(characterObject.transform.position.y - plotIconPosition.y) < 0.05f)
-                {
-                    Debug.Log("Character reached plot icon y position");
-                    plotIconObject.SetActive(true); // プロットアイコンを表示
-                }
+                //// キャラクターのy値がplotIconPositionのy値と等しいかどうかをチェック
+                //if (Mathf.Abs(characterObject.transform.position.y - plotIconPosition.y) < 0.05f)
+                //{
+                //    Debug.Log("Character reached plot icon y position");
+                //    plotIconObject.SetActive(true); // プロットアイコンを表示
+                //}
 
-                // plotIconPositionのy値を表示
-                Debug.Log("Plot icon y position: " + plotIconPosition.y);
+                //// plotIconPositionのy値を表示
+                //Debug.Log("Plot icon y position: " + plotIconPosition.y);
                 // characterObjectのy値を表示
                 Debug.Log("Character y position: " + characterObject.transform.position.y);
 

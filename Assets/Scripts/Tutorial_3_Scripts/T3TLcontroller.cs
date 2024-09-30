@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class T3TLcontroller : MonoBehaviour
 {
+    public GameObject target_Message; // ゲームオブジェクト target_intro_Message（開始メッセージ）
     public GameObject start_intro_Message; // ゲームオブジェクト start_intro_Message（開始メッセージ）
     public GameObject second_intro_Message; // ゲームオブジェクト second_intro_Message（開始メッセージ）
     public GameObject lineCount1_Message; // ゲームオブジェクト lineCount1_Message（残りの線何本メッセージ）
@@ -14,6 +15,7 @@ public class T3TLcontroller : MonoBehaviour
     public List<GameObject> storyMessages; // ゲームオブジェクト storyMessage（物語のメッセージ）
 
     public GameObject endMessage; // ゲームオブジェクト endMessage（エンディングメッセージ）
+    public PlayableDirector target_MessagePlayableDirector; // target_MessageのPlayableDirector
     public PlayableDirector start_intro_MessagePlayableDirector; // start_intro_MessageのPlayableDirector
     public PlayableDirector second_intro_MessagePlayableDirector; // second_intro_MessageのPlayableDirector
     public PlayableDirector lineCount1_MessagePlayableDirector; // lineCount1_MessageのPlayableDirector
@@ -96,6 +98,11 @@ public class T3TLcontroller : MonoBehaviour
         {
             endMessage.SetActive(false);
         }
+        //  開始時にtarget_MessageのGameObjectを非表示にする
+        if (target_Message != null)
+        {
+            target_Message.SetActive(false);
+        }
 
 
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
@@ -133,6 +140,10 @@ public class T3TLcontroller : MonoBehaviour
         else
         {
             Debug.LogWarning("lineCount1_MessagePlayableDirector is not assigned.");
+        }
+        if (target_MessagePlayableDirector != null)
+        {
+            target_MessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
 
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
@@ -275,18 +286,26 @@ public class T3TLcontroller : MonoBehaviour
 
         if (director == start_intro_MessagePlayableDirector)
         {
-            lineCount1_Message.SetActive(true);
-            lineCount1_MessagePlayableDirector.Play();
+            target_MessagePlayableDirector.Play();
+            target_Message.SetActive(true);
+
 
             Debug.Log("start_intro_Message Timeline playback completed.");
         }
+        else if (director == target_MessagePlayableDirector)
+        {
+
+            lineCount1_Message.SetActive(true);
+            lineCount1_MessagePlayableDirector.Play();
+        }
         else if (director == lineCount1_MessagePlayableDirector)
         {
+            
             currentGameMode = GameMode.PlayerPlaying;
-
 
             Debug.Log("lineCount1_Message Timeline playback completed.");
         }
+        
         else if (director == second_intro_MessagePlayableDirector)
         {
             hasSecondIntroPlayed = true;
@@ -410,7 +429,11 @@ public class T3TLcontroller : MonoBehaviour
         {
             start_intro_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
-
+  
+        if (target_MessagePlayableDirector != null)
+        {
+            target_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
         if (second_intro_MessagePlayableDirector != null)
         {
             second_intro_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
