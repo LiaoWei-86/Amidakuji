@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class gameController : MonoBehaviour
+public class gameController1 : MonoBehaviour
 {
     public GameObject firstMessage; // ゲームオブジェクト firstMessage（開始メッセージ1）
     public PlayableDirector firstMessagePlayableDirector; // firstMessageのPlayableDirector

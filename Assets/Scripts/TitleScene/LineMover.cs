@@ -1,4 +1,4 @@
-uusing UnityEngine;
+using UnityEngine;
 using System;
 
 public class LineMover : MonoBehaviour
