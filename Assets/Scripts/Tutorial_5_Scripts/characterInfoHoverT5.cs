@@ -21,9 +21,10 @@ public class characterInfoHoverT5 : MonoBehaviour
     private Dictionary<int, string[]> characterInfoDict;    // キャラクター情報を保存
 
     public DrawLineT5 DrawLineT5Script;    // DrawLineT5スクリプトの参照
+    public T5TLcontroller T5TLcontrollerScript;   // T5TLcontrollerスクリプトの参照
 
     // キャラクター情報を設定する
-    private static readonly Dictionary<int, string[]> defaultCharacterInfoDict = new Dictionary<int, string[]>
+    public Dictionary<int, string[]> defaultCharacterInfoDict = new Dictionary<int, string[]>
     {
         { 1, new string[] { "騎士", "○ 凶暴な犬を飼っています。", "○ 国王の安全を守るよう命じられています。", "○ 東洋の剣術を軽視しています。" } },
         { 2, new string[] { "猟師", "○ 猟犬が欲しいです。", "○ 行方不明になった娘を探しています。", "○ 思いがけず手に入れた財宝は拒まず、貯めます。" } }
@@ -35,6 +36,10 @@ public class characterInfoHoverT5 : MonoBehaviour
         if (DrawLineT5Script == null)
         {
             DrawLineT5Script = FindObjectOfType<DrawLineT5>();
+        }
+        if (T5TLcontrollerScript == null)
+        {
+            T5TLcontrollerScript = FindObjectOfType<T5TLcontroller>();
         }
 
         // キャラクター情報を設定
@@ -87,6 +92,8 @@ public class characterInfoHoverT5 : MonoBehaviour
             string characterName = character.name;
             Debug.Log("Which character is the player placing the mouse on? --> " + character.name);
 
+            
+
             // キャラクター名の最後の文字を番号として解析する
             if (int.TryParse(characterName[characterName.Length - 1].ToString(), out int charaInfoNum))
             {
@@ -132,6 +139,18 @@ public class characterInfoHoverT5 : MonoBehaviour
         {
             Destroy(charaInfoInstance);
             Debug.Log("charaInfoInstance destroyed");
+
+            //　T5TLcontrollerのブール値を変える
+            if (character.name == "Character1")
+            {
+                T5TLcontrollerScript.charaKnightInfoChecked = true;
+                Debug.Log("T5TLcontrollerScript.charaKnightInfoChecked: " + T5TLcontrollerScript.charaKnightInfoChecked);
+            }
+            else if (character.name == "Character2")
+            {
+                T5TLcontrollerScript.charaHunterInfoChecked = true;
+                Debug.Log("T5TLcontrollerScript.charaHunterInfoChecked: " + T5TLcontrollerScript.charaHunterInfoChecked);
+            }
         }
     }
 

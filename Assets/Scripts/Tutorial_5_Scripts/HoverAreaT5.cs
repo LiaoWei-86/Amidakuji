@@ -70,6 +70,17 @@ public class HoverAreaT5 : MonoBehaviour
             {
                 CreateHorizontalLine();
                 Debug.Log("Horizontal line created");
+
+                if (pointA.name == "Circle_Line1_Point2")
+                {
+                    T5TLcontrollerScript.isHorizontal_1_LineCreated = true;
+                    Debug.Log("T5TLcontrollerScript.isHorizontal_1_LineCreated: " + T5TLcontrollerScript.isHorizontal_1_LineCreated);
+                }
+                else if(pointA.name== "Circle_Line1_Point3")
+                {
+                    T5TLcontrollerScript.isHorizontal_2_LineCreated = true;
+                    Debug.Log("T5TLcontrollerScript.isHorizontal_2_LineCreated: " + T5TLcontrollerScript.isHorizontal_2_LineCreated);
+                }
                 //T5TLcontrollerScript.isHorizontalLineCreated = true;
                 //Debug.Log("T4TLcontrollerScript.isHorizontalLineCreated" + T5TLcontrollerScript.isHorizontalLineCreated);
             }
@@ -82,6 +93,15 @@ public class HoverAreaT5 : MonoBehaviour
                 currentLine = null;
 
                 Debug.Log("Horizontal line destroyed");
+
+                if (pointA.name == "Circle_Line1_Point3")
+                {
+                    T5TLcontrollerScript.isHorizontal_1_LineCreated = false;
+                }
+                else if (pointA.name == "Circle_Line1_Point4")
+                {
+                    T5TLcontrollerScript.isHorizontal_2_LineCreated = false;
+                }
                 //T5TLcontrollerScript.isHorizontalLineCreated = false;
             }
         }

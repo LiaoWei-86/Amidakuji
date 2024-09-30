@@ -10,18 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
-  m_Name: IntroduceMessageTimeline
+  m_Name: secondMessageTimeline
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
-  - {fileID: 718733083231880845}
+  - {fileID: 9000499388988844955}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 0}
---- !u!114 &718733083231880845
+--- !u!114 &5732729967163553438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44df274b1a6e60a4cab148bbb8432ad2, type: 3}
+  m_Name: TextPlayableAsset
+  m_EditorClassIdentifier: 
+  charaObj:
+    exposedName: 035554c69a297fd419321f453c48da5f
+    defaultValue: {fileID: 0}
+--- !u!114 &9000499388988844955
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,10 +60,10 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 808518367983645548}
+    m_Asset: {fileID: 5732729967163553438}
     m_Duration: 4
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 718733083231880845}
+    m_ParentTrack: {fileID: 9000499388988844955}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
@@ -113,18 +128,3 @@ MonoBehaviour:
     m_DisplayName: TextPlayableAsset
   m_Markers:
     m_Objects: []
---- !u!114 &808518367983645548
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44df274b1a6e60a4cab148bbb8432ad2, type: 3}
-  m_Name: TextPlayableAsset
-  m_EditorClassIdentifier: 
-  charaObj:
-    exposedName: 0ad3408473aaa6c4a81e3408d74667ad
-    defaultValue: {fileID: 0}
