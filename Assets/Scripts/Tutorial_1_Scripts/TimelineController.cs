@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class TimelineController : MonoBehaviour
 {
-    public GameObject introduceMessage; // šZÓ­¥á¥Ã¥»©`¥¸¤ÎGameObject
-    public GameObject firstActMessage; // ĞòÄ»¥á¥Ã¥»©`¥¸¤ÎGameObject
-    public PlayableDirector firstActPlayableDirector;  // ĞòÄ»¥á¥Ã¥»©`¥¸¤ÎPlayableDirector
+    public GameObject introduceMessage; // æ­“è¿ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®GameObject
+    public GameObject firstActMessage; // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®GameObject
+    public PlayableDirector firstActPlayableDirector;  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®PlayableDirector
 
     private enum GameMode
     {
@@ -14,12 +14,12 @@ public class TimelineController : MonoBehaviour
         WaitForSceneChange
     }
 
-    private GameMode currentGameMode = GameMode.TextPlaying;  // ¥Ç¥Õ¥©¥ë¥È¥²©`¥à¥â©`¥É¤ÏTextPlaying
-    private bool isFirstActPlaying = false;  // ĞòÄ»¥á¥Ã¥»©`¥¸¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    private GameMode currentGameMode = GameMode.TextPlaying;  // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã¯TextPlaying
+    private bool isFirstActPlaying = false;  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
 
     void Start()
     {
-        // PlayableDirector¤¬null¤Ç¤Ê¤¤¤³¤È¤ò´_ÕJ¤·¡¢ÔÙÉúÍêÁË¥¤¥Ù¥ó¥È¤ò¥µ¥Ö¥¹¥¯¥é¥¤¥Ö
+        // PlayableDirectorãŒnullã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã€å†ç”Ÿå®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–
         if (firstActPlayableDirector != null)
         {
             firstActPlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -32,29 +32,29 @@ public class TimelineController : MonoBehaviour
 
     void Update()
     {
-        // Enter¥­©`¤¬Ñº¤µ¤ì¤¿¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+        // Enterã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (currentGameMode)
             {
                 case GameMode.TextPlaying:
-                    if (!isFirstActPlaying) // ĞòÄ»¥á¥Ã¥»©`¥¸¤¬ÔÙÉúÖĞ¤Ç¤Ê¤¤ˆöºÏ
+                    if (!isFirstActPlaying) // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå†ç”Ÿä¸­ã§ãªã„å ´åˆ
                     {
-                        if (introduceMessage != null) // šZÓ­¥á¥Ã¥»©`¥¸¤¬null¤Ç¤Ê¤¤ˆöºÏ
+                        if (introduceMessage != null) // æ­“è¿ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒnullã§ãªã„å ´åˆ
                         {
-                            introduceMessage.SetActive(false); // ¥Ç¥Õ¥©¥ë¥È¤ÎšZÓ­¥á¥Ã¥»©`¥¸¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+                            introduceMessage.SetActive(false); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ­“è¿ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’éè¡¨ç¤ºã«ã™ã‚‹
                         }
 
-                        if (firstActMessage != null)  // ĞòÄ»¥á¥Ã¥»©`¥¸¤¬null¤Ç¤Ê¤¤ˆöºÏ
+                        if (firstActMessage != null)  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒnullã§ãªã„å ´åˆ
                         {
-                            firstActMessage.SetActive(true);  // ĞòÄ»¥á¥Ã¥»©`¥¸¤ò±íÊ¾¤¹¤ë
+                            firstActMessage.SetActive(true);  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
                         }
 
-                        // ²¥·Å Timeline
-                        if (firstActPlayableDirector != null)  // ĞòÄ»¥á¥Ã¥»©`¥¸¤ÎPlayableDirector¤¬null¤Ç¤Ê¤¤ˆöºÏ
+                        // æ’­æ”¾ Timeline
+                        if (firstActPlayableDirector != null)  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®PlayableDirectorãŒnullã§ãªã„å ´åˆ
                         {
-                            firstActPlayableDirector.Play();  // ĞòÄ»¥á¥Ã¥»©`¥¸¤ÎPlayableDirector¤òÔÙÉú¤¹¤ë
-                            isFirstActPlaying = true;  // ÔÙÉúÖĞ¤È¥Ş©`¥¯¤¹¤ë
+                            firstActPlayableDirector.Play();  // åºå¹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®PlayableDirectorã‚’å†ç”Ÿã™ã‚‹
+                            isFirstActPlaying = true;  // å†ç”Ÿä¸­ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
                         }
                         else
                         {
@@ -64,7 +64,7 @@ public class TimelineController : MonoBehaviour
                     break;
 
                 case GameMode.WaitForSceneChange:
-                    // ¥·©`¥ó¤òÇĞ¤êÌæ¤¨¤ë
+                    // ã‚·ãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
                     SceneManager.LoadScene("Tutorial_2_Scene");
                     break;
             }
@@ -75,15 +75,15 @@ public class TimelineController : MonoBehaviour
     {
         if (director == firstActPlayableDirector)
         {
-            isFirstActPlaying = false;  // ÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
-            currentGameMode = GameMode.WaitForSceneChange;  // ¥·©`¥óÇĞ¤êÌæ¤¨´ı¤Á¥â©`¥É¤Ë‰ä¸ü¤¹¤ë
+            isFirstActPlaying = false;  // å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
+            currentGameMode = GameMode.WaitForSceneChange;  // ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå¾…ã¡ãƒ¢ãƒ¼ãƒ‰ã«å¤‰æ›´ã™ã‚‹
             Debug.Log("Timeline playback completed.");
         }
     }
 
     void OnDestroy()
     {
-        // ¥¤¥Ù¥ó¥È¤Î¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤ò½â³ı¤·¤Æ¡¢¥á¥â¥ê¥ê©`¥¯¤ò·À¤°
+        // ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã‚’è§£é™¤ã—ã¦ã€ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
         if (firstActPlayableDirector != null)
         {
             firstActPlayableDirector.stopped -= OnPlayableDirectorStopped;
@@ -91,25 +91,25 @@ public class TimelineController : MonoBehaviour
     }
 
     /*
-    ¡¾OnPlayableDirectorStopped ¥á¥½¥Ã¥É¤ÎŒg¬FÔ­Àí¡¿
-    OnPlayableDirectorStopped ¥á¥½¥Ã¥É¤Ï¡¢PlayableDirector ¤ÎÔÙÉú¤¬Í£Ö¹¤·¤¿¤È¤­¤Ëºô¤Ó³ö¤µ¤ì¤ë¥¤¥Ù¥ó¥È¥Ï¥ó¥É¥é©`¤Ç¤¹¡£Œg¬FÔ­Àí¤Ï´Î¤ÎÍ¨¤ê¤Ç¤¹£º
+    ã€OnPlayableDirectorStopped ãƒ¡ã‚½ãƒƒãƒ‰ã®å®Ÿç¾åŸç†ã€‘
+    OnPlayableDirectorStopped ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€PlayableDirector ã®å†ç”ŸãŒåœæ­¢ã—ãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã§ã™ã€‚å®Ÿç¾åŸç†ã¯æ¬¡ã®é€šã‚Šã§ã™ï¼š
 
-    ¥¤¥Ù¥ó¥È¥µ¥Ö¥¹¥¯¥é¥¤¥Ö:
+    ã‚¤ãƒ™ãƒ³ãƒˆã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–:
 
-    Start ¥á¥½¥Ã¥É¤Ç¡¢PlayableDirector ¤¬Í£Ö¹¤·¤¿¤È¤­¤Ë OnPlayableDirectorStopped ¥á¥½¥Ã¥É¤¬ºô¤Ó³ö¤µ¤ì¤ë¤è¤¦¤Ë¡¢firstActPlayableDirector.stopped ¥¤¥Ù¥ó¥È¤Ë¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤·¤Æ¤¤¤Ş¤¹¡£
+    Start ãƒ¡ã‚½ãƒƒãƒ‰ã§ã€PlayableDirector ãŒåœæ­¢ã—ãŸã¨ãã« OnPlayableDirectorStopped ãƒ¡ã‚½ãƒƒãƒ‰ãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ã‚ˆã†ã«ã€firstActPlayableDirector.stopped ã‚¤ãƒ™ãƒ³ãƒˆã«ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã—ã¦ã„ã¾ã™ã€‚
     firstActPlayableDirector.stopped += OnPlayableDirectorStopped;
 
-    ¥¤¥Ù¥ó¥È°kÉú•r¤Î„IÀí:
+    ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿæ™‚ã®å‡¦ç†:
 
-    OnPlayableDirectorStopped ¥á¥½¥Ã¥É¤Ï¡¢PlayableDirector ¤ÎÔÙÉú¤¬Í£Ö¹¤¹¤ë¤È×Ô„ÓµÄ¤Ëºô¤Ó³ö¤µ¤ì¤Ş¤¹¡£
-    ¥á¥½¥Ã¥ÉÄÚ²¿¤Ç¤Ï¡¢PlayableDirector ¤¬ firstActPlayableDirector ¤ÈÒ»ÖÂ¤¹¤ë¤«¤É¤¦¤«¤ò´_ÕJ¤·¤Ş¤¹¡£
-    Ò»ÖÂ¤¹¤ëˆöºÏ¡¢isFirstActPlaying ¤ò false ¤ËÔO¶¨¤·¡¢ÔÙÉú¤¬ÍêÁË¤·¤¿¤³¤È¤òÊ¾¤·¤Ş¤¹¡£
-    ´Î¤Ë¡¢currentGameMode ¤ò WaitForSceneChange ¤Ë‰ä¸ü¤·¡¢¥·©`¥óÇĞ¤êÌæ¤¨´ı¤Á¥â©`¥É¤Ë¤·¤Ş¤¹¡£
-    ×îáá¤Ë¡¢¥Ç¥Ğ¥Ã¥°¥í¥°¤ò³öÁ¦¤·¤Æ¡¢ÔÙÉú¤¬ÍêÁË¤·¤¿¤³¤È¤òÍ¨Öª¤·¤Ş¤¹¡£
+    OnPlayableDirectorStopped ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€PlayableDirector ã®å†ç”ŸãŒåœæ­¢ã™ã‚‹ã¨è‡ªå‹•çš„ã«å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚
+    ãƒ¡ã‚½ãƒƒãƒ‰å†…éƒ¨ã§ã¯ã€PlayableDirector ãŒ firstActPlayableDirector ã¨ä¸€è‡´ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚
+    ä¸€è‡´ã™ã‚‹å ´åˆã€isFirstActPlaying ã‚’ false ã«è¨­å®šã—ã€å†ç”ŸãŒå®Œäº†ã—ãŸã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
+    æ¬¡ã«ã€currentGameMode ã‚’ WaitForSceneChange ã«å¤‰æ›´ã—ã€ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå¾…ã¡ãƒ¢ãƒ¼ãƒ‰ã«ã—ã¾ã™ã€‚
+    æœ€å¾Œã«ã€ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’å‡ºåŠ›ã—ã¦ã€å†ç”ŸãŒå®Œäº†ã—ãŸã“ã¨ã‚’é€šçŸ¥ã—ã¾ã™ã€‚
 
-    ¥¤¥Ù¥ó¥È¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤Î½â³ı:
+    ã‚¤ãƒ™ãƒ³ãƒˆã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã®è§£é™¤:
 
-    ¥á¥â¥ê¥ê©`¥¯¤ò·À¤°¤¿¤á¤Ë¡¢OnDestroy ¥á¥½¥Ã¥É¤Ç¥¤¥Ù¥ó¥È¤ÎÙÕi¤ò½â³ı¤·¤Ş¤¹¡£
+    ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ããŸã‚ã«ã€OnDestroy ãƒ¡ã‚½ãƒƒãƒ‰ã§ã‚¤ãƒ™ãƒ³ãƒˆã®è³¼èª­ã‚’è§£é™¤ã—ã¾ã™ã€‚
     firstActPlayableDirector.stopped -= OnPlayableDirectorStopped;
      */
 }

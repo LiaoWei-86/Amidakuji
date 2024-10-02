@@ -1,133 +1,133 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
 public class HoverArea : MonoBehaviour
 {
-    private GameObject pointA; // ºá¾€¤ÎÊ¼µã¤È¤Ê¤ë¥İ¥¤¥ó¥ÈA
-    private GameObject pointB; // ºá¾€¤Î½Kµã¤È¤Ê¤ë¥İ¥¤¥ó¥ÈB
-    private Material horizontalLineMaterial; // ºá¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤ò±£³Ö
-    private float horizontalLineWidth; // ºá¾€¤Î·ù¤òÔO¶¨¤¹¤ë¤¿¤á¤Î‰äÊı
-    private GameObject tooltipPrefab; // ¥Ä©`¥ë¥Á¥Ã¥×¤Î¥×¥ì¥Ï¥Ö¤ò±£³Ö
-    private GameObject tooltipInstance; // ¥¤¥ó¥¹¥¿¥ó¥¹»¯¤µ¤ì¤¿¥Ä©`¥ë¥Á¥Ã¥×¤ò±£³Ö
-    private GameObject currentLine; // ¬FÔÚ¤Îºá¾€¥ª¥Ö¥¸¥§¥¯¥È¤ò±£³Ö
+    private GameObject pointA; // æ¨ªç·šã®å§‹ç‚¹ã¨ãªã‚‹ãƒã‚¤ãƒ³ãƒˆA
+    private GameObject pointB; // æ¨ªç·šã®çµ‚ç‚¹ã¨ãªã‚‹ãƒã‚¤ãƒ³ãƒˆB
+    private Material horizontalLineMaterial; // æ¨ªç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä¿æŒ
+    private float horizontalLineWidth; // æ¨ªç·šã®å¹…ã‚’è¨­å®šã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    private GameObject tooltipPrefab; // ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®ãƒ—ãƒ¬ãƒãƒ–ã‚’ä¿æŒ
+    private GameObject tooltipInstance; // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã•ã‚ŒãŸãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’ä¿æŒ
+    private GameObject currentLine; // ç¾åœ¨ã®æ¨ªç·šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¿æŒ
 
-    public T3TLcontroller T3TLcontrollerScript; // T3TLcontroller¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤ò¸ñ¼{¤¹¤ë¤¿¤á
-    public DrawLineT3 DrawLineT3Script; // DrawLineT3¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤ò¸ñ¼{¤¹¤ë¤¿¤á
+    public T3TLcontroller T3TLcontrollerScript; // T3TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚
+    public DrawLineT3 DrawLineT3Script; // DrawLineT3ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚
 
-    // ĞÂ¤·¤¤¥Õ¥£©`¥ë¥É¤ò×·¼Ó¤·¤Æ¡¢×÷³É¤µ¤ì¤¿ºá¾€¤ÎÇéˆó¤òÓ›åh¤·¤Ş¤¹
-    private Dictionary<int, int[]> horizontalLines = new Dictionary<int, int[]>(); // ºá¾€¤ÎÇéˆó¤ò±£´æ¤¹¤ë¥Ç¥£¥¯¥·¥ç¥Ê¥ê
+    // æ–°ã—ã„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¿½åŠ ã—ã¦ã€ä½œæˆã•ã‚ŒãŸæ¨ªç·šã®æƒ…å ±ã‚’è¨˜éŒ²ã—ã¾ã™
+    private Dictionary<int, int[]> horizontalLines = new Dictionary<int, int[]>(); // æ¨ªç·šã®æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒª
 
     void Start()
     {
-        //¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤òÈ¡µÃ
+        //ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’å–å¾—
         if (DrawLineT3Script != null)
         {
-            DrawLineT3Script = FindObjectOfType<DrawLineT3>(); // DrawLineT3¥¹¥¯¥ê¥×¥È¤ò¥·©`¥óÄÚ¤«¤éÌ½¤·¤Æ²ÎÕÕ¤òÈ¡µÃ
+            DrawLineT3Script = FindObjectOfType<DrawLineT3>(); // DrawLineT3ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¢ã—ã¦å‚ç…§ã‚’å–å¾—
         }
 
         if (T3TLcontrollerScript == null)
         {
-            T3TLcontrollerScript = FindObjectOfType<T3TLcontroller>(); // T3TLcontroller¥¹¥¯¥ê¥×¥È¤ò¥·©`¥óÄÚ¤«¤éÌ½¤·¤Æ²ÎÕÕ¤òÈ¡µÃ
+            T3TLcontrollerScript = FindObjectOfType<T3TLcontroller>(); // T3TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¢ã—ã¦å‚ç…§ã‚’å–å¾—
         }
 
     }
 
-    // HoverArea¥¯¥é¥¹¤Î³õÆÚ»¯„IÀí
+    // HoverAreaã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†
     public void Initialize(GameObject pointA, GameObject pointB, Material horizontalLineMaterial, float horizontalLineWidth, GameObject tooltipPrefab)
     {
-        // ÒıÊı¤ÇÊÜ¤±È¡¤Ã¤¿‚¤ò¥á¥ó¥Ğ‰äÊı¤Ë´úÈë
+        // å¼•æ•°ã§å—ã‘å–ã£ãŸå€¤ã‚’ãƒ¡ãƒ³ãƒå¤‰æ•°ã«ä»£å…¥
         this.pointA = pointA;
         this.pointB = pointB;
         this.horizontalLineMaterial = horizontalLineMaterial;
         this.horizontalLineWidth = horizontalLineWidth;
         this.tooltipPrefab = tooltipPrefab;
 
-        // ³õÆÚ»¯¤µ¤ì¤¿Çéˆó¤ò¥í¥°³öÁ¦
+        // åˆæœŸåŒ–ã•ã‚ŒãŸæƒ…å ±ã‚’ãƒ­ã‚°å‡ºåŠ›
         Debug.Log($"HoverArea initialized with points {pointA.name} and {pointB.name}, material {horizontalLineMaterial.name}, width {horizontalLineWidth}, tooltip prefab {tooltipPrefab.name}");
     }
 
-    // ¥Ş¥¦¥¹¤¬¥ª¥Ö¥¸¥§¥¯¥È¤ËÈë¤Ã¤¿ëH¤Î„IÀí
+    // ãƒã‚¦ã‚¹ãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å…¥ã£ãŸéš›ã®å‡¦ç†
     void OnMouseEnter()
     {
         if (tooltipPrefab != null)
         {
-            // ¥Ä©`¥ë¥Á¥Ã¥×¤ò±íÊ¾¤¹¤ë¤¿¤á¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÉú³É
+            // ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
             tooltipInstance = Instantiate(tooltipPrefab, transform.position, Quaternion.identity);
             Debug.Log($"Tooltip instantiated at {transform.position}");
         }
     }
 
-    // ¥Ş¥¦¥¹¤¬¥ª¥Ö¥¸¥§¥¯¥È¤«¤éëx¤ì¤¿ëH¤Î„IÀí
+    // ãƒã‚¦ã‚¹ãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰é›¢ã‚ŒãŸéš›ã®å‡¦ç†
     void OnMouseExit()
     {
         if (tooltipInstance != null)
         {
-            // ±íÊ¾¤µ¤ì¤Æ¤¤¤ë¥Ä©`¥ë¥Á¥Ã¥×¤òÏ÷³ı
+            // è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’å‰Šé™¤
             Destroy(tooltipInstance);
             Debug.Log("Tooltip destroyed");
         }
     }
 
-    // ¥Ş¥¦¥¹¤¬¥ª¥Ö¥¸¥§¥¯¥ÈÉÏ¤Ë¤¢¤ëëH¤Î„IÀí
+    // ãƒã‚¦ã‚¹ãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸Šã«ã‚ã‚‹éš›ã®å‡¦ç†
     void OnMouseOver()
     {
-        // ×ó¥¯¥ê¥Ã¥¯¤Çºá¾€¤òÉú³É¤Ş¤¿¤ÏÏ÷³ı
-        if (Input.GetMouseButtonDown(0)) // ×ó¥¯¥ê¥Ã¥¯¤¬Ñº¤µ¤ì¤¿•r
+        // å·¦ã‚¯ãƒªãƒƒã‚¯ã§æ¨ªç·šã‚’ç”Ÿæˆã¾ãŸã¯å‰Šé™¤
+        if (Input.GetMouseButtonDown(0)) // å·¦ã‚¯ãƒªãƒƒã‚¯ãŒæŠ¼ã•ã‚ŒãŸæ™‚
         {
             if (currentLine == null)
             {
-                CreateHorizontalLine(); // ºá¾€¤òÉú³É¤¹¤ë
+                CreateHorizontalLine(); // æ¨ªç·šã‚’ç”Ÿæˆã™ã‚‹
                 Debug.Log("Horizontal line created");
-                T3TLcontrollerScript.isHorizontalLineCreated = true; // ºá¾€¤¬×÷³É¤µ¤ì¤¿¤³¤È¤ò¥Õ¥é¥°¤Ç¹ÜÀí
+                T3TLcontrollerScript.isHorizontalLineCreated = true; // æ¨ªç·šãŒä½œæˆã•ã‚ŒãŸã“ã¨ã‚’ãƒ•ãƒ©ã‚°ã§ç®¡ç†
             }
         }
-        else if (Input.GetMouseButtonDown(1)) // ÓÒ¥¯¥ê¥Ã¥¯¤¬Ñº¤µ¤ì¤¿•r
+        else if (Input.GetMouseButtonDown(1)) // å³ã‚¯ãƒªãƒƒã‚¯ãŒæŠ¼ã•ã‚ŒãŸæ™‚
         {
             if (currentLine != null)
             {
-                // ¼È´æ¤Îºá¾€¤òÏ÷³ı¤¹¤ë
+                // æ—¢å­˜ã®æ¨ªç·šã‚’å‰Šé™¤ã™ã‚‹
                 Destroy(currentLine);
                 currentLine = null;
 
                 Debug.Log("Horizontal line destroyed");
-                T3TLcontrollerScript.isHorizontalLineCreated = false; // ºá¾€¤¬Ï÷³ı¤µ¤ì¤¿¤³¤È¤ò¥Õ¥é¥°¤Ç¹ÜÀí
+                T3TLcontrollerScript.isHorizontalLineCreated = false; // æ¨ªç·šãŒå‰Šé™¤ã•ã‚ŒãŸã“ã¨ã‚’ãƒ•ãƒ©ã‚°ã§ç®¡ç†
             }
         }
     }
 
-    // ºá¾€¤òÉú³É¤¹¤ëévÊı
+    // æ¨ªç·šã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°
     void CreateHorizontalLine()
     {
-        // ĞÂ¤·¤¤ºá¾€ÓÃ¤Î¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È¤ò×÷³É
+        // æ–°ã—ã„æ¨ªç·šç”¨ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
         GameObject lineObject = new GameObject("HorizontalLine");
-        LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>(); // LineRenderer¥³¥ó¥İ©`¥Í¥ó¥È¤ò×·¼Ó
+        LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>(); // LineRendererã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ 
 
-        // LineRenderer¤ÎÔO¶¨¤òĞĞ¤¦
-        lineRenderer.material = horizontalLineMaterial; // ºá¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤òÔO¶¨
-        lineRenderer.startWidth = horizontalLineWidth; // ºá¾€¤Îé_Ê¼µØµã¤Î·ù¤òÔO¶¨
-        lineRenderer.endWidth = horizontalLineWidth; // ºá¾€¤Î½Kµã¤Î·ù¤òÔO¶¨
-        lineRenderer.positionCount = 2; // í”µã¤ÎÊı¤ò2¤ËÔO¶¨£¨Ê¼µã¤È½Kµã£©
-        lineRenderer.SetPosition(0, pointA.transform.position); // Ê¼µã¤ÎÎ»ÖÃ¤òÔO¶¨
-        lineRenderer.SetPosition(1, pointB.transform.position); // ½Kµã¤ÎÎ»ÖÃ¤òÔO¶¨
+        // LineRendererã®è¨­å®šã‚’è¡Œã†
+        lineRenderer.material = horizontalLineMaterial; // æ¨ªç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®š
+        lineRenderer.startWidth = horizontalLineWidth; // æ¨ªç·šã®é–‹å§‹åœ°ç‚¹ã®å¹…ã‚’è¨­å®š
+        lineRenderer.endWidth = horizontalLineWidth; // æ¨ªç·šã®çµ‚ç‚¹ã®å¹…ã‚’è¨­å®š
+        lineRenderer.positionCount = 2; // é ‚ç‚¹ã®æ•°ã‚’2ã«è¨­å®šï¼ˆå§‹ç‚¹ã¨çµ‚ç‚¹ï¼‰
+        lineRenderer.SetPosition(0, pointA.transform.position); // å§‹ç‚¹ã®ä½ç½®ã‚’è¨­å®š
+        lineRenderer.SetPosition(1, pointB.transform.position); // çµ‚ç‚¹ã®ä½ç½®ã‚’è¨­å®š
 
-        currentLine = lineObject; // ×÷³É¤·¤¿ºá¾€¤òcurrentLine¤Ë±£´æ
+        currentLine = lineObject; // ä½œæˆã—ãŸæ¨ªç·šã‚’currentLineã«ä¿å­˜
 
         Debug.Log($"Horizontal line created between {pointA.name} and {pointB.name}");
     }
 
-    // Gizmos¤Ç¥Ç¥Ğ¥Ã¥°Ãè»­¤òĞĞ¤¦évÊı
+    // Gizmosã§ãƒ‡ãƒãƒƒã‚°æç”»ã‚’è¡Œã†é–¢æ•°
     void OnDrawGizmos()
     {
         if (pointA != null && pointB != null)
         {
-            Gizmos.color = Color.yellow; // ¾€¤ÎÉ«¤ò»ÆÉ«¤ËÔO¶¨
-            Gizmos.DrawLine(pointA.transform.position, pointB.transform.position); // Ê¼µã¤È½Kµã¤ò½Y¤Ö¾€¤òÃè»­
+            Gizmos.color = Color.yellow; // ç·šã®è‰²ã‚’é»„è‰²ã«è¨­å®š
+            Gizmos.DrawLine(pointA.transform.position, pointB.transform.position); // å§‹ç‚¹ã¨çµ‚ç‚¹ã‚’çµã¶ç·šã‚’æç”»
 
-            // ¥Û¥Ğ©`¥¨¥ê¥¢¤òÃè»­¤¹¤ë
-            Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2; // Ê¼µã¤È½Kµã¤ÎÖĞégµØµã¤òÓ‹Ëã
-            Gizmos.DrawWireCube(midPoint, new Vector3(Vector3.Distance(pointA.transform.position, pointB.transform.position), DrawLineT3Script.hoverAreaWidth, 0.1f)); // ÖĞégµØµã¤ËËÄ½ÇĞÎ¤òÃè»­
+            // ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã‚’æç”»ã™ã‚‹
+            Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2; // å§‹ç‚¹ã¨çµ‚ç‚¹ã®ä¸­é–“åœ°ç‚¹ã‚’è¨ˆç®—
+            Gizmos.DrawWireCube(midPoint, new Vector3(Vector3.Distance(pointA.transform.position, pointB.transform.position), DrawLineT3Script.hoverAreaWidth, 0.1f)); // ä¸­é–“åœ°ç‚¹ã«å››è§’å½¢ã‚’æç”»
         }
     }
 

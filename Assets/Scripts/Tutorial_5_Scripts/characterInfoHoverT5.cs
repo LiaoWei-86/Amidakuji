@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,28 +6,28 @@ using TMPro;
 public class characterInfoHoverT5 : MonoBehaviour
 {
     
-    private GameObject character;  // ¥­¥ã¥é¥¯¥¿©`¥ª¥Ö¥¸¥§¥¯¥È¤Î²ÎÕÕ
-    private GameObject charaInfoPrefab;  // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤ò±íÊ¾¤¹¤ë¥×¥ì¥Ï¥Ö¤Î²ÎÕÕ
-    private GameObject charaInfoInstance;    // ¥×¥ì¥Ï¥Ö¤Î¥¤¥ó¥¹¥¿¥ó¥¹
-    private Vector3 charaInfoPosition;    // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤Î±íÊ¾Î»ÖÃ
-    public int charaInfoNum;    // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤Î·¬ºÅ
+    private GameObject character;  // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§
+    private GameObject charaInfoPrefab;  // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹ãƒ—ãƒ¬ãƒãƒ–ã®å‚ç…§
+    private GameObject charaInfoInstance;    // ãƒ—ãƒ¬ãƒãƒ–ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+    private Vector3 charaInfoPosition;    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã®è¡¨ç¤ºä½ç½®
+    public int charaInfoNum;    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã®ç•ªå·
 
 
-    public Vector2 textSize = new Vector2(4, 6);    // ¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹¤Î¥µ¥¤¥º¤òÔO¶¨
-    public Vector3 textOffset = new Vector3(0.1f, -1.7f, -0.1f);    // ¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹¤ÎÎ»ÖÃ¤Î¥ª¥Õ¥»¥Ã¥È¤òÔO¶¨
+    public Vector2 textSize = new Vector2(4, 6);    // ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
+    public Vector3 textOffset = new Vector3(0.1f, -1.7f, -0.1f);    // ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ä½ç½®ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 
-    public TMP_FontAsset dotFont;    // TextMeshProÓÃ¤Î¥Õ¥©¥ó¥È¥¢¥»¥Ã¥È£»¼È¤Ë×÷³Éœg¤ß¤ÎTMP¥Õ¥©¥ó¥È
+    public TMP_FontAsset dotFont;    // TextMeshProç”¨ã®ãƒ•ã‚©ãƒ³ãƒˆã‚¢ã‚»ãƒƒãƒˆï¼›æ—¢ã«ä½œæˆæ¸ˆã¿ã®TMPãƒ•ã‚©ãƒ³ãƒˆ
 
-    private Dictionary<int, string[]> characterInfoDict;    // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤ò±£´æ
+    private Dictionary<int, string[]> characterInfoDict;    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’ä¿å­˜
 
-    public DrawLineT5 DrawLineT5Script;    // DrawLineT5¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ
-    public T5TLcontroller T5TLcontrollerScript;   // T5TLcontroller¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ
+    public DrawLineT5 DrawLineT5Script;    // DrawLineT5ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§
+    public T5TLcontroller T5TLcontrollerScript;   // T5TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§
 
-    // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤òÔO¶¨¤¹¤ë
+    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’è¨­å®šã™ã‚‹
     public Dictionary<int, string[]> defaultCharacterInfoDict = new Dictionary<int, string[]>
     {
-        { 1, new string[] { "òTÊ¿", "¡ğ Ğ×±©¤ÊÈ®¤òï•¤Ã¤Æ¤¤¤Ş¤¹¡£", "¡ğ ¹úÍõ¤Î°²È«¤òÊØ¤ë¤è¤¦Ãü¤¸¤é¤ì¤Æ¤¤¤Ş¤¹¡£", "¡ğ –|Ñó¤Î„‡Ğg¤òİXÒ•¤·¤Æ¤¤¤Ş¤¹¡£" } },
-        { 2, new string[] { "ªdŸ", "¡ğ ªdÈ®¤¬Óû¤·¤¤¤Ç¤¹¡£", "¡ğ ĞĞ·½²»Ã÷¤Ë¤Ê¤Ã¤¿Äï¤òÌ½¤·¤Æ¤¤¤Ş¤¹¡£", "¡ğ Ë¼¤¤¤¬¤±¤ºÊÖ¤ËÈë¤ì¤¿Ø”±¦¤Ï¾Ü¤Ş¤º¡¢ÙA¤á¤Ş¤¹¡£" } }
+        { 1, new string[] { "é¨å£«", "â—‹ å‡¶æš´ãªçŠ¬ã‚’é£¼ã£ã¦ã„ã¾ã™ã€‚", "â—‹ å›½ç‹ã®å®‰å…¨ã‚’å®ˆã‚‹ã‚ˆã†å‘½ã˜ã‚‰ã‚Œã¦ã„ã¾ã™ã€‚", "â—‹ æ±æ´‹ã®å‰£è¡“ã‚’è»½è¦–ã—ã¦ã„ã¾ã™ã€‚" } },
+        { 2, new string[] { "çŒŸå¸«", "â—‹ çŒŸçŠ¬ãŒæ¬²ã—ã„ã§ã™ã€‚", "â—‹ è¡Œæ–¹ä¸æ˜ã«ãªã£ãŸå¨˜ã‚’æ¢ã—ã¦ã„ã¾ã™ã€‚", "â—‹ æ€ã„ãŒã‘ãšæ‰‹ã«å…¥ã‚ŒãŸè²¡å®ã¯æ‹’ã¾ãšã€è²¯ã‚ã¾ã™ã€‚" } }
     };
 
     // Start is called before the first frame update
@@ -42,105 +42,105 @@ public class characterInfoHoverT5 : MonoBehaviour
             T5TLcontrollerScript = FindObjectOfType<T5TLcontroller>();
         }
 
-        // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤òÔO¶¨
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’è¨­å®š
         characterInfoDict = new Dictionary<int, string[]>(defaultCharacterInfoDict);
 
-        // ¥Õ¥©¥ó¥È¤ÎÔO¶¨
+        // ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®š
         dotFont = DrawLineT5Script.dotFont;
     }
 
-    // ¥­¥ã¥é¥¯¥¿©`Çéˆó±íÊ¾¤Î³õÆÚ»¯¥á¥½¥Ã¥É
+    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±è¡¨ç¤ºã®åˆæœŸåŒ–ãƒ¡ã‚½ãƒƒãƒ‰
     public void Initialize(GameObject character, GameObject charaInfoPrefab, Vector3 charaInfoPosition)
     {
-        // ¶É¤µ¤ì¤¿¥­¥ã¥é¥¯¥¿©`¤ä±íÊ¾Î»ÖÃ¡¢¥×¥ì¥Ï¥Ö¤ò±£³Ö¤¹¤ë
+        // æ¸¡ã•ã‚ŒãŸã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚„è¡¨ç¤ºä½ç½®ã€ãƒ—ãƒ¬ãƒãƒ–ã‚’ä¿æŒã™ã‚‹
         this.character = character;
         this.charaInfoPosition = charaInfoPosition;
         this.charaInfoPrefab = charaInfoPrefab;
 
-        // ³õÆÚ»¯¤Î¥Ç¥Ğ¥Ã¥°¥á¥Ã¥»©`¥¸¤ò±íÊ¾
+        // åˆæœŸåŒ–ã®ãƒ‡ãƒãƒƒã‚°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
         Debug.Log($"HoverArea initialized with character: {character.name}");
     }
 
-    // ¥Ş¥¦¥¹¤¬¥­¥ã¥é¥¯¥¿©`¤ÎÉÏ¤ËÈë¤Ã¤¿•r¤Î„IÀí
+    // ãƒã‚¦ã‚¹ãŒã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä¸Šã«å…¥ã£ãŸæ™‚ã®å‡¦ç†
     void OnMouseEnter()
     {
-        // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤¬ÔO¶¨¤µ¤ì¤Æ¤¤¤Ê¤¤ˆöºÏ¤Ï¥¨¥é©`¥á¥Ã¥»©`¥¸¤ò±íÊ¾¤·¤Æ„IÀí¤ò½KÁË¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†ã™ã‚‹
         if (character == null)
         {
             Debug.LogError("Character is not initialized.");
             return;
         }
 
-        // ¥­¥ã¥é¥¯¥¿©`Çéˆó¥Ç¥£¥¯¥·¥ç¥Ê¥ê¤¬³õÆÚ»¯¤µ¤ì¤Æ¤¤¤Ê¤¤ˆöºÏ¤â¥¨¥é©`¥á¥Ã¥»©`¥¸¤ò±íÊ¾¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãªã„å ´åˆã‚‚ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
         if (characterInfoDict == null)
         {
             Debug.LogError("characterInfoDict is not initialized.");
             return;
         }
 
-        // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤Î¥×¥ì¥Ï¥Ö¤¬´æÔÚ¤¹¤ëˆöºÏ¡¢¥¤¥ó¥¹¥¿¥ó¥¹»¯¤·¤Æ±íÊ¾¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã®ãƒ—ãƒ¬ãƒãƒ–ãŒå­˜åœ¨ã™ã‚‹å ´åˆã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã—ã¦è¡¨ç¤ºã™ã‚‹
         if (charaInfoPrefab != null)
         {
-            // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÉú³É¤¹¤ë
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹
             charaInfoInstance = Instantiate(charaInfoPrefab, charaInfoPosition, Quaternion.identity);
 
-            // ±íÊ¾Î»ÖÃ¤ä¤½¤ÎËû¤ÎÊôĞÔ¤òÔO¶¨
-            charaInfoInstance.transform.position = transform.position + new Vector3(0, -2.5f, 0); // ±íÊ¾Î»ÖÃ¤òÕ{Õû
+            // è¡¨ç¤ºä½ç½®ã‚„ãã®ä»–ã®å±æ€§ã‚’è¨­å®š
+            charaInfoInstance.transform.position = transform.position + new Vector3(0, -2.5f, 0); // è¡¨ç¤ºä½ç½®ã‚’èª¿æ•´
             Debug.Log($"CharaInfoPrefab of {character} instantiated at {charaInfoPosition}");
 
-            // ¥­¥ã¥é¥¯¥¿©`Ãû¤òÈ¡µÃ¤·¤Æ¥Ç¥Ğ¥Ã¥°±íÊ¾
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã‚’å–å¾—ã—ã¦ãƒ‡ãƒãƒƒã‚°è¡¨ç¤º
             string characterName = character.name;
             Debug.Log("Which character is the player placing the mouse on? --> " + character.name);
 
             
 
-            // ¥­¥ã¥é¥¯¥¿©`Ãû¤Î×îáá¤ÎÎÄ×Ö¤ò·¬ºÅ¤È¤·¤Æ½âÎö¤¹¤ë
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã®æœ€å¾Œã®æ–‡å­—ã‚’ç•ªå·ã¨ã—ã¦è§£æã™ã‚‹
             if (int.TryParse(characterName[characterName.Length - 1].ToString(), out int charaInfoNum))
             {
-                // ¥Ç¥£¥¯¥·¥ç¥Ê¥ê¤«¤é¥­¥ã¥é¥¯¥¿©`Çéˆó¤òÈ¡µÃ
+                // ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªã‹ã‚‰ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’å–å¾—
                 if (characterInfoDict.TryGetValue(charaInfoNum, out string[] info))
                 {
-                    // È¡µÃ¤·¤¿¥­¥ã¥é¥¯¥¿©`Çéˆó¤ò¥Ç¥Ğ¥Ã¥°±íÊ¾
+                    // å–å¾—ã—ãŸã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã‚’ãƒ‡ãƒãƒƒã‚°è¡¨ç¤º
                     Debug.Log("Character info found: " + string.Join(", ", info));
 
-                    // // ¥Æ¥­¥¹¥È¥ª¥Ö¥¸¥§¥¯¥È¤òÉú³É¤·¡¢Çéˆó¤ò±íÊ¾
+                    // // ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã€æƒ…å ±ã‚’è¡¨ç¤º
                     GameObject textObject = new GameObject("CharacterInfoText");
                     textObject.transform.SetParent(charaInfoInstance.transform, false);
                     RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-                    rectTransform.sizeDelta = textSize; // ¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹¤Î¥µ¥¤¥º¤òÔO¶¨
-                    rectTransform.position = charaInfoInstance.transform.position + textOffset; // ¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹¤ÎÎ»ÖÃ¤òÔO¶¨
+                    rectTransform.sizeDelta = textSize; // ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
+                    rectTransform.position = charaInfoInstance.transform.position + textOffset; // ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ä½ç½®ã‚’è¨­å®š
 
                     TextMeshPro tmpText = textObject.AddComponent<TextMeshPro>();
-                    tmpText.font = dotFont; // ¥Õ¥©¥ó¥È¤òÔO¶¨
-                    tmpText.fontSize = 3; // ÎÄ×Ö¥µ¥¤¥º¤òÔO¶¨
-                    tmpText.lineSpacing = 25.0f; // ĞĞég¤òÔO¶¨
+                    tmpText.font = dotFont; // ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®š
+                    tmpText.fontSize = 3; // æ–‡å­—ã‚µã‚¤ã‚ºã‚’è¨­å®š
+                    tmpText.lineSpacing = 25.0f; // è¡Œé–“ã‚’è¨­å®š
                     tmpText.color = new Color32(0x07, 0x8D, 0x21, 0xFF); // color #078D21
-                    tmpText.text = string.Join("\n", info);¡¡// ¥Æ¥­¥¹¥ÈÄÚÈİ¤òÔO¶¨
+                    tmpText.text = string.Join("\n", info);ã€€// ãƒ†ã‚­ã‚¹ãƒˆå†…å®¹ã‚’è¨­å®š
                 }
                 else
                 {
-                    // ¥­¥ã¥é¥¯¥¿©`·¬ºÅ¤ËŒê¤¹¤ëÇéˆó¤¬Ÿo¤¤ˆöºÏ¤Î¥¨¥é©`
+                    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç•ªå·ã«å¯¾å¿œã™ã‚‹æƒ…å ±ãŒç„¡ã„å ´åˆã®ã‚¨ãƒ©ãƒ¼
                     Debug.LogError($"No character info found for character number {charaInfoNum}");
                 }
             }
             else
             {
-                // ¥­¥ã¥é¥¯¥¿©`Ãû¤«¤é·¬ºÅ¤ò½âÎö¤Ç¤­¤Ê¤«¤Ã¤¿ˆöºÏ¤Î¥¨¥é©`
+                // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã‹ã‚‰ç•ªå·ã‚’è§£æã§ããªã‹ã£ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼
                 Debug.LogError($"Failed to parse character number from name: {characterName}");
             }
         }
     }
 
-    // ¥Ş¥¦¥¹¤¬¥­¥ã¥é¥¯¥¿©`¤«¤éëx¤ì¤¿¤È¤­¤Î„IÀí
+    // ãƒã‚¦ã‚¹ãŒã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‹ã‚‰é›¢ã‚ŒãŸã¨ãã®å‡¦ç†
     void OnMouseExit()
     {
-        // ¥­¥ã¥é¥¯¥¿©`Çéˆó¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤¬´æÔÚ¤¹¤ëˆöºÏ¤ÏÆÆ—‰¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼æƒ…å ±ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ç ´æ£„ã™ã‚‹
         if (charaInfoInstance != null)
         {
             Destroy(charaInfoInstance);
             Debug.Log("charaInfoInstance destroyed");
 
-            //¡¡T5TLcontroller¤Î¥Ö©`¥ë‚¤ò‰ä¤¨¤ë
+            //ã€€T5TLcontrollerã®ãƒ–ãƒ¼ãƒ«å€¤ã‚’å¤‰ãˆã‚‹
             if (character.name == "Character1")
             {
                 T5TLcontrollerScript.charaKnightInfoChecked = true;

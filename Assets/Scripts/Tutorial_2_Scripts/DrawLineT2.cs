@@ -1,79 +1,79 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawLineT2 : MonoBehaviour
 {
-    public Material lineMaterial; // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë
-    public float lineWidth = 0.1f; // ¾€¤Î·ù
-    public Vector3 startPoint = new Vector3(0, 0, 0); // Æğµã
-    public Vector3 endPoint = new Vector3(0, 5, 0); // ½Kµã
+    public Material lineMaterial; // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«
+    public float lineWidth = 0.1f; // ç·šã®å¹…
+    public Vector3 startPoint = new Vector3(0, 0, 0); // èµ·ç‚¹
+    public Vector3 endPoint = new Vector3(0, 5, 0); // çµ‚ç‚¹
 
-    public GameObject circlePrefab; // ƒÒ(µã)¤Î¥×¥ì¥Ï¥Ö
+    public GameObject circlePrefab; // å††(ç‚¹)ã®ãƒ—ãƒ¬ãƒãƒ–
 
-    public GameObject characterPrefab; //¡¡¥­¥ã¥é¥¯¥¿©`¤Î¥×¥ì¥Ï¥Ö
-    private Vector3 characterPosition; // ¥­¥ã¥é¥¯¥¿©`¤ÎÎ»ÖÃ
-    private Vector3 targetPosition; // ¥¿©`¥²¥Ã¥ÈÎ»ÖÃ
-    private GameObject characterObject; //¡¡¥­¥ã¥é¥¯¥¿©`ÓÃ¤ËĞÂ¤·¤¯×÷³É¤µ¤ì¤¿ GameObject
-    public float speed = 1.0f; // ¥­¥ã¥é¥¯¥¿©`¤ÎÒÆ„ÓËÙ¶È
+    public GameObject characterPrefab; //ã€€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ãƒ—ãƒ¬ãƒãƒ–
+    private Vector3 characterPosition; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä½ç½®
+    private Vector3 targetPosition; // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®
+    private GameObject characterObject; //ã€€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç”¨ã«æ–°ã—ãä½œæˆã•ã‚ŒãŸ GameObject
+    public float speed = 1.0f; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç§»å‹•é€Ÿåº¦
 
-    public GameObject endingPrefab; //¡¡½YÄ©¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
+    public GameObject endingPrefab; //ã€€çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
 
-    //public GameObject plotIconPrefab; //¡¡¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
-    //private Vector3 plotIconPosition; // ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤ÎÎ»ÖÃ
-    //private GameObject plotIconObject; //¡¡¥×¥í¥Ã¥È¥¢¥¤¥³¥óÓÃ¤ËĞÂ¤·¤¯×÷³É¤µ¤ì¤¿ GameObject
+    //public GameObject plotIconPrefab; //ã€€ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    //private Vector3 plotIconPosition; // ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ä½ç½®
+    //private GameObject plotIconObject; //ã€€ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ç”¨ã«æ–°ã—ãä½œæˆã•ã‚ŒãŸ GameObject
 
 
-    public GameObject T2TLcontrollerGameObject; // T2TLcontroller¥¹¥¯¥ê¥×¥È¤ÎisCharacterMoving¥Ö©`¥ë‚¤òÈ¡µÃ¤¹¤ë¤¿¤á
-    public T2TLcontroller T2TLcontrollerScript; // T2TLcontroller¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤ò¸ñ¼{¤¹¤ë¤¿¤á
+    public GameObject T2TLcontrollerGameObject; // T2TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®isCharacterMovingãƒ–ãƒ¼ãƒ«å€¤ã‚’å–å¾—ã™ã‚‹ãŸã‚
+    public T2TLcontroller T2TLcontrollerScript; // T2TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚
 
     void Start()
     {
-        // T2TLcontroller¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤òÈ¡µÃ
+        // T2TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’å–å¾—
         T2TLcontrollerScript = T2TLcontrollerGameObject.GetComponent<T2TLcontroller>();
 
-        // ¾€¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
+        // ç·šã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
         GameObject lineObject = new GameObject("Line");
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
-        // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤È·ù¤òÔO¶¨
+        // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã¨å¹…ã‚’è¨­å®š
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
 
-        // ¾€¤ÎÆğµã¤È½Kµã¤òÔO¶¨
+        // ç·šã®èµ·ç‚¹ã¨çµ‚ç‚¹ã‚’è¨­å®š
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
 
-        // ƒÒ¤ÎÎ»ÖÃ¤òÓ‹Ëã£¨¾€¤ÎÖĞµã£©
+        // å††ã®ä½ç½®ã‚’è¨ˆç®—ï¼ˆç·šã®ä¸­ç‚¹ï¼‰
         Vector3 circlePosition = (startPoint + endPoint) / 2;
 
-        // ƒÒ¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
+        // å††ã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
         GameObject circleObject = Instantiate(circlePrefab, circlePosition, Quaternion.identity);
 
-        // ƒÒ¤ò¾€¤Î¥ª¥Ö¥¸¥§¥¯¥È¤Î×Ó¥ª¥Ö¥¸¥§¥¯¥È¤È¤·¤ÆÔO¶¨
+        // å††ã‚’ç·šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦è¨­å®š
         circleObject.transform.parent = lineObject.transform;
 
 
-        // ¥­¥ã¥é¥¯¥¿©`
-        characterPosition = (startPoint + new Vector3(0,1,-0.1f)); //¡¡¥­¥ã¥é¥¯¥¿©`¤ÎÎ»ÖÃ¤òÓ‹Ëã£¨startPoint¤ÎÉÏ£©
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
+        characterPosition = (startPoint + new Vector3(0,1,-0.1f)); //ã€€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä½ç½®ã‚’è¨ˆç®—ï¼ˆstartPointã®ä¸Šï¼‰
         characterObject = Instantiate(characterPrefab, characterPosition, Quaternion.identity); 
-        characterObject.transform.parent = lineObject.transform; // ¥­¥ã¥é¥¯¥¿©`¤ò¾€¤Î¥ª¥Ö¥¸¥§¥¯¥È¤Î×Ó¥ª¥Ö¥¸¥§¥¯¥È¤È¤·¤ÆÔO¶¨
-        // ¥­¥ã¥é¥¯¥¿©`¤ÎÒÆ„ÓÏÈÎ»ÖÃ¤òÓ‹Ëã£¨endPoint£©
-        targetPosition = endPoint+(new Vector3(0,0,-0.1f)); // »­Ïñ¤¬ÒŠ¤ì¤ë¤¿¤á¤Ë£ú¤¬-0.1f¤Ë¤·¤¿
+        characterObject.transform.parent = lineObject.transform; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç·šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦è¨­å®š
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç§»å‹•å…ˆä½ç½®ã‚’è¨ˆç®—ï¼ˆendPointï¼‰
+        targetPosition = endPoint+(new Vector3(0,0,-0.1f)); // ç”»åƒãŒè¦‹ã‚Œã‚‹ãŸã‚ã«ï½šãŒ-0.1fã«ã—ãŸ
 
 
-        // ½YÄ©¥¢¥¤¥³¥ó
-        Vector3 endingPosition = (endPoint + new Vector3(0, -1, 0)); // ½YÄ©¥¢¥¤¥³¥ó¤ÎÎ»ÖÃ¤òÓ‹Ëã£¨endPoint¤ÎÏÂ£©
-        GameObject endingObject = Instantiate(endingPrefab, endingPosition, Quaternion.identity); // ½YÄ©¥¢¥¤¥³¥ó¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
-        endingObject.transform.parent = lineObject.transform; // ½YÄ©¥¢¥¤¥³¥ó¤ò¾€¤Î¥ª¥Ö¥¸¥§¥¯¥È¤Î×Ó¥ª¥Ö¥¸¥§¥¯¥È¤È¤·¤ÆÔO¶¨
+        // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³
+        Vector3 endingPosition = (endPoint + new Vector3(0, -1, 0)); // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã®ä½ç½®ã‚’è¨ˆç®—ï¼ˆendPointã®ä¸‹ï¼‰
+        GameObject endingObject = Instantiate(endingPrefab, endingPosition, Quaternion.identity); // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
+        endingObject.transform.parent = lineObject.transform; // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç·šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦è¨­å®š
 
-        //// ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó
-        //plotIconPosition = ((circlePosition + endPoint) / 2 + new Vector3(1, 0, 0)); //¡¡¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤ÎÎ»ÖÃ¤òÓ‹Ëã£¨circle¤È½Kµã¤ÎÖĞégµã¤ÎÓÒ£©
+        //// ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³
+        //plotIconPosition = ((circlePosition + endPoint) / 2 + new Vector3(1, 0, 0)); //ã€€ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ä½ç½®ã‚’è¨ˆç®—ï¼ˆcircleã¨çµ‚ç‚¹ã®ä¸­é–“ç‚¹ã®å³ï¼‰
         //plotIconObject = Instantiate(plotIconPrefab, plotIconPosition, Quaternion.identity); 
         //plotIconObject.transform.parent = lineObject.transform; 
-        //plotIconObject.SetActive(false); // ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //plotIconObject.SetActive(false); // ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã‚’éè¡¨ç¤ºã«ã™ã‚‹
 
     }
 
@@ -83,42 +83,42 @@ public class DrawLineT2 : MonoBehaviour
     {
         if (T2TLcontrollerScript != null && T2TLcontrollerScript.isCharacterMoving)
         {
-            // ¥­¥ã¥é¥¯¥¿©`¤ÎÒÆ„Ó¥¢¥Ë¥á©`¥·¥ç¥ó¤òŒgĞĞ
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç§»å‹•ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œ
             Debug.Log("isCharacterMoving is true, start moving the character.");
 
-            // ÒÆ„ÓÖĞ¤À¤Ã¤¿¤é£º
+            // ç§»å‹•ä¸­ã ã£ãŸã‚‰ï¼š
             if (T2TLcontrollerScript.isCharacterMoving)
             {
-                // ¥­¥ã¥é¥¯¥¿©`¤Î¬FÔÚÎ»ÖÃ¤ò±íÊ¾
+                // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç¾åœ¨ä½ç½®ã‚’è¡¨ç¤º
                 Debug.Log("Current character position: " + characterObject.transform.position);
 
 
-                // ÒÆ„Ó·½Ïò¤òÓ‹Ëã
+                // ç§»å‹•æ–¹å‘ã‚’è¨ˆç®—
                 Vector3 direction = (targetPosition - transform.position).normalized;
 
-                // š°¥Õ¥ì©`¥à¤ÎÒÆ„Ó¾àëx¤òÓ‹Ëã
+                // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®ç§»å‹•è·é›¢ã‚’è¨ˆç®—
                 float step = speed * Time.deltaTime;
-                // ¥­¥ã¥é¥¯¥¿©`¤ÎÎ»ÖÃ¤ò¸üĞÂ
+                // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä½ç½®ã‚’æ›´æ–°
                 Vector3 position = characterObject.transform.position;
                 Vector3 pos = Vector3.MoveTowards(position, targetPosition, step);
                 characterObject.transform.position = pos;
 
-                // ¥¿©`¥²¥Ã¥ÈÎ»ÖÃ¤Ëµ½ß_¤·¤¿¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+                // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ã«åˆ°é”ã—ãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
                 if (Vector3.Distance(characterObject.transform.position, targetPosition) < 0.001f)
                 {
-                    T2TLcontrollerScript.isCharacterMoving = false; // ÒÆ„Ó¤òÍ£Ö¹
+                    T2TLcontrollerScript.isCharacterMoving = false; // ç§»å‹•ã‚’åœæ­¢
                 }
 
-                //// ¥­¥ã¥é¥¯¥¿©`¤Îy‚¤¬plotIconPosition¤Îy‚¤ÈµÈ¤·¤¤¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+                //// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®yå€¤ãŒplotIconPositionã®yå€¤ã¨ç­‰ã—ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
                 //if (Mathf.Abs(characterObject.transform.position.y - plotIconPosition.y) < 0.05f)
                 //{
                 //    Debug.Log("Character reached plot icon y position");
-                //    plotIconObject.SetActive(true); // ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤ò±íÊ¾
+                //    plotIconObject.SetActive(true); // ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤º
                 //}
 
-                //// plotIconPosition¤Îy‚¤ò±íÊ¾
+                //// plotIconPositionã®yå€¤ã‚’è¡¨ç¤º
                 //Debug.Log("Plot icon y position: " + plotIconPosition.y);
-                // characterObject¤Îy‚¤ò±íÊ¾
+                // characterObjectã®yå€¤ã‚’è¡¨ç¤º
                 Debug.Log("Character y position: " + characterObject.transform.position.y);
 
             }
