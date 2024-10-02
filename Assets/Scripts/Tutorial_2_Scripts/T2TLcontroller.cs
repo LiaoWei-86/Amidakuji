@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -6,41 +6,41 @@ using UnityEngine.SceneManagement;
 
 public class T2TLcontroller : MonoBehaviour
 {
-    public GameObject startMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È startMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸£©
-    public GameObject storyMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È storyMessage£¨ÎïÕZ¤Î¥á¥Ã¥»©`¥¸£©
-    public GameObject endMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È endMessage£¨¥¨¥ó¥Ç¥£¥ó¥°¥á¥Ã¥»©`¥¸£©
-    public PlayableDirector startMessagePlayableDirector; // startMessage¤ÎPlayableDirector
-    public PlayableDirector storyMessagePlayableDirector; // storyMessage¤ÎPlayableDirector
-    public PlayableDirector endMessagePlayableDirector; // endMessage¤ÎPlayableDirector
+    public GameObject startMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ startMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject storyMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ storyMessageï¼ˆç‰©èªã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject endMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ endMessageï¼ˆã‚¨ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public PlayableDirector startMessagePlayableDirector; // startMessageã®PlayableDirector
+    public PlayableDirector storyMessagePlayableDirector; // storyMessageã®PlayableDirector
+    public PlayableDirector endMessagePlayableDirector; // endMessageã®PlayableDirector
 
-    private bool isStartPlaying = true;  // startMessage¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïtrue
-    private bool isStoryPlaying = false;  // storyMessage¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
-    private bool isEndPlaying = false;  // endMessage¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    private bool isStartPlaying = true;  // startMessageãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯true
+    private bool isStoryPlaying = false;  // storyMessageãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
+    private bool isEndPlaying = false;  // endMessageãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
 
-    public bool isCharacterMoving = false; // òTÊ¿¤Ï„Ó¤¤¤Æ¤ë¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    public bool isCharacterMoving = false; // é¨å£«ã¯å‹•ã„ã¦ã‚‹ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
 
-    // ¥²©`¥à¥â©`¥É¤òÔO¶¨¤·¡¢¥²©`¥à¤¬ŒgĞĞ¤µ¤ì¤ë¤È¤³¤Î3¤Ä¤Î¥â©`¥É¤Îég¤ÇÇĞ¤êÌæ¤¨¤¬ĞĞ¤ï¤ì¤Ş¤¹
+    // ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã—ã€ã‚²ãƒ¼ãƒ ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã¨ã“ã®3ã¤ã®ãƒ¢ãƒ¼ãƒ‰ã®é–“ã§åˆ‡ã‚Šæ›¿ãˆãŒè¡Œã‚ã‚Œã¾ã™
     private enum GameMode
     {
-        StartTextPlaying, // ¥²©`¥àé_Ê¼•r¤Î¥Æ¥­¥¹¥È¤¬ÔÙÉúÖĞ
-        PlayerPlaying, // ¥×¥ì¥¤¥ä©`¤¬²Ù×÷¤·¤Æ¤¤¤ë×´‘B(¾ßÌåµÄ¤ËÑÔ¤¦¤È¡¢Enter¤òÑº¤·¤¿¤éÎïÕZ¥Æ¥­¥¹¥È¤¬ÔÙÉú¤¹¤ë²¿·Ö)
-        WaitForSceneChange // ¬F¥·©`¥ó¤Î¥²©`¥àÄÚÈİ¤¬½KÁË¤·¡¢¥×¥ì¥¤¥ä©`¤¬Enter¤òÑº¤¹¤Î¤ò´ı¤Ã¤Æ´Î¤Î¥·©`¥ó¤ËÇĞ¤êÌæ¤¨¤ë
+        StartTextPlaying, // ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆãŒå†ç”Ÿä¸­
+        PlayerPlaying, // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ“ä½œã—ã¦ã„ã‚‹çŠ¶æ…‹(å…·ä½“çš„ã«è¨€ã†ã¨ã€Enterã‚’æŠ¼ã—ãŸã‚‰ç‰©èªãƒ†ã‚­ã‚¹ãƒˆãŒå†ç”Ÿã™ã‚‹éƒ¨åˆ†)
+        WaitForSceneChange // ç¾ã‚·ãƒ¼ãƒ³ã®ã‚²ãƒ¼ãƒ å†…å®¹ãŒçµ‚äº†ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒEnterã‚’æŠ¼ã™ã®ã‚’å¾…ã£ã¦æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
     }
 
-    private GameMode currentGameMode = GameMode.StartTextPlaying; // ¬F¥·©`¥óé_Ê¼•r¤Ë¥²©`¥à¥â©`¥É¤òStartTextPlaying¤ËÔO¶¨
+    private GameMode currentGameMode = GameMode.StartTextPlaying; // ç¾ã‚·ãƒ¼ãƒ³é–‹å§‹æ™‚ã«ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’StartTextPlayingã«è¨­å®š
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //  é_Ê¼•r¤ËstoryMessage¤ÈendMessage¤ÎGameObject¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«storyMessageã¨endMessageã®GameObjectã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (storyMessage != null && endMessage != null)
         {
             storyMessage.SetActive(false);
             endMessage.SetActive(false);
         }
 
-        // PlayableDirector¤¬null¤Ç¤Ê¤¤¤³¤È¤ò´_ÕJ¤·¡¢ÔÙÉúÍêÁË¥¤¥Ù¥ó¥È¤ò¥µ¥Ö¥¹¥¯¥é¥¤¥Ö
+        // PlayableDirectorãŒnullã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã€å†ç”Ÿå®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–
         if (startMessagePlayableDirector != null)
         {
             startMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -72,7 +72,7 @@ public class T2TLcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Enter¥­©`¤¬Ñº¤µ¤ì¤¿¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+        // Enterã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (currentGameMode)
@@ -82,9 +82,9 @@ public class T2TLcontroller : MonoBehaviour
                     break;
 
                 case GameMode.PlayerPlaying:
-                    //  ¤³¤Î¥â©`¥É¤Ç¤Ï¡¢¥×¥ì¥¤¥ä©`¤¬Enter¤òÑº¤¹¤È¡¢¥­¥ã¥é¥¯¥¿©`¤¬„Ó¤­¡¢story¤ÈendMessagePlayableDirector¤¬ÔÙÉú¤µ¤ì¤ë
+                    //  ã“ã®ãƒ¢ãƒ¼ãƒ‰ã§ã¯ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒEnterã‚’æŠ¼ã™ã¨ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒå‹•ãã€storyã¨endMessagePlayableDirectorãŒå†ç”Ÿã•ã‚Œã‚‹
 
-                    isCharacterMoving = true; //òTÊ¿¤¬„Ó¤¯
+                    isCharacterMoving = true; //é¨å£«ãŒå‹•ã
 
                     if (!isStoryPlaying)
                     {
@@ -93,7 +93,7 @@ public class T2TLcontroller : MonoBehaviour
                             startMessage.SetActive(false);
                         }
 
-                        // storyMessage¤ÎGameObject¤ò¥¢¥¯¥Æ¥£¥Ö¤Ë¤¹¤ë
+                        // storyMessageã®GameObjectã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
                         if (storyMessage != null && endMessage != null)
                         {
                             storyMessage.SetActive(true);
@@ -101,8 +101,8 @@ public class T2TLcontroller : MonoBehaviour
 
                         if (storyMessagePlayableDirector != null && endMessagePlayableDirector != null)  
                         {
-                            storyMessagePlayableDirector.Play();  // storyMessage¤ÎPlayableDirector¤òÔÙÉú¤¹¤ë
-                            isStoryPlaying = true; // ÔÙÉúÖĞ¤È¥Ş©`¥¯¤¹¤ë
+                            storyMessagePlayableDirector.Play();  // storyMessageã®PlayableDirectorã‚’å†ç”Ÿã™ã‚‹
+                            isStoryPlaying = true; // å†ç”Ÿä¸­ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
                             
                         }
                     }
@@ -110,7 +110,7 @@ public class T2TLcontroller : MonoBehaviour
                     break;
 
                 case GameMode.WaitForSceneChange:
-                    // ¥·©`¥ó¤òÇĞ¤êÌæ¤¨¤ë
+                    // ã‚·ãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
                     SceneManager.LoadScene("Tutorial_3_Scene");
                     break;
             }
@@ -121,15 +121,15 @@ public class T2TLcontroller : MonoBehaviour
     {
         if (director == startMessagePlayableDirector)
         {
-            isStartPlaying = false;  // ÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
-            currentGameMode = GameMode.PlayerPlaying;  // PlayerPlaying¥â©`¥É¤Ë‰ä¸ü¤¹¤ë
+            isStartPlaying = false;  // å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
+            currentGameMode = GameMode.PlayerPlaying;  // PlayerPlayingãƒ¢ãƒ¼ãƒ‰ã«å¤‰æ›´ã™ã‚‹
             Debug.Log("startMessage Timeline playback completed.");
         }
         else if (director == storyMessagePlayableDirector)
         {
-            isStoryPlaying = false;  // ÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
+            isStoryPlaying = false;  // å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
 
-            // storyMessage¤¬ÔÙÉúÍêÁË¤·¤¿¤é¤¹¤°endMessage¤òÔÙÉú¤¹¤ë
+            // storyMessageãŒå†ç”Ÿå®Œäº†ã—ãŸã‚‰ã™ãendMessageã‚’å†ç”Ÿã™ã‚‹
             isEndPlaying = true; 
             endMessage.SetActive(true);
             endMessagePlayableDirector.Play(); 
@@ -138,15 +138,15 @@ public class T2TLcontroller : MonoBehaviour
         }
         else if (director == endMessagePlayableDirector)
         {
-            isEndPlaying = false;  // ÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
-            currentGameMode = GameMode.WaitForSceneChange;  //  ¥·©`¥óÇĞ¤êÌæ¤¨´ı¤Á¥â©`¥É¤Ë‰ä¸ü¤¹¤ë
+            isEndPlaying = false;  // å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
+            currentGameMode = GameMode.WaitForSceneChange;  //  ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå¾…ã¡ãƒ¢ãƒ¼ãƒ‰ã«å¤‰æ›´ã™ã‚‹
             Debug.Log("endMessage Timeline playback completed.");
         }
     }
 
     void OnDestroy()
     {
-        // ¥¤¥Ù¥ó¥È¤Î¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤ò½â³ı¤·¤Æ¡¢¥á¥â¥ê¥ê©`¥¯¤ò·À¤°
+        // ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã‚’è§£é™¤ã—ã¦ã€ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
         if (startMessagePlayableDirector != null)
         {
             startMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;

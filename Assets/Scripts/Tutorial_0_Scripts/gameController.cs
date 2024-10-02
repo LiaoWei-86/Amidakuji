@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -6,37 +6,37 @@ using UnityEngine.SceneManagement;
 
 public class gameController : MonoBehaviour
 {
-    public GameObject firstMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È firstMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector firstMessagePlayableDirector; // firstMessage¤ÎPlayableDirector
-    private bool hasFirstMessagePlayed = false; //  firstMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject firstMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ firstMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector firstMessagePlayableDirector; // firstMessageã®PlayableDirector
+    private bool hasFirstMessagePlayed = false; //  firstMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject secondMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È secondMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector secondMessagePlayableDirector; // secondMessage¤ÎPlayableDirector
-    private bool hasSecondMessagePlayed = false; //  secondMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject secondMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ secondMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector secondMessagePlayableDirector; // secondMessageã®PlayableDirector
+    private bool hasSecondMessagePlayed = false; //  secondMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject thirdMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È thirdMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector thirdMessagePlayableDirector; // thirdMessage¤ÎPlayableDirector
-    private bool hasThirdMessagePlayed = false; //  thirdMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject thirdMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ thirdMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector thirdMessagePlayableDirector; // thirdMessageã®PlayableDirector
+    private bool hasThirdMessagePlayed = false; //  thirdMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject charaMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È charaMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector charaMessagePlayableDirector; // charaMessage¤ÎPlayableDirector
-    private bool hasCharaMessagePlayed = false; //  charaMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject charaMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ charaMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector charaMessagePlayableDirector; // charaMessageã®PlayableDirector
+    private bool hasCharaMessagePlayed = false; //  charaMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject endMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È endMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector endMessagePlayableDirector; // endMessage¤ÎPlayableDirector
-    private bool hasEndMessagePlayed = false; //  endMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject endMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ endMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector endMessagePlayableDirector; // endMessageã®PlayableDirector
+    private bool hasEndMessagePlayed = false; //  endMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject lineMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È lineMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector lineMessagePlayableDirector; // lineMessage¤ÎPlayableDirector
-    private bool hasLineMessagePlayed = false; //  lineMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject lineMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ lineMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector lineMessagePlayableDirector; // lineMessageã®PlayableDirector
+    private bool hasLineMessagePlayed = false; //  lineMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject pointMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È pointMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector pointMessagePlayableDirector; // pointMessage¤ÎPlayableDirector
-    private bool hasPointMessagePlayed = false; //  pointMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject pointMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ pointMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector pointMessagePlayableDirector; // pointMessageã®PlayableDirector
+    private bool hasPointMessagePlayed = false; //  pointMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
-    public GameObject yoko_lineMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È yoko_lineMessage£¨é_Ê¼¥á¥Ã¥»©`¥¸1£©
-    public PlayableDirector yoko_lineMessagePlayableDirector; // yoko_lineMessage¤ÎPlayableDirector
-    private bool hasYoko_LineMessagePlayed = false; //  yoko_lineMessage¤ÏÔÙÉúÍêÁË¤µ¤ì¤¿¤«£¿¤Î¥Ö©`¥ë‚;¤Ş¤ÀÔÙÉúÍêÁË¤·¤Æ¤Ê¤¤
+    public GameObject yoko_lineMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ yoko_lineMessageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸1ï¼‰
+    public PlayableDirector yoko_lineMessagePlayableDirector; // yoko_lineMessageã®PlayableDirector
+    private bool hasYoko_LineMessagePlayed = false; //  yoko_lineMessageã¯å†ç”Ÿå®Œäº†ã•ã‚ŒãŸã‹ï¼Ÿã®ãƒ–ãƒ¼ãƒ«å€¤;ã¾ã å†ç”Ÿå®Œäº†ã—ã¦ãªã„
 
     public GameObject knight;
     public GameObject hunter;
@@ -50,12 +50,12 @@ public class gameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //  é_Ê¼•r¤ËsecondMessage¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«secondMessageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (secondMessage != null)
         {
             secondMessage.SetActive(false);
         }
-        //  é_Ê¼•r¤ËthirdMessage¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«thirdMessageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (thirdMessage != null)
         {
             thirdMessage.SetActive(false);
@@ -81,7 +81,7 @@ public class gameController : MonoBehaviour
             endMessage.SetActive(false);
         }
 
-        // PlayableDirector¤¬null¤Ç¤Ê¤¤¤³¤È¤ò´_ÕJ¤·¡¢ÔÙÉúÍêÁË¥¤¥Ù¥ó¥È¤ò¥µ¥Ö¥¹¥¯¥é¥¤¥Ö
+        // PlayableDirectorãŒnullã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã€å†ç”Ÿå®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–
         if (firstMessagePlayableDirector != null)
         {
             firstMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -222,7 +222,7 @@ public class gameController : MonoBehaviour
 
     void OnDestroy()
     {
-        // ¥¤¥Ù¥ó¥È¤Î¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤ò½â³ı¤·¤Æ¡¢¥á¥â¥ê¥ê©`¥¯¤ò·À¤°
+        // ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã‚’è§£é™¤ã—ã¦ã€ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
         if (firstMessagePlayableDirector != null)
         {
             firstMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;

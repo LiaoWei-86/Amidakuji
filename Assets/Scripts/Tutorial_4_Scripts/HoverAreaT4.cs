@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -62,7 +62,7 @@ public class HoverAreaT4 : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0)) // ×ó¥¯¥ê¥Ã¥¯¤Çºá¾€¤òÉú³É¤Ş¤¿¤ÏÏ÷³ı
+        if (Input.GetMouseButtonDown(0)) // å·¦ã‚¯ãƒªãƒƒã‚¯ã§æ¨ªç·šã‚’ç”Ÿæˆã¾ãŸã¯å‰Šé™¤
         {
             if (currentLine == null)
             {
@@ -72,7 +72,7 @@ public class HoverAreaT4 : MonoBehaviour
                 Debug.Log("T4TLcontrollerScript.isHorizontalLineCreated" + T4TLcontrollerScript.isHorizontalLineCreated);
             }
         }
-        else if (Input.GetMouseButtonDown(1)) // ÓÒ¥¯¥ê¥Ã¥¯¤Çºá¾€¤òÏ÷³ı
+        else if (Input.GetMouseButtonDown(1)) // å³ã‚¯ãƒªãƒƒã‚¯ã§æ¨ªç·šã‚’å‰Šé™¤
         {
             if (currentLine != null)
             {

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -6,40 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class T3TLcontroller : MonoBehaviour
 {
-    public GameObject target_Message; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È target_intro_Message£¨é_Ê¼¥á¥Ã¥»©`¥¸£©
-    public GameObject start_intro_Message; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È start_intro_Message£¨é_Ê¼¥á¥Ã¥»©`¥¸£©
-    public GameObject second_intro_Message; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È second_intro_Message£¨é_Ê¼¥á¥Ã¥»©`¥¸£©
-    public GameObject lineCount1_Message; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È lineCount1_Message£¨²Ğ¤ê¤Î¾€ºÎ±¾¥á¥Ã¥»©`¥¸£©
-    public GameObject lineCount0_Message; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È lineCount0_Message£¨²Ğ¤ê¤Î¾€ºÎ±¾¥á¥Ã¥»©`¥¸£©
+    public GameObject target_Message; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ target_intro_Messageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject start_intro_Message; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ start_intro_Messageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject second_intro_Message; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ second_intro_Messageï¼ˆé–‹å§‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject lineCount1_Message; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ lineCount1_Messageï¼ˆæ®‹ã‚Šã®ç·šä½•æœ¬ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public GameObject lineCount0_Message; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ lineCount0_Messageï¼ˆæ®‹ã‚Šã®ç·šä½•æœ¬ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
 
-    public List<GameObject> storyMessages; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È storyMessage£¨ÎïÕZ¤Î¥á¥Ã¥»©`¥¸£©
+    public List<GameObject> storyMessages; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ storyMessageï¼ˆç‰©èªã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
 
-    public GameObject endMessage; // ¥²©`¥à¥ª¥Ö¥¸¥§¥¯¥È endMessage£¨¥¨¥ó¥Ç¥£¥ó¥°¥á¥Ã¥»©`¥¸£©
-    public PlayableDirector target_MessagePlayableDirector; // target_Message¤ÎPlayableDirector
-    public PlayableDirector start_intro_MessagePlayableDirector; // start_intro_Message¤ÎPlayableDirector
-    public PlayableDirector second_intro_MessagePlayableDirector; // second_intro_Message¤ÎPlayableDirector
-    public PlayableDirector lineCount1_MessagePlayableDirector; // lineCount1_Message¤ÎPlayableDirector
-    public PlayableDirector lineCount0_MessagePlayableDirector; // lineCount0_Message¤ÎPlayableDirector
+    public GameObject endMessage; // ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ endMessageï¼ˆã‚¨ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
+    public PlayableDirector target_MessagePlayableDirector; // target_Messageã®PlayableDirector
+    public PlayableDirector start_intro_MessagePlayableDirector; // start_intro_Messageã®PlayableDirector
+    public PlayableDirector second_intro_MessagePlayableDirector; // second_intro_Messageã®PlayableDirector
+    public PlayableDirector lineCount1_MessagePlayableDirector; // lineCount1_Messageã®PlayableDirector
+    public PlayableDirector lineCount0_MessagePlayableDirector; // lineCount0_Messageã®PlayableDirector
 
-    public PlayableDirector[] storyMessagePlayableDirectors; // storyMessage¤ÎPlayableDirector
+    public PlayableDirector[] storyMessagePlayableDirectors; // storyMessageã®PlayableDirector
 
-    public PlayableDirector endMessagePlayableDirector; // endMessage¤ÎPlayableDirector
+    public PlayableDirector endMessagePlayableDirector; // endMessageã®PlayableDirector
 
-    private int currentStoryIndex = 0; // ¤É¤ÎPlayableDirector¤¬ÔÙÉú¤·¤Æ¤ë¤«¤ò×·ÛE¤¹¤ë¤¿¤á
+    private int currentStoryIndex = 0; // ã©ã®PlayableDirectorãŒå†ç”Ÿã—ã¦ã‚‹ã‹ã‚’è¿½è·¡ã™ã‚‹ãŸã‚
 
     public bool isHorizontalLineCreated = false;
 
 
 
-    private bool isStoryPlaying = false;  // storyMessage¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
-    private bool isEndPlaying = false;  // endMessage¤¬ÔÙÉúÖĞ¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    private bool isStoryPlaying = false;  // storyMessageãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
+    private bool isEndPlaying = false;  // endMessageãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
     private bool hasEndPlayed = false;
 
-    private bool hasSecondIntroPlayed = false;// second_intro_Message¤¬ÔÙÉú½KÁË¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
-    private bool haslineCount0_Played = false;// lineCount0_Message¤¬ÔÙÉú½KÁË¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    private bool hasSecondIntroPlayed = false;// second_intro_MessageãŒå†ç”Ÿçµ‚äº†ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
+    private bool haslineCount0_Played = false;// lineCount0_MessageãŒå†ç”Ÿçµ‚äº†ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
 
-    public bool isKnightMoving = false; // òTÊ¿¤Ï„Ó¤¤¤Æ¤ë¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
-    public bool isHunterMoving = false; // ªdŸ¤Ï„Ó¤¤¤Æ¤ë¤«¤É¤¦¤«¤òÊ¾¤¹¥Ö©`¥ë‚¡¢³õÆÚ‚¤Ïfalse
+    public bool isKnightMoving = false; // é¨å£«ã¯å‹•ã„ã¦ã‚‹ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
+    public bool isHunterMoving = false; // çŒŸå¸«ã¯å‹•ã„ã¦ã‚‹ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ–ãƒ¼ãƒ«å€¤ã€åˆæœŸå€¤ã¯false
 
     public GameObject knight;
     public GameObject hunter;
@@ -49,17 +49,17 @@ public class T3TLcontroller : MonoBehaviour
 
     public float speed = 3.0f;
 
-    public DrawLineT3 DrawLineT3Script; // DrawLineT3¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤ò¸ñ¼{¤¹¤ë¤¿¤á
+    public DrawLineT3 DrawLineT3Script; // DrawLineT3ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚
 
-    // ¥²©`¥à¥â©`¥É¤òÔO¶¨¤·¡¢¥²©`¥à¤¬ŒgĞĞ¤µ¤ì¤ë¤È¤³¤Î3¤Ä¤Î¥â©`¥É¤Îég¤ÇÇĞ¤êÌæ¤¨¤¬ĞĞ¤ï¤ì¤Ş¤¹
+    // ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã—ã€ã‚²ãƒ¼ãƒ ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã¨ã“ã®3ã¤ã®ãƒ¢ãƒ¼ãƒ‰ã®é–“ã§åˆ‡ã‚Šæ›¿ãˆãŒè¡Œã‚ã‚Œã¾ã™
     private enum GameMode
     {
-        TextPlaying, // ¥²©`¥àé_Ê¼•r¤Î¥Æ¥­¥¹¥È¤¬ÔÙÉúÖĞ
-        PlayerPlaying, // ¥×¥ì¥¤¥ä©`¤¬²Ù×÷¤·¤Æ¤¤¤ë×´‘B
-        WaitForSceneChange // ¬F¥·©`¥ó¤Î¥²©`¥àÄÚÈİ¤¬½KÁË¤·¡¢¥×¥ì¥¤¥ä©`¤¬Enter¤òÑº¤¹¤Î¤ò´ı¤Ã¤Æ´Î¤Î¥·©`¥ó¤ËÇĞ¤êÌæ¤¨¤ë
+        TextPlaying, // ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆãŒå†ç”Ÿä¸­
+        PlayerPlaying, // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ“ä½œã—ã¦ã„ã‚‹çŠ¶æ…‹
+        WaitForSceneChange // ç¾ã‚·ãƒ¼ãƒ³ã®ã‚²ãƒ¼ãƒ å†…å®¹ãŒçµ‚äº†ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒEnterã‚’æŠ¼ã™ã®ã‚’å¾…ã£ã¦æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
     }
 
-    private GameMode currentGameMode = GameMode.TextPlaying; // ¬F¥·©`¥óé_Ê¼•r¤Ë¥²©`¥à¥â©`¥É¤òStartTextPlaying¤ËÔO¶¨
+    private GameMode currentGameMode = GameMode.TextPlaying; // ç¾ã‚·ãƒ¼ãƒ³é–‹å§‹æ™‚ã«ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’StartTextPlayingã«è¨­å®š
 
     // Start is called before the first frame update
     void Start()
@@ -69,43 +69,43 @@ public class T3TLcontroller : MonoBehaviour
             DrawLineT3Script = FindObjectOfType<DrawLineT3>();
         }
 
-        //  é_Ê¼•r¤Ësecond_intro_Message¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«second_intro_Messageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (second_intro_Message != null)
         {
             second_intro_Message.SetActive(false);
         }
-        //  é_Ê¼•r¤ËstoryMessage¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«storyMessageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (storyMessages != null)
         {
-            // storyMessages¤Î·Ç±íÊ¾¤ò¥ë©`¥×¤ÇĞĞ¤¦
+            // storyMessagesã®éè¡¨ç¤ºã‚’ãƒ«ãƒ¼ãƒ—ã§è¡Œã†
             foreach (var message in storyMessages)
             {
                 message.SetActive(false);
             }
         }
-        //  é_Ê¼•r¤ËlineCount0_Message¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«lineCount0_Messageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (lineCount1_Message != null)
         {
             lineCount1_Message.SetActive(false);
         }
-        //  é_Ê¼•r¤ËlineCount0_Message¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«lineCount0_Messageã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (lineCount0_Message != null)
         {
             lineCount0_Message.SetActive(false);
         }
-        //  é_Ê¼•r¤ËendMessage¤ÎGameObject¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«endMessageã®GameObjectã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (endMessage != null)
         {
             endMessage.SetActive(false);
         }
-        //  é_Ê¼•r¤Ëtarget_Message¤ÎGameObject¤ò·Ç±íÊ¾¤Ë¤¹¤ë
+        //  é–‹å§‹æ™‚ã«target_Messageã®GameObjectã‚’éè¡¨ç¤ºã«ã™ã‚‹
         if (target_Message != null)
         {
             target_Message.SetActive(false);
         }
 
 
-        // PlayableDirector¤¬null¤Ç¤Ê¤¤¤³¤È¤ò´_ÕJ¤·¡¢ÔÙÉúÍêÁË¥¤¥Ù¥ó¥È¤ò¥µ¥Ö¥¹¥¯¥é¥¤¥Ö
+        // PlayableDirectorãŒnullã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã€å†ç”Ÿå®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–
         if (start_intro_MessagePlayableDirector != null)
         {
             start_intro_MessagePlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -146,7 +146,7 @@ public class T3TLcontroller : MonoBehaviour
             target_MessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
 
-        // PlayableDirector¤¬null¤Ç¤Ê¤¤¤³¤È¤ò´_ÕJ¤·¡¢ÔÙÉúÍêÁË¥¤¥Ù¥ó¥È¤ò¥µ¥Ö¥¹¥¯¥é¥¤¥Ö
+        // PlayableDirectorãŒnullã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã€å†ç”Ÿå®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–
         for (int i = 0; i < storyMessagePlayableDirectors.Length; i++)
         {
             if (storyMessagePlayableDirectors[i] != null)
@@ -190,7 +190,7 @@ public class T3TLcontroller : MonoBehaviour
 
         }
 
-        // Enter¥­©`¤¬Ñº¤µ¤ì¤¿¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+        // Enterã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (currentGameMode)
@@ -200,7 +200,7 @@ public class T3TLcontroller : MonoBehaviour
                     break;
 
                 case GameMode.PlayerPlaying:
-                    //  ¤³¤Î¥â©`¥É¤Ç¤Ï¡¢¥×¥ì¥¤¥ä©`¤¬Enter¤òÑº¤¹¤È¡¢¥­¥ã¥é¥¯¥¿©`¤ÎÒÆ„Ó£«¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤ÎÉú³É£«¥¹¥È©`¥ê©`¥á¥Ã¥»©`¥¸¤ÎÉú³É¤òÒ»¤Ä¤º¤Ä±íÊ¾¤µ¤ì¤ë
+                    //  ã“ã®ãƒ¢ãƒ¼ãƒ‰ã§ã¯ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒEnterã‚’æŠ¼ã™ã¨ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç§»å‹•ï¼‹ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ç”Ÿæˆï¼‹ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ç”Ÿæˆã‚’ä¸€ã¤ãšã¤è¡¨ç¤ºã•ã‚Œã‚‹
 
                     if (hasSecondIntroPlayed == true && isStoryPlaying == false)
                     {
@@ -246,7 +246,7 @@ public class T3TLcontroller : MonoBehaviour
                     break;
 
                 case GameMode.WaitForSceneChange:
-                    // ¥·©`¥ó¤òÇĞ¤êÌæ¤¨¤ë
+                    // ã‚·ãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
                     if (!isEndPlaying && hasEndPlayed == true )
                     {
                         SceneManager.LoadScene("Tutorial_4_Scene");
@@ -322,18 +322,18 @@ public class T3TLcontroller : MonoBehaviour
 
             Debug.Log("lineCount0_Message Timeline playback completed.");
         }
-        // ¤â¤·storyMessagePlayableDirector¤ÎÖĞ¤Ç¤É¤Á¤é¤¬stop¤·¤¿¤é
+        // ã‚‚ã—storyMessagePlayableDirectorã®ä¸­ã§ã©ã¡ã‚‰ãŒstopã—ãŸã‚‰
         else if (System.Array.IndexOf(storyMessagePlayableDirectors, director) != -1)
         {
             Debug.Log("A story message PlayableDirector stopped, increasing currentStoryIndex.");
 
-            currentStoryIndex++; // ÔÙÉú¤¹¤ëPlayableDirector¥Ê¥ó¥Ğ©`¤ò¸üĞÂ¤¹¤ë
+            currentStoryIndex++; // å†ç”Ÿã™ã‚‹PlayableDirectorãƒŠãƒ³ãƒãƒ¼ã‚’æ›´æ–°ã™ã‚‹
             Debug.Log("currentStoryIndex"+currentStoryIndex);
-            isStoryPlaying = false; // ¥¹¥È©`¥ê©`¥á¥Ã¥»©`¥¸¤ÏÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
+            isStoryPlaying = false; // ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
 
             Debug.Log("New currentStoryIndex: " + currentStoryIndex);
 
-            // È«²¿¤Î¥¹¥È©`¥ê©`¥á¥Ã¥»©`¥¸¤ÏÔÙÉú¤µ¤ì¤¿¤«¤ò´_ÕJ¤¹¤ë
+            // å…¨éƒ¨ã®ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯å†ç”Ÿã•ã‚ŒãŸã‹ã‚’ç¢ºèªã™ã‚‹
             if (currentStoryIndex >= storyMessagePlayableDirectors.Length)
             {
                 
@@ -346,9 +346,9 @@ public class T3TLcontroller : MonoBehaviour
         }
         else if (director == endMessagePlayableDirector)
         {
-            isEndPlaying = false;  // ÔÙÉúÍêÁË¤È¥Ş©`¥¯¤¹¤ë
+            isEndPlaying = false;  // å†ç”Ÿå®Œäº†ã¨ãƒãƒ¼ã‚¯ã™ã‚‹
             hasEndPlayed = true;
-            currentGameMode = GameMode.WaitForSceneChange;  //  ¥·©`¥óÇĞ¤êÌæ¤¨´ı¤Á¥â©`¥É¤Ë‰ä¸ü¤¹¤ë
+            currentGameMode = GameMode.WaitForSceneChange;  //  ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå¾…ã¡ãƒ¢ãƒ¼ãƒ‰ã«å¤‰æ›´ã™ã‚‹
             Debug.Log("endMessage Timeline playback completed.");
         }
     }
@@ -357,7 +357,7 @@ public class T3TLcontroller : MonoBehaviour
 
     void StartMovement(List<int> knightPath, List<int> hunterPath)
     {
-        // ßMĞĞÖĞ¤ÎÒÆ„Ó¤òÍ£Ö¹
+        // é€²è¡Œä¸­ã®ç§»å‹•ã‚’åœæ­¢
         if (knightMovementCoroutine != null)
             StopCoroutine(knightMovementCoroutine);
         if (hunterMovementCoroutine != null)
@@ -366,18 +366,18 @@ public class T3TLcontroller : MonoBehaviour
         knightMovementCoroutine = StartCoroutine(MoveKnightCoroutine(knightPath));
         hunterMovementCoroutine = StartCoroutine(MoveHunterCoroutine(hunterPath));
 
-        // ÒÆ„ÓÍêÁËáá¤ËÈëÁ¦´ı¤Á×´‘B¤Ë‘ø¤ë
+        // ç§»å‹•å®Œäº†å¾Œã«å…¥åŠ›å¾…ã¡çŠ¶æ…‹ã«æˆ»ã‚‹
         //StartCoroutine(AfterMovementCoroutine());
     }
-    /* Ôª¡©¤ÎÒâ‡í¤Ï¡¢¥­¥ã¥é¥¯¥¿©`¤¬½Kµã¤Ëµ½ß_¤·¤¿áá¡¢waitForSceneChange×´‘B¤ËÈë¤ê¡¢¥×¥ì¥¤¥ä©`¤¬Enter¥­©`¤òÑº¤¹¤È¥·©`¥ó¤¬ÇĞ¤êÌæ¤ï¤ë¤È¤¤¤¦¤â¤Î¤Ç¤·¤¿¡£
-     * ¤·¤«¤·¡¢¬FÔÚ¤ÏstoryMessage¤ò1±¾¤º¤ÄÔÙÉú¤·¡¢×îáá¤Î¥á¥Ã¥»©`¥¸¤¬ÔÙÉú¤µ¤ì¤¿•rµã¤ÇwaitForSceneChange×´‘B¤ËÈë¤ë¤è¤¦¤Ë‰ä¸ü¤·¤¿¤¿¤á¡¢¤½¤Î¥í¥¸¥Ã¥¯¤¬Ê¹¤¨¤Ê¤¯¤Ê¤ê¡¢
-     * ¥³©`¥É¤ò¥³¥á¥ó¥È¤·¤Ş¤·¤¿¡£*/
+    /* å…ƒã€…ã®æ„å›³ã¯ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒçµ‚ç‚¹ã«åˆ°é”ã—ãŸå¾Œã€waitForSceneChangeçŠ¶æ…‹ã«å…¥ã‚Šã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒEnterã‚­ãƒ¼ã‚’æŠ¼ã™ã¨ã‚·ãƒ¼ãƒ³ãŒåˆ‡ã‚Šæ›¿ã‚ã‚‹ã¨ã„ã†ã‚‚ã®ã§ã—ãŸã€‚
+     * ã—ã‹ã—ã€ç¾åœ¨ã¯storyMessageã‚’1æœ¬ãšã¤å†ç”Ÿã—ã€æœ€å¾Œã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå†ç”Ÿã•ã‚ŒãŸæ™‚ç‚¹ã§waitForSceneChangeçŠ¶æ…‹ã«å…¥ã‚‹ã‚ˆã†ã«å¤‰æ›´ã—ãŸãŸã‚ã€ãã®ãƒ­ã‚¸ãƒƒã‚¯ãŒä½¿ãˆãªããªã‚Šã€
+     * ã‚³ãƒ¼ãƒ‰ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã—ã¾ã—ãŸã€‚*/
 
     //IEnumerator AfterMovementCoroutine()
     //{
     //    yield return new WaitUntil(() => knightMovementCoroutine == null && hunterMovementCoroutine == null);
 
-    //    // ´Î¤Î×´‘B¤ËÒÆĞĞ
+    //    // æ¬¡ã®çŠ¶æ…‹ã«ç§»è¡Œ
     //    if (isHorizontalLineCreated)
     //    {
     //        currentGameMode = GameMode.WaitForSceneChange;
@@ -414,9 +414,9 @@ public class T3TLcontroller : MonoBehaviour
     {
         if (index < 4)
         {
-            // ÌØ¶¨¤ÎÎ»ÖÃ¤ËplotIcon¤òÖÃ¤¯
+            // ç‰¹å®šã®ä½ç½®ã«plotIconã‚’ç½®ã
             GameObject plotIcon = Instantiate(DrawLineT3Script.plotIconPrefabs[index], DrawLineT3Script.plotIconPositions[index].position, Quaternion.identity);
-            plotIcon.name = "plotIcon" + index; // plotIcon¤ÎÃûÇ°¤ò¤Ä¤±¤ë
+            plotIcon.name = "plotIcon" + index; // plotIconã®åå‰ã‚’ã¤ã‘ã‚‹
             Debug.Log($"Generated {plotIcon.name} at position {plotIcon.transform.position}");
         }
         
@@ -424,7 +424,7 @@ public class T3TLcontroller : MonoBehaviour
 
     void OnDestroy()
     {
-        // ¥¤¥Ù¥ó¥È¤Î¥µ¥Ö¥¹¥¯¥é¥¤¥Ö¤ò½â³ı¤·¤Æ¡¢¥á¥â¥ê¥ê©`¥¯¤ò·À¤°
+        // ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚µãƒ–ã‚¹ã‚¯ãƒ©ã‚¤ãƒ–ã‚’è§£é™¤ã—ã¦ã€ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
         if (start_intro_MessagePlayableDirector != null)
         {
             start_intro_MessagePlayableDirector.stopped -= OnPlayableDirectorStopped;

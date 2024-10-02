@@ -1,38 +1,38 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawLineT3 : MonoBehaviour
 {
-    public Material lineMaterial; // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë
-    public float lineWidth = 0.1f; // ¾€¤Î·ù
-    public Vector3 initialStartPoint = new Vector3(0, 0, 0); // ³õÆÚ¤ÎÆğµã
-    public Vector3 initialEndPoint = new Vector3(0, 5, 0); // ³õÆÚ¤Î½Kµã
-    public int numberOfLines = 2; // ¾€¤ÎÊı
-    public int pointsPerLine = 1; // ¸÷¾€¤Îµã¤ÎÊı
+    public Material lineMaterial; // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«
+    public float lineWidth = 0.1f; // ç·šã®å¹…
+    public Vector3 initialStartPoint = new Vector3(0, 0, 0); // åˆæœŸã®èµ·ç‚¹
+    public Vector3 initialEndPoint = new Vector3(0, 5, 0); // åˆæœŸã®çµ‚ç‚¹
+    public int numberOfLines = 2; // ç·šã®æ•°
+    public int pointsPerLine = 1; // å„ç·šã®ç‚¹ã®æ•°
 
-    public GameObject circlePrefab; // ƒÒ(µã)¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] characterPrefabs; // ¥­¥ã¥é¥¯¥¿©`¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] endingPrefabs; // ½YÄ©¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] plotIconPrefabs; // ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
-    public Transform[] plotIconPositions; // plotIcon¤ÎÎ»ÖÃ
+    public GameObject circlePrefab; // å††(ç‚¹)ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] characterPrefabs; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] endingPrefabs; // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] plotIconPrefabs; // ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    public Transform[] plotIconPositions; // plotIconã®ä½ç½®
 
     //private bool plotIcon0Generated = false;
     //private bool plotIcon1_3Generated = false;
 
-    public GameObject tooltipPrefab; // ÌáÊ¾–˜¤Î¥×¥ì¥Ï¥Ö
-    public Material horizontalLineMaterial; // ºá¾€¤Î¥Ş¥Æ¥ê¥¢¥ë
-    public float horizontalLineWidth = 0.1f; // ºá¾€¤Î·ù
-    private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // ºá¾€¤Î´Ç•ø
-    public float hoverAreaWidth = 0.4f; // ºá¾€¤Î¥Û¥Ğ©`¥¨¥ê¥¢¤Î¿k·ù
+    public GameObject tooltipPrefab; // æç¤ºæ ã®ãƒ—ãƒ¬ãƒãƒ–
+    public Material horizontalLineMaterial; // æ¨ªç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«
+    public float horizontalLineWidth = 0.1f; // æ¨ªç·šã®å¹…
+    private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // æ¨ªç·šã®è¾æ›¸
+    public float hoverAreaWidth = 0.4f; // æ¨ªç·šã®ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®ç¸¦å¹…
 
-    //public GameObject T2TLcontrollerGameObject; // T2TLcontroller¥¹¥¯¥ê¥×¥È¤ÎisCharacterMoving¥Ö©`¥ë‚¤òÈ¡µÃ¤¹¤ë¤¿¤á
-    //public T2TLcontroller T2TLcontrollerScript; // T2TLcontroller¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤ò¸ñ¼{¤¹¤ë¤¿¤á
+    //public GameObject T2TLcontrollerGameObject; // T2TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®isCharacterMovingãƒ–ãƒ¼ãƒ«å€¤ã‚’å–å¾—ã™ã‚‹ãŸã‚
+    //public T2TLcontroller T2TLcontrollerScript; // T2TLcontrollerã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚
 
-    private List<GameObject> lines = new List<GameObject>(); // ¾€¥ª¥Ö¥¸¥§¥¯¥È¤Î¥ê¥¹¥È
-    private List<GameObject> points = new List<GameObject>(); // µã¥ª¥Ö¥¸¥§¥¯¥È¤Î¥ê¥¹¥È
+    private List<GameObject> lines = new List<GameObject>(); // ç·šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªã‚¹ãƒˆ
+    private List<GameObject> points = new List<GameObject>(); // ç‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªã‚¹ãƒˆ
 
-    public Dictionary<int, Vector3> pointsDictionary;// µã¤È¤½¤ÎÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë´Ç•ø
+    public Dictionary<int, Vector3> pointsDictionary;// ç‚¹ã¨ãã®ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹è¾æ›¸
 
     public float offset = -0.1f;
 
@@ -47,24 +47,24 @@ public class DrawLineT3 : MonoBehaviour
         }
 
         pointsDictionary = new Dictionary<int, Vector3>();
-        //  ¥¹¥¯¥ê¥×¥È¤Î²ÎÕÕ¤òÈ¡µÃ
+        //  ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å‚ç…§ã‚’å–å¾—
         //T2TLcontrollerScript = T2TLcontrollerGameObject.GetComponent<T2TLcontroller>();
 
-        // Ñ}Êı¤Î¾€¤òÉú³É
+        // è¤‡æ•°ã®ç·šã‚’ç”Ÿæˆ
         for (int i = 0; i < numberOfLines; i++)
         {
-            Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // ºá¤Ë¥ª¥Õ¥»¥Ã¥È
+            Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // æ¨ªã«ã‚ªãƒ•ã‚»ãƒƒãƒˆ
             Vector3 endPoint = initialEndPoint + new Vector3(i * 2, 0, 0);
             
-            pointsDictionary.Add(i, startPoint); // µã¤Î´Ç•ø¤Ë¤½¤ì¤¾¤ì¤Î¾€¤Î¥¹¥¿©`¥Èµã¤ò·¬ºÅ¸¶¤±¤ÆÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë
+            pointsDictionary.Add(i, startPoint); // ç‚¹ã®è¾æ›¸ã«ãã‚Œãã‚Œã®ç·šã®ã‚¹ã‚¿ãƒ¼ãƒˆç‚¹ã‚’ç•ªå·ä»˜ã‘ã¦ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
 
-            CreateLine(startPoint, endPoint, i); // CreateLineévÊı¤òŒgĞĞ¤¹¤ë
+            CreateLine(startPoint, endPoint, i); // CreateLineé–¢æ•°ã‚’å®Ÿè¡Œã™ã‚‹
 
-            pointsDictionary.Add(i + numberOfLines*(pointsPerLine+1), endPoint); // µã¤Î´Ç•ø¤Ë¤½¤ì¤¾¤ì¤Î¾€¤Î¥¨¥ó¥Éµã¤ò·¬ºÅ¸¶¤±¤ÆÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë
+            pointsDictionary.Add(i + numberOfLines*(pointsPerLine+1), endPoint); // ç‚¹ã®è¾æ›¸ã«ãã‚Œãã‚Œã®ç·šã®ã‚¨ãƒ³ãƒ‰ç‚¹ã‚’ç•ªå·ä»˜ã‘ã¦ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
 
         }
 
-        // Éú³É¤µ¤ì¤¿È«¤Æ¤Îµã¤ÎÇéˆó¤ò¥í¥°¤Ë³öÁ¦
+        // ç”Ÿæˆã•ã‚ŒãŸå…¨ã¦ã®ç‚¹ã®æƒ…å ±ã‚’ãƒ­ã‚°ã«å‡ºåŠ›
         foreach (var point in points)
         {
             Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
@@ -81,23 +81,23 @@ public class DrawLineT3 : MonoBehaviour
         int lineNumber = lineIndex + 1; // lineNumber is 1-based for display
         Debug.Log($"Creating Line: lineIndex = {lineIndex}, lineNumber = {lineNumber}");
 
-        // ¾€¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
+        // ç·šã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
         GameObject lineObject = new GameObject("Line" + lineNumber );
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
-        // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤È·ù¤òÔO¶¨
+        // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã¨å¹…ã‚’è¨­å®š
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
 
-        // ¾€¤ÎÆğµã¤È½Kµã¤òÔO¶¨
+        // ç·šã®èµ·ç‚¹ã¨çµ‚ç‚¹ã‚’è¨­å®š
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
 
         Debug.Log($"Line {lineNumber }: Start Point = {startPoint}, End Point = {endPoint}");
 
-        // ƒÒ£¨µã£©¤ÎÎ»ÖÃ¤òÓ‹Ëã¤·¡¢Éú³É
+        // å††ï¼ˆç‚¹ï¼‰ã®ä½ç½®ã‚’è¨ˆç®—ã—ã€ç”Ÿæˆ
         for (int i = 0; i < pointsPerLine; i++)
         {
             Vector3 circlePosition = startPoint + new Vector3(0, (endPoint.y - startPoint.y) / (pointsPerLine + 1) * (i + 1), 0);
@@ -106,7 +106,7 @@ public class DrawLineT3 : MonoBehaviour
             points.Add(circleObject);
             
 
-            // ·¬ºÅÇéˆó¤ò×·¼Ó
+            // ç•ªå·æƒ…å ±ã‚’è¿½åŠ 
             circleObject.name = $"Circle_Line{lineIndex}_Point{i}";
             Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} with ID ({lineIndex}, {i})");
             pointsDictionary.Add(lineIndex + numberOfLines, circlePosition);
@@ -124,7 +124,7 @@ public class DrawLineT3 : MonoBehaviour
 
         
 
-        // ¥­¥ã¥é¥¯¥¿©`¤òÉú³É
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆ
         if (lineIndex < characterPrefabs.Length)
         {
             Vector3 characterPosition = startPoint + new Vector3(0, 1, -0.1f);
@@ -134,13 +134,13 @@ public class DrawLineT3 : MonoBehaviour
             GameObject parentGameObject = GameObject.Find(gameObjectName);
             if (parentGameObject != null)
             {
-                // ¤â¤·ÒŠ¤Ä¤±¤¿¤é¡¢characterObject¤ÎTransform¤òÒŠ¤Ä¤«¤é¤ì¤¿GameObject¤ÎTransform¤Î×Ó¹©¥ª¥Ö¥¸¥§¥¯¥È¤ËÔOÖÃ
+                // ã‚‚ã—è¦‹ã¤ã‘ãŸã‚‰ã€characterObjectã®Transformã‚’è¦‹ã¤ã‹ã‚‰ã‚ŒãŸGameObjectã®Transformã®å­ä¾›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¨­ç½®
                 characterObject.transform.parent = parentGameObject.transform ;
                 characterObject.transform.position = parentGameObject.transform.position + new Vector3(0, offset, 0);
             }
             else
             {
-                // ¤â¤·ÒŠ¤Ä¤±¤é¤ì¤Ê¤«¤Ã¤¿¤é¡¢¥¨¥é©`¤ò¥Ç¥Ğ¥Ã¥°¤¹¤ë
+                // ã‚‚ã—è¦‹ã¤ã‘ã‚‰ã‚Œãªã‹ã£ãŸã‚‰ã€ã‚¨ãƒ©ãƒ¼ã‚’ãƒ‡ãƒãƒƒã‚°ã™ã‚‹
                 Debug.LogError($"GameObject '{gameObjectName}' not found!");
             }
             characterObject.name = $"Character{lineNumber}";
@@ -154,7 +154,7 @@ public class DrawLineT3 : MonoBehaviour
 
 
 
-        // ½YÄ©¥¢¥¤¥³¥ó¤òÉú³É
+        // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç”Ÿæˆ
         if (lineIndex < endingPrefabs.Length)
         {
             Vector3 endingPosition = endPoint + new Vector3(0, -1, 0);

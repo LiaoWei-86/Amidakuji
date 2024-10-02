@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,36 +6,36 @@ using System.IO;
 
 public class DrawLineT5 : MonoBehaviour
 {
-    public Material lineMaterial; // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë
-    public float lineWidth = 0.1f; // ¾€¤Î·ù
-    public Vector3 initialStartPoint = new Vector3(0, 0, 0); // ³õÆÚ¤ÎÆğµã
-    public Vector3 initialEndPoint = new Vector3(0, 5, 0); // ³õÆÚ¤Î½Kµã
-    public int numberOfLines = 2; // ¾€¤ÎÊı
-    public int pointsPerLine = 2; // ¸÷¾€¤Îµã¤ÎÊı
+    public Material lineMaterial; // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«
+    public float lineWidth = 0.1f; // ç·šã®å¹…
+    public Vector3 initialStartPoint = new Vector3(0, 0, 0); // åˆæœŸã®èµ·ç‚¹
+    public Vector3 initialEndPoint = new Vector3(0, 5, 0); // åˆæœŸã®çµ‚ç‚¹
+    public int numberOfLines = 2; // ç·šã®æ•°
+    public int pointsPerLine = 2; // å„ç·šã®ç‚¹ã®æ•°
 
-    public GameObject circlePrefab; // ƒÒ(µã)¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] characterPrefabs; // ¥­¥ã¥é¥¯¥¿©`¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] endingPrefabs; // ½YÄ©¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
-    public GameObject[] plotIconPrefabs; // ¥×¥í¥Ã¥È¥¢¥¤¥³¥ó¤Î¥×¥ì¥Ï¥Ö
-    public Transform[] plotIconPositions; // plotIcon¤ÎÎ»ÖÃ
+    public GameObject circlePrefab; // å††(ç‚¹)ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] characterPrefabs; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] endingPrefabs; // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject[] plotIconPrefabs; // ãƒ—ãƒ­ãƒƒãƒˆã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    public Transform[] plotIconPositions; // plotIconã®ä½ç½®
 
-    public GameObject tooltipPrefab; // ÌáÊ¾–˜¤Î¥×¥ì¥Ï¥Ö
+    public GameObject tooltipPrefab; // æç¤ºæ ã®ãƒ—ãƒ¬ãƒãƒ–
     public GameObject charaInfoPrefab;
 
-    public Material horizontalLineMaterial; // ºá¾€¤Î¥Ş¥Æ¥ê¥¢¥ë
-    public float horizontalLineWidth = 0.1f; // ºá¾€¤Î·ù
-    private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // ºá¾€¤Î´Ç•ø
-    public float hoverAreaWidth = 0.4f; // ºá¾€¤Î¥Û¥Ğ©`¥¨¥ê¥¢¤Î¿k·ù
+    public Material horizontalLineMaterial; // æ¨ªç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«
+    public float horizontalLineWidth = 0.1f; // æ¨ªç·šã®å¹…
+    private Dictionary<(GameObject, GameObject), GameObject> horizontalLines = new Dictionary<(GameObject, GameObject), GameObject>(); // æ¨ªç·šã®è¾æ›¸
+    public float hoverAreaWidth = 0.4f; // æ¨ªç·šã®ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®ç¸¦å¹…
 
-    private List<GameObject> lines = new List<GameObject>(); // ¾€¥ª¥Ö¥¸¥§¥¯¥È¤Î¥ê¥¹¥È
-    private List<GameObject> points = new List<GameObject>(); // µã¥ª¥Ö¥¸¥§¥¯¥È¤Î¥ê¥¹¥È
+    private List<GameObject> lines = new List<GameObject>(); // ç·šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªã‚¹ãƒˆ
+    private List<GameObject> points = new List<GameObject>(); // ç‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªã‚¹ãƒˆ
 
-    public Dictionary<int, Vector3> pointsDictionary;// µã¤È¤½¤ÎÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë´Ç•ø
+    public Dictionary<int, Vector3> pointsDictionary;// ç‚¹ã¨ãã®ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹è¾æ›¸
 
-    public float offset = -0.1f;  // ¥­¥ã¥é¥¯¥¿©`¤Î¥ª¥Õ¥»¥Ã¥È
+    public float offset = -0.1f;  // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 
 
-    public TMP_FontAsset dotFont;  // ¥É¥Ã¥È¥Õ¥©¥ó¥È
+    public TMP_FontAsset dotFont;  // ãƒ‰ãƒƒãƒˆãƒ•ã‚©ãƒ³ãƒˆ
 
     public T5TLcontroller T5TLcontrollerScript;
     public characterInfoHoverT5 characterInfoHoverT5Script;
@@ -50,26 +50,26 @@ public class DrawLineT5 : MonoBehaviour
 
         pointsDictionary = new Dictionary<int, Vector3>();
 
-        // Ñ}Êı¤Î¾€¤òÉú³É
+        // è¤‡æ•°ã®ç·šã‚’ç”Ÿæˆ
         for (int i = 0; i < numberOfLines; i++)
         {
-            Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // ºá¤Ë¥ª¥Õ¥»¥Ã¥È
+            Vector3 startPoint = initialStartPoint + new Vector3(i * 2, 0, 0); // æ¨ªã«ã‚ªãƒ•ã‚»ãƒƒãƒˆ
             Vector3 endPoint = initialEndPoint + new Vector3(i * 2, 0, 0);
 
-            pointsDictionary.Add(i, startPoint); // µã¤Î´Ç•ø¤Ë¤½¤ì¤¾¤ì¤Î¾€¤Î¥¹¥¿©`¥Èµã¤ò·¬ºÅ¸¶¤±¤ÆÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë
-            pointsDictionary.Add(i + numberOfLines * (pointsPerLine + 1), endPoint); // µã¤Î´Ç•ø¤Ë¤½¤ì¤¾¤ì¤Î¾€¤Î¥¨¥ó¥Éµã¤ò·¬ºÅ¸¶¤±¤ÆÎ»ÖÃÇéˆó¤ò¸ñ¼{¤¹¤ë
+            pointsDictionary.Add(i, startPoint); // ç‚¹ã®è¾æ›¸ã«ãã‚Œãã‚Œã®ç·šã®ã‚¹ã‚¿ãƒ¼ãƒˆç‚¹ã‚’ç•ªå·ä»˜ã‘ã¦ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
+            pointsDictionary.Add(i + numberOfLines * (pointsPerLine + 1), endPoint); // ç‚¹ã®è¾æ›¸ã«ãã‚Œãã‚Œã®ç·šã®ã‚¨ãƒ³ãƒ‰ç‚¹ã‚’ç•ªå·ä»˜ã‘ã¦ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
 
 
-            CreateLine(startPoint, endPoint, i); // CreateLineévÊı¤òŒgĞĞ¤¹¤ë
+            CreateLine(startPoint, endPoint, i); // CreateLineé–¢æ•°ã‚’å®Ÿè¡Œã™ã‚‹
 
-            // Éú³É¤µ¤ì¤¿È«¤Æ¤Îµã¤ÎÇéˆó¤ò¥í¥°¤Ë³öÁ¦
+            // ç”Ÿæˆã•ã‚ŒãŸå…¨ã¦ã®ç‚¹ã®æƒ…å ±ã‚’ãƒ­ã‚°ã«å‡ºåŠ›
             foreach (var point in points)
             {
                 Debug.Log($"Point: {point.name}, Position: {point.transform.position}");
             }
 
-            // Éú³É¤µ¤ì¤¿È«¤Æ¤Îµã¤Ë·¬ºÅ¸¶¤±¤Æ¤½¤ì¤¾¤ì¤ÎÎ»ÖÃÇéˆó¤òKeyValuePair<int, Vector3>¤ÎĞÎ¤Ç¥Ç¥£¥¯¥·¥ç¥Ê¥ê©`¤Ë±£´æ¤·¤¿
-            // ¤½¤ì¤ò´_ÕJ¤¹¤ë¤¿¤á¤Ë¡¢±£´æ¤µ¤ì¤¿µã¤Î·¬ºÅ¤ÈÎ»ÖÃÇéˆó¤ò¥í¥°¤Ë³öÁ¦
+            // ç”Ÿæˆã•ã‚ŒãŸå…¨ã¦ã®ç‚¹ã«ç•ªå·ä»˜ã‘ã¦ãã‚Œãã‚Œã®ä½ç½®æƒ…å ±ã‚’KeyValuePair<int, Vector3>ã®å½¢ã§ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªãƒ¼ã«ä¿å­˜ã—ãŸ
+            // ãã‚Œã‚’ç¢ºèªã™ã‚‹ãŸã‚ã«ã€ä¿å­˜ã•ã‚ŒãŸç‚¹ã®ç•ªå·ã¨ä½ç½®æƒ…å ±ã‚’ãƒ­ã‚°ã«å‡ºåŠ›
             foreach (KeyValuePair<int, Vector3> kvp in pointsDictionary)
             {
                 Debug.Log($"PointsKey: {kvp.Key}, PointsTransformPositionVector3: {kvp.Value}");
@@ -78,7 +78,7 @@ public class DrawLineT5 : MonoBehaviour
             
         }
 
-        // ºá¾€¤òÃè»­
+        // æ¨ªç·šã‚’æç”»
         DrawHorizontalLine(2, 3);
         DrawHorizontalLine(4, 5);
 
@@ -90,16 +90,16 @@ public class DrawLineT5 : MonoBehaviour
         int lineNumber = lineIndex + 1; // lineNumber is 1-based for display
         Debug.Log($"Creating Line: lineIndex = {lineIndex}, lineNumber = {lineNumber}");
 
-        // ¾€¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
+        // ç·šã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
         GameObject lineObject = new GameObject("Line" + lineNumber);
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
-        // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤È·ù¤òÔO¶¨
+        // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã¨å¹…ã‚’è¨­å®š
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
 
-        // ¾€¤ÎÆğµã¤È½Kµã¤òÔO¶¨
+        // ç·šã®èµ·ç‚¹ã¨çµ‚ç‚¹ã‚’è¨­å®š
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
@@ -108,7 +108,7 @@ public class DrawLineT5 : MonoBehaviour
 
 
 
-        // ƒÒ£¨µã£©¤ÎÎ»ÖÃ¤òÓ‹Ëã¤·¡¢Éú³É
+        // å††ï¼ˆç‚¹ï¼‰ã®ä½ç½®ã‚’è¨ˆç®—ã—ã€ç”Ÿæˆ
         for (int i = 0; i < pointsPerLine; i++)
         {
             Vector3 circlePosition = startPoint + new Vector3(0, (endPoint.y - startPoint.y) / (pointsPerLine + 1) * (i + 1), 0);
@@ -117,7 +117,7 @@ public class DrawLineT5 : MonoBehaviour
             points.Add(circleObject);
 
 
-            // ·¬ºÅÉú³ÉÇéˆó
+            // ç•ªå·ç”Ÿæˆæƒ…å ±
             circleObject.name = $"Circle_Line{lineNumber}_Point{i}";
             Debug.Log($"Line {lineNumber}: Created Circle at {circlePosition} ");
 
@@ -132,26 +132,26 @@ public class DrawLineT5 : MonoBehaviour
                 CreateHoverAreaT5(points[2], points[6]);
                 CreateHoverAreaT5(points[3], points[7]);
                 /*
-                 * "if (points.Count > 7)"----->  ¤³¤ì¤é¤Î¥³©`¥É¤òŒgĞĞ¤¹¤ë•r¡¢point¤ÎÊı¤¬¼È¤Ë 8 ¤Ëß_¤·¤Æ¤¤¤ë¤È¤¤¤¦¤³¤È
+                 * "if (points.Count > 7)"----->  ã“ã‚Œã‚‰ã®ã‚³ãƒ¼ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹æ™‚ã€pointã®æ•°ãŒæ—¢ã« 8 ã«é”ã—ã¦ã„ã‚‹ã¨ã„ã†ã“ã¨
                  
-                 * Ç°¤Î¾€ÉÏ¤Îµã¤ò¼Ó¤¨¤¿áá¤Ç´Î¤Î¾€¤Îµã¤ò×·¼Ó¤¹¤ë¤¿¤á¡¢
+                 * å‰ã®ç·šä¸Šã®ç‚¹ã‚’åŠ ãˆãŸå¾Œã§æ¬¡ã®ç·šã®ç‚¹ã‚’è¿½åŠ ã™ã‚‹ãŸã‚ã€
 
-                    points[0]¡úline1_point0
-                    points[1]¡úline1_point1
-                    points[2]¡úline2_point0
-                    points[3]¡úline2_point1
+                    points[0]â†’line1_point0
+                    points[1]â†’line1_point1
+                    points[2]â†’line2_point0
+                    points[3]â†’line2_point1
                     
-                    ¡¡¡¡¡¡¡¡¡¸òTÊ¿¡¹0¡¡¡¡¡¡¡¡¡¡¡¸ªdŸ¡¹1
+                    ã€€ã€€ã€€ã€€ã€Œé¨å£«ã€0ã€€ã€€ã€€ã€€ã€€ã€ŒçŒŸå¸«ã€1
                                 ||                ||
-                    points[0]   ¡ğ2    points[4]  ¡ğ3
+                    points[0]   â—‹2    points[4]  â—‹3
                                 ||                ||
-                    points[1]   ¡ğ4    points[5]  ¡ğ5
+                    points[1]   â—‹4    points[5]  â—‹5
                                 ||                ||
-                    points[2]   ¡ğ6    points[6]  ¡ğ7
+                    points[2]   â—‹6    points[6]  â—‹7
                                 ||                ||
-                    points[3]   ¡ğ8    points[7]  ¡ğ9
+                    points[3]   â—‹8    points[7]  â—‹9
                                 ||                ||
-                ¡¡¡¡¡¡¡¡¡¡¡¡¡¸½YÄ©¡¹10¡¡¡¡¡¡¡¡¡¡¡¸½YÄ©¡¹11
+                ã€€ã€€ã€€ã€€ã€€ã€€ã€Œçµæœ«ã€10ã€€ã€€ã€€ã€€ã€€ã€Œçµæœ«ã€11
                 */
 
             }
@@ -160,7 +160,7 @@ public class DrawLineT5 : MonoBehaviour
 
 
 
-        // ¥­¥ã¥é¥¯¥¿©`¤òÉú³É
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆ
         if (lineIndex < characterPrefabs.Length)
         {
             Vector3 characterPosition = startPoint + new Vector3(0, 1, -0.1f);
@@ -170,14 +170,14 @@ public class DrawLineT5 : MonoBehaviour
             GameObject parentGameObject = GameObject.Find(gameObjectName);
             if (parentGameObject != null)
             {
-                // ¤â¤·ÒŠ¤Ä¤±¤¿¤é¡¢characterObject¤ÎTransform¤òÒŠ¤Ä¤«¤é¤ì¤¿GameObject¤ÎTransform¤Î×Ó¹©¥ª¥Ö¥¸¥§¥¯¥È¤ËÔOÖÃ
+                // ã‚‚ã—è¦‹ã¤ã‘ãŸã‚‰ã€characterObjectã®Transformã‚’è¦‹ã¤ã‹ã‚‰ã‚ŒãŸGameObjectã®Transformã®å­ä¾›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¨­ç½®
                 characterObject.transform.parent = parentGameObject.transform;
                 characterObject.transform.position = parentGameObject.transform.position + new Vector3(0, offset, 0);
                 CreateHoverAreaCharacter(characterObject,lineNumber);
             }
             else
             {
-                // ¤â¤·ÒŠ¤Ä¤±¤é¤ì¤Ê¤«¤Ã¤¿¤é¡¢¥¨¥é©`¤ò¥Ç¥Ğ¥Ã¥°¤¹¤ë
+                // ã‚‚ã—è¦‹ã¤ã‘ã‚‰ã‚Œãªã‹ã£ãŸã‚‰ã€ã‚¨ãƒ©ãƒ¼ã‚’ãƒ‡ãƒãƒƒã‚°ã™ã‚‹
                 Debug.LogError($"GameObject '{gameObjectName}' not found!");
             }
             characterObject.name = $"Character{lineNumber}";
@@ -191,7 +191,7 @@ public class DrawLineT5 : MonoBehaviour
 
 
 
-        // ½YÄ©¥¢¥¤¥³¥ó¤òÉú³É
+        // çµæœ«ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç”Ÿæˆ
         if (lineIndex < endingPrefabs.Length)
         {
             Vector3 endingPosition = endPoint + new Vector3(0, -1, 0);
@@ -208,14 +208,14 @@ public class DrawLineT5 : MonoBehaviour
         lines.Add(lineObject);
     }
 
-    // ºá¾€¤òÃè»­¤¹¤ë¥á¥½¥Ã¥É
+    // æ¨ªç·šã‚’æç”»ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     private void DrawHorizontalLine(int start, int end)
     {
-        // ¾€¤Î¤¿¤á¤ÎĞÂ¤·¤¤ GameObject ¤ò×÷³É
+        // ç·šã®ãŸã‚ã®æ–°ã—ã„ GameObject ã‚’ä½œæˆ
         GameObject lineObject = new GameObject($"HorizontalLine({start},{end})");
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>();
 
-        // ¾€¤Î¥Ş¥Æ¥ê¥¢¥ë¤È·ù¤òÔO¶¨
+        // ç·šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã¨å¹…ã‚’è¨­å®š
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = horizontalLineWidth;
         lineRenderer.endWidth = horizontalLineWidth;
@@ -226,84 +226,84 @@ public class DrawLineT5 : MonoBehaviour
         if (pointsDictionary.TryGetValue(start, out startPoint))
         {
             //Key found
-            Debug.Log($"¡¾DrawHorizontalLine¡¿Key[{start}]Value[{startPoint}]");
+            Debug.Log($"ã€DrawHorizontalLineã€‘Key[{start}]Value[{startPoint}]");
         }
         else
         {
             // Key not found
-            Debug.Log($"¡¾DrawHorizontalLine¡¿Key[{start}]Value[startPoint] not found.");
+            Debug.Log($"ã€DrawHorizontalLineã€‘Key[{start}]Value[startPoint] not found.");
         }
         if (pointsDictionary.TryGetValue(end, out endPoint))
         {
             //Key found
-            Debug.Log($"¡¾DrawHorizontalLine¡¿Key[{end}]Value[{endPoint}]");
+            Debug.Log($"ã€DrawHorizontalLineã€‘Key[{end}]Value[{endPoint}]");
         }
         else
         {
             // Key not found
-            Debug.Log($"¡¾DrawHorizontalLine¡¿Key[{end}]Value[endPoint] not found.");
+            Debug.Log($"ã€DrawHorizontalLineã€‘Key[{end}]Value[endPoint] not found.");
         }
 
-        //ºá¾€¤òÃè¤¯
+        //æ¨ªç·šã‚’æã
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
     }
 
-    // µã¤Î¥Ú¥¢¤´¤È¤Ë¥Û¥Ğ©`¥¨¥ê¥¢¤òÉú³É¤¹¤ë¥á¥½¥Ã¥É
+    // ç‚¹ã®ãƒšã‚¢ã”ã¨ã«ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void CreateHoverAreaT5(GameObject pointA, GameObject pointB)
     {
-        Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");   // ¥Ç¥Ğ¥Ã¥°¥í¥°¤ò³öÁ¦¤·¤Æ¡¢µãA¤ÈµãB¤ÎÇéˆó¤ò±íÊ¾¤¹¤ë
+        Debug.Log($"CreateHoverArea called with pointA: {pointA.name}, pointB: {pointB.name}");   // ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’å‡ºåŠ›ã—ã¦ã€ç‚¹Aã¨ç‚¹Bã®æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹
 
-        Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2;   // µãA¤ÈµãB¤ÎÖĞégµã¤òÓ‹Ëã¤¹¤ë
-        Vector3 direction = (pointB.transform.position - pointA.transform.position).normalized;   // µãA¤«¤éµãB¤Ø¤Î·½Ïò¥Ù¥¯¥È¥ë¤òÓ‹Ëã¤·¡¢ÕıÒ»¯¤¹¤ë
+        Vector3 midPoint = (pointA.transform.position + pointB.transform.position) / 2;   // ç‚¹Aã¨ç‚¹Bã®ä¸­é–“ç‚¹ã‚’è¨ˆç®—ã™ã‚‹
+        Vector3 direction = (pointB.transform.position - pointA.transform.position).normalized;   // ç‚¹Aã‹ã‚‰ç‚¹Bã¸ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã—ã€æ­£è¦åŒ–ã™ã‚‹
 
-        GameObject hoverArea = new GameObject("HoverArea");   // ĞÂ¤·¤¤ GameObject ¤ò×÷³É¤·¡¢¤½¤ÎÃûÇ°¤ò "HoverArea" ¤ËÔO¶¨¤¹¤ë
-        BoxCollider boxCollider = hoverArea.AddComponent<BoxCollider>();   // BoxCollider ¥³¥ó¥İ©`¥Í¥ó¥È¤ò×·¼Ó¤·¡¢¥Û¥Ğ©`¥¨¥ê¥¢¤Î¥µ¥¤¥º¤òÔO¶¨¤¹¤ë
+        GameObject hoverArea = new GameObject("HoverArea");   // æ–°ã—ã„ GameObject ã‚’ä½œæˆã—ã€ãã®åå‰ã‚’ "HoverArea" ã«è¨­å®šã™ã‚‹
+        BoxCollider boxCollider = hoverArea.AddComponent<BoxCollider>();   // BoxCollider ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ ã—ã€ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹
 
-        // µãA¤ÈµãB¤Îég¤Î¾àëx¤ò¥Û¥Ğ©`¥¨¥ê¥¢¤Îºá·ù¤ËÔO¶¨¤·¡¢¿k·ù¤ò hoverAreaWidth¡¢ºñ¤ß¤ò 0.1f ¤ËÔO¶¨¤¹¤ë
+        // ç‚¹Aã¨ç‚¹Bã®é–“ã®è·é›¢ã‚’ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®æ¨ªå¹…ã«è¨­å®šã—ã€ç¸¦å¹…ã‚’ hoverAreaWidthã€åšã¿ã‚’ 0.1f ã«è¨­å®šã™ã‚‹
         boxCollider.size = new Vector3(Vector3.Distance(pointA.transform.position, pointB.transform.position), hoverAreaWidth, 0.1f);
 
-        // BoxCollider ¤ò¥È¥ê¥¬©`¤È¤·¤ÆÔO¶¨¤¹¤ë
+        // BoxCollider ã‚’ãƒˆãƒªã‚¬ãƒ¼ã¨ã—ã¦è¨­å®šã™ã‚‹
         boxCollider.isTrigger = true;
 
-        Debug.Log($"BoxCollider created with size: {boxCollider.size}");   // BoxCollider ¤Î¥µ¥¤¥º¤ò¥Ç¥Ğ¥Ã¥°¥í¥°¤Ç±íÊ¾¤¹¤ë
+        Debug.Log($"BoxCollider created with size: {boxCollider.size}");   // BoxCollider ã®ã‚µã‚¤ã‚ºã‚’ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã§è¡¨ç¤ºã™ã‚‹
 
-        hoverArea.transform.position = midPoint;   // ¥Û¥Ğ©`¥¨¥ê¥¢¤ÎÎ»ÖÃ¤òÖĞégµã¤ËÔO¶¨¤¹¤ë
-        hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);   // ¥Û¥Ğ©`¥¨¥ê¥¢¤Î»ØÜ¤ò¡¢µãA¤«¤éµãB¤Ø¤Î·½Ïò¤Ë»ù¤Å¤¤¤ÆÔO¶¨¤¹¤ë
+        hoverArea.transform.position = midPoint;   // ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®ä½ç½®ã‚’ä¸­é–“ç‚¹ã«è¨­å®šã™ã‚‹
+        hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);   // ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®å›è»¢ã‚’ã€ç‚¹Aã‹ã‚‰ç‚¹Bã¸ã®æ–¹å‘ã«åŸºã¥ã„ã¦è¨­å®šã™ã‚‹
 
-        // HoverAreaT5 ¥¹¥¯¥ê¥×¥È¤ò¥Û¥Ğ©`¥¨¥ê¥¢¤Ë×·¼Ó¤¹¤ë
-        HoverAreaT5 hoverScriptT5 = hoverArea.AddComponent<HoverAreaT5>();         // Need changed NOTICE£¡
-        hoverScriptT5.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);   // HoverAreaT5 ¥¹¥¯¥ê¥×¥È¤ò³õÆÚ»¯¤¹¤ë
+        // HoverAreaT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã«è¿½åŠ ã™ã‚‹
+        HoverAreaT5 hoverScriptT5 = hoverArea.AddComponent<HoverAreaT5>();         // Need changed NOTICEï¼
+        hoverScriptT5.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);   // HoverAreaT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 
-        // HoverAreaT5 ¥¹¥¯¥ê¥×¥È¤¬×·¼Ó¤µ¤ì¤¿¤³¤È¤ò¥Ç¥Ğ¥Ã¥°¥í¥°¤Ç±íÊ¾¤¹¤ë
+        // HoverAreaT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒè¿½åŠ ã•ã‚ŒãŸã“ã¨ã‚’ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã§è¡¨ç¤ºã™ã‚‹
         Debug.Log($"HoverArea script added to {hoverArea.name}");
 
-        // ¥Û¥Ğ©`¥¨¥ê¥¢¤¬×÷³É¤µ¤ì¤¿Î»ÖÃ¤È¥µ¥¤¥º¤ò¥Ç¥Ğ¥Ã¥°¥í¥°¤Ç±íÊ¾¤¹¤ë
+        // ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ãŒä½œæˆã•ã‚ŒãŸä½ç½®ã¨ã‚µã‚¤ã‚ºã‚’ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã§è¡¨ç¤ºã™ã‚‹
         Debug.Log($"Hover Area created at {midPoint} with size {boxCollider.size}");
     }
 
-    // ¥­¥ã¥é¥¯¥¿©`¤Î¥Û¥Ğ©`¥¨¥ê¥¢¤òÉú³É¤¹¤ë¥á¥½¥Ã¥É
+    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void CreateHoverAreaCharacter(GameObject character, int charaInfoNum)
     {
-        // ¥Ç¥Ğ¥Ã¥°¥í¥°¤ò³öÁ¦¤·¤Æ¡¢¥­¥ã¥é¥¯¥¿©`¤ÎÇéˆó¤ò±íÊ¾¤¹¤ë
+        // ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’å‡ºåŠ›ã—ã¦ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹
         Debug.Log($"CreateHoverArea called with character: {character.name}");
 
-        // ¥­¥ã¥é¥¯¥¿©`¤ÎÎ»ÖÃ¤«¤é¥ª¥Õ¥»¥Ã¥È¤ò¼Ó¤¨¤¿Î»ÖÃ¤òÓ‹Ëã¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä½ç½®ã‹ã‚‰ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’åŠ ãˆãŸä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
         Vector3 charaInfoPosition = character.transform.position + new Vector3(-3,-1,0);
 
-        // ¥­¥ã¥é¥¯¥¿©`¤Ë BoxCollider ¥³¥ó¥İ©`¥Í¥ó¥È¤ò×·¼Ó¤·¡¢¥Û¥Ğ©`¥¨¥ê¥¢¤Î¥µ¥¤¥º¤òÔO¶¨¤¹¤ë
+        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã« BoxCollider ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ ã—ã€ãƒ›ãƒãƒ¼ã‚¨ãƒªã‚¢ã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹
         BoxCollider boxCollider = character.AddComponent<BoxCollider>();
         boxCollider.size = new Vector3(1f, 1f, 0.1f);
         boxCollider.isTrigger = true;
 
-        // characterInfoHoverT5 ¥¹¥¯¥ê¥×¥È¤ò¥­¥ã¥é¥¯¥¿©`¤Ë×·¼Ó¤¹¤ë
+        // characterInfoHoverT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã«è¿½åŠ ã™ã‚‹
         characterInfoHoverT5 characterInfoHoverT5Script = character.AddComponent<characterInfoHoverT5>();
 
-        // characterInfoHoverT5 ¥¹¥¯¥ê¥×¥È¤ÎÇéˆó·¬ºÅ¤òÔO¶¨¤¹¤ë
+        // characterInfoHoverT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®æƒ…å ±ç•ªå·ã‚’è¨­å®šã™ã‚‹
         characterInfoHoverT5Script.charaInfoNum = charaInfoNum;
 
-        // characterInfoHoverT5 ¥¹¥¯¥ê¥×¥È¤ò³õÆÚ»¯¤¹¤ë
+        // characterInfoHoverT5 ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
         characterInfoHoverT5Script.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
 
