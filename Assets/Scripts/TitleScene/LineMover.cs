@@ -47,6 +47,27 @@ public class LineMover : MonoBehaviour
     }
     private void Update()
     {
+        LineRenderer lineRenderer;
+
+        void Update()
+        {
+
+            if (Input.GetMouseButtonDown(0))
+            {
+
+                lineRenderer = null;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+
+                if (hit2d)
+                {
+                    lineRenderer = hit2d.transform.lineRenderer;
+                }
+
+                Debug.Log(clickedGameObject);
+            }
+        }
         var result = GetTargetPosition(
             ref currentIndex,
             speed * Time.deltaTime,
