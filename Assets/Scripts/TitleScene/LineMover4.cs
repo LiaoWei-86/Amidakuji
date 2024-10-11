@@ -1,16 +1,15 @@
 using UnityEngine;
 using System;
-
-public class LineMover : MonoBehaviour
+public class LineMover_CharactorRecords : MonoBehaviour
 {
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private float speed = 1f;
 
     private int currentIndex;
     public EventHandler OnEndReached;
-
-    private void Start()
+    public void OnClick()
     {
+        Debug.Log("OnClick");
         Initialize(0, speed, lineRenderer);
     }
     public void Initialize(int index, float speed, LineRenderer lineRenderer)
@@ -21,7 +20,6 @@ public class LineMover : MonoBehaviour
         this.lineRenderer = lineRenderer;
         transform.position = this.lineRenderer.GetPosition(currentIndex);
     }
-
     public static (Vector3 targetPosition, bool isEnd) GetTargetPosition(ref int index, float moveSpeed, Vector3 currentPosition, LineRenderer lineRenderer)
     {
         int nextIndex = index + 1;
@@ -59,4 +57,6 @@ public class LineMover : MonoBehaviour
             enabled = false;
         }
     }
+   
+
 }
