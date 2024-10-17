@@ -204,8 +204,8 @@ public class T5TLcontroller : MonoBehaviour
 
 
 
-            // Enterキーが押されたかどうかをチェック
-            if (Input.GetKeyDown(KeyCode.Return))
+        // Enterキーが押されたかどうかをチェック
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (currentGameMode)
             {

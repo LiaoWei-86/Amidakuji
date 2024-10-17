@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class gameController : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class gameController : MonoBehaviour
     private bool hasYoko_LineMessagePlayed = false; //  yoko_lineMessageは再生完了されたか？のブール値;まだ再生完了してない
 
     public GameObject knight;
-    public GameObject hunter;
+    public GameObject hunter; //  元々は猟師だけど、国王に変えた。スクリプト上は名前を変更するのややこしいのでこのまま保留した。実は国王だ
     public GameObject knightPrefab;
     public GameObject hunterPrefab;
 
@@ -47,9 +48,22 @@ public class gameController : MonoBehaviour
     public GameObject end1Prefab;
     public GameObject end2Prefab;
 
+    public TMP_FontAsset dotFont;  // ドットフォント
+    public bool charaKnightInfoChecked = false; //　騎士のキャラクター情報は確認されたか？のブール値
+    public bool charaHunterInfoChecked = false; //　猟師のキャラクター情報は確認されたか？のブール値
+
+    public GameObject charaInfoPrefab;
+
+    public characterInfoHoverT0 characterInfoHoverT0Script;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (characterInfoHoverT0Script == null)
+        {
+            characterInfoHoverT0Script = FindObjectOfType<characterInfoHoverT0>();
+        }
+
         //  開始時にsecondMessageを非表示にする
         if (secondMessage != null)
         {
@@ -114,6 +128,9 @@ public class gameController : MonoBehaviour
         {
             endMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
+
+        CreateHoverAreaCharacter(knight, 1);
+        CreateHoverAreaCharacter(hunter, 3);// ３だから、実は国王
     }
 
     // Update is called once per frame
@@ -177,7 +194,28 @@ public class gameController : MonoBehaviour
         }
     }
 
+    void CreateHoverAreaCharacter(GameObject character, int charaInfoNum)
+    {
+        // デバッグログを出力して、キャラクターの情報を表示する
+        Debug.Log($"CreateHoverArea called with character: {character.name}");
 
+        // キャラクターの位置からオフセットを加えた位置を計算する
+        Vector3 charaInfoPosition = character.transform.position + new Vector3(-3, -1, 0);
+
+        // キャラクターに BoxCollider コンポーネントを追加し、ホバーエリアのサイズを設定する
+        BoxCollider boxCollider = character.AddComponent<BoxCollider>();
+        boxCollider.size = new Vector3(1f, 1f, 0.1f);
+        boxCollider.isTrigger = true;
+
+        // characterInfoHoverT0 スクリプトをキャラクターに追加する
+        characterInfoHoverT0 characterInfoHoverT0Script= character.AddComponent<characterInfoHoverT0>();
+
+        // characterInfoHoverT5 スクリプトの情報番号を設定する
+        characterInfoHoverT0Script.charaInfoNum = charaInfoNum;
+
+        // characterInfoHoverT5 スクリプトを初期化する
+        characterInfoHoverT0Script.Initialize(character, charaInfoPrefab, charaInfoPosition);
+    }
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
         Debug.Log("PlayableDirector Stopped: " + director.name);
