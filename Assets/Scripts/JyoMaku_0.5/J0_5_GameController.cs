@@ -10,6 +10,9 @@ public class J0_5_GameController : MonoBehaviour
 
     public bool canToNextStage = false;
 
+    public GameObject character1;
+    public GameObject character2;
+    public GameObject charaInfo;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,9 @@ public class J0_5_GameController : MonoBehaviour
         {
             j0_5_starting.stopped += OnPlayableDirectorStopped;
         }
+
+        CreateHoverAreaCharacter(character1);
+        CreateHoverAreaCharacter(character2);
     }
 
     // Update is called once per frame
@@ -37,6 +43,27 @@ public class J0_5_GameController : MonoBehaviour
 
             Debug.Log("canToNextStage:" + canToNextStage);
         }
+    }
+
+    void CreateHoverAreaCharacter(GameObject character)
+    {
+        // デバッグログを出力して、キャラクターの情報を表示する
+        Debug.Log($"CreateHoverArea called with character: {character.name}");
+
+        // キャラクターの位置からオフセットを加えた位置を計算する
+        Vector3 charaInfoPosition = character.transform.position + new Vector3(-3, -1, 0);
+
+        // キャラクターに BoxCollider コンポーネントを追加し、ホバーエリアのサイズを設定する
+        BoxCollider boxCollider = character.AddComponent<BoxCollider>();
+        boxCollider.size = new Vector3(1f, 1f, 0.1f);
+        boxCollider.isTrigger = true;
+
+
+        // A1_25_charaHoverAreaScript スクリプトをキャラクターに追加する
+        J0_5_hoverChara J0_5_hoverAreaScript = character.AddComponent<J0_5_hoverChara>();
+
+        // A1_25_charaHoverAreaScriptスクリプトを初期化する
+        J0_5_hoverAreaScript.Initialize(character, charaInfo, charaInfoPosition);
     }
 
     void OnDestroy()
