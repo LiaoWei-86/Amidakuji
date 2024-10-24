@@ -65,7 +65,7 @@ public class TimelineController : MonoBehaviour
 
                 case GameMode.WaitForSceneChange:
                     // シーンを切り替える
-                    SceneManager.LoadScene("JyoMaku_0");
+                    SceneManager.LoadScene("JyoMaku_before_0");
                     break;
             }
         }

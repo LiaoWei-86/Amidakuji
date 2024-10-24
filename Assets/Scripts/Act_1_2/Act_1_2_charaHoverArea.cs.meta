@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2dd14b62705d27049909969f94002b52
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dotFont: {fileID: 11400000, guid: 40a177137a637e94caf05dfbf4153e34, type: 2}
+  - Act_1_2_gameControllerScript: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -7,12 +7,6 @@ using TMPro;
 
 public class J0_gameController : MonoBehaviour
 {
-    public GameObject J0_Starting; // ゲームオブジェクト J0_Starting
-    public PlayableDirector J0_StartingPlayableDirector; // J0_StartingのPlayableDirector
-    public bool isJ0_StratingPlayed = false; // J0_StartingのPlayableDirectorは再生したかをfalseとマークする
-
-    public GameObject Amidakji_J0; // あみだくじの部分
-
 
     public GameObject Jyomaku_J0_Text; // ゲームオブジェクト Jyomaku_J0_Text
     public PlayableDirector Jyomaku_J0_TextPlayableDirector; // Jyomaku_J0_TextのPlayableDirector
@@ -86,19 +80,27 @@ public class J0_gameController : MonoBehaviour
     public GameObject newCharaAnounce; // 新しいキャラクターが登場したという通知
     public PlayableDirector newCharaAnPlayableDirector; // 新しいキャラクターが登場したという通知 PlayableDirector
 
+    public AudioClip leftClickClip;
+    public AudioClip rightClickClip;
+
+    public AudioSource audioSourceJ0;
+
     private enum GameMode
     {
-        AmidakujiReady,       // プレイヤーが Enterを押すのを待って、Amidakujiを表示する
-        WaitForTargetTextEnd, // target_J0_TextPlayableDirector が再生完了のを待つ
         TextPlaying, // ゲーム開始時のテキストが再生中
         PlayerPlaying, // プレイヤーが操作している状態
         WaitForSceneChange // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
     }
     private GameMode currentGameMode = GameMode.TextPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
+        
+
         CreateHoverAreaCharacter(character1, 1); // 騎士：１
         CreateHoverAreaCharacter(character2, 3); // 国王：３
 
@@ -149,10 +151,7 @@ public class J0_gameController : MonoBehaviour
         }
 
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
-        if (J0_StartingPlayableDirector != null)
-        {
-            J0_StartingPlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
+
         if (Jyomaku_J0_TextPlayableDirector != null)
         {
             Jyomaku_J0_TextPlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -223,26 +222,6 @@ public class J0_gameController : MonoBehaviour
         {
             case GameMode.TextPlaying:
 
-                if (Input.GetKeyDown(KeyCode.Return) && isJ0_StratingPlayed == true)
-                {
-                    J0_Starting.SetActive(false);
-                    Amidakji_J0.SetActive(true);
-                    currentGameMode = GameMode.AmidakujiReady;
-                }
-
-                break;
-
-            case GameMode.AmidakujiReady:
-                
-                    //  target_J0_TextPlayableDirectorが再生し始める
-                    target_J0_Text.SetActive(true);
-                    target_J0_TextPlayableDirector.Play();
-                    currentGameMode = GameMode.WaitForTargetTextEnd;
-                
-                break;
-
-            case GameMode.WaitForTargetTextEnd:
-                
                 break;
 
             case GameMode.PlayerPlaying:
@@ -494,20 +473,10 @@ public class J0_gameController : MonoBehaviour
 
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
-        if (director == J0_StartingPlayableDirector)
+        if (director == Jyomaku_J0_TextPlayableDirector) 
         {
-            Jyomaku_J0_Text.SetActive(true);
-            Jyomaku_J0_TextPlayableDirector.Play();
-            isJ0_StratingPlayed = true;
-
-
-
-            Debug.Log(" J0_Starting Timeline playback completed.");
-        }
-        else if (director == Jyomaku_J0_TextPlayableDirector) 
-        {
-            //target_J0_Text.SetActive(true);
-            //target_J0_TextPlayableDirector.Play();
+            target_J0_Text.SetActive(true);
+            target_J0_TextPlayableDirector.Play();
 
             Debug.Log(" Jyomaku_J0_Text Timeline playback completed.");
         }
@@ -564,10 +533,7 @@ public class J0_gameController : MonoBehaviour
     void OnDestroy()
     {
         // イベントのサブスクライブを解除して、メモリリークを防ぐ
-        if (J0_StartingPlayableDirector != null)
-        {
-            J0_StartingPlayableDirector.stopped -= OnPlayableDirectorStopped;
-        }
+
 
         if (Jyomaku_J0_TextPlayableDirector != null)
         {

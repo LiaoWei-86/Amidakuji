@@ -78,6 +78,8 @@ public class J1_hoverArea : MonoBehaviour
             {
                 CreateHorizontalLine(); // 横線を生成する
                 Debug.Log("Horizontal line created");
+                J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.leftClickClip);
+                
                 J1_GameControllerScript.isAnyHorizontalLineCreated = true; // 横線が作成されたことをフラグで管理
 
                 if (pointA.name == "circle1")
@@ -99,6 +101,7 @@ public class J1_hoverArea : MonoBehaviour
                 // 既存の横線を削除する
                 Destroy(currentLine);
                 currentLine = null;
+                J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.rightClickClip);
 
                 Debug.Log("Horizontal line destroyed");
                 J1_GameControllerScript.isAnyHorizontalLineCreated = false; // 横線が削除されたことをフラグで管理

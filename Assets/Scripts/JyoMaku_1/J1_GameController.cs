@@ -19,6 +19,9 @@ public class J1_GameController : MonoBehaviour
     public GameObject didnotfriendText; // ゲームオブジェクト didnotfriendText
     public PlayableDirector didnotfriendTextPlayableDirector; // didnotfriendTextのPlayableDirector
 
+    public GameObject didnotMetText; // ゲームオブジェクト didnotMetText
+    public PlayableDirector didnotMetTextPlayableDirector; // didnotMetTextのPlayableDirector
+
     public GameObject befriend; //プロットアイコンbefriend
     public PlayableDirector befriendPlayableDirector; // プロットアイコンbefriendのPlayableDirector
 
@@ -109,6 +112,11 @@ public class J1_GameController : MonoBehaviour
     public float moveSpeed = 1.5f; // メニューの移動スピード
     public TMP_Text cannotENTER; // メニューの「Enter：進む」
 
+    public AudioClip leftClickClip;
+    public AudioClip rightClickClip;
+
+    public AudioSource audioSourceJ1;
+
     private enum GameMode
     {
         TextPlaying, // ゲーム開始時のテキストが再生中
@@ -132,6 +140,10 @@ public class J1_GameController : MonoBehaviour
         if (didnotfriendText != null)
         {
             didnotfriendText.SetActive(false);
+        }
+        if (didnotMetText != null)
+        {
+            didnotMetText.SetActive(false);
         }
         if (becameFriendText != null)
         {
@@ -213,7 +225,10 @@ public class J1_GameController : MonoBehaviour
         {
             targetCompletedTextPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
-
+        if (didnotMetTextPlayableDirector != null)
+        {
+            didnotMetTextPlayableDirector.stopped += OnPlayableDirectorStopped;
+        }
         if (didnotfriendTextPlayableDirector != null)
         {
             didnotfriendTextPlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -713,6 +728,13 @@ public class J1_GameController : MonoBehaviour
             Debug.Log(" didnotfriendText Timeline playback completed.");
             Debug.Log("GameMode.WaitForSceneChangeに切り替える");
         }
+        else if (director == didnotMetTextPlayableDirector)
+        {
+            currentGameMode = GameMode.WaitForSceneChange;
+
+            Debug.Log(" didnotMetText Timeline playback completed.");
+            Debug.Log("GameMode.WaitForSceneChangeに切り替える");
+        }
         else if (director == befriendPlayableDirector)
         {
             becameFriendText.SetActive(true);
@@ -752,8 +774,8 @@ public class J1_GameController : MonoBehaviour
         }
         else if (director == dialogue_OE_hunterPlayableDirector)
         {
-            didnotfriendText.SetActive(true);
-            didnotfriendTextPlayableDirector.Play();
+            didnotMetText.SetActive(true);
+            didnotMetTextPlayableDirector.Play();
         }
     }
     void OnDestroy()
@@ -777,6 +799,11 @@ public class J1_GameController : MonoBehaviour
         if (didnotfriendTextPlayableDirector != null)
         {
             didnotfriendTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
+
+        if (didnotMetTextPlayableDirector != null)
+        {
+            didnotMetTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
         if (befriendPlayableDirector != null)

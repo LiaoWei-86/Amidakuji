@@ -24,8 +24,9 @@ public class J1_charaHoverArea : MonoBehaviour
     // キャラクター情報を設定する
     public Dictionary<string, string[]> defaultCharacterInfoDict = new Dictionary<string, string[]>
     {
-        { "knight", new string[] { "騎士","○ 国王様のために何でもする。", "○ 凶暴な犬を飼っている。", "○ 東洋の財宝を持っているようなチャイナ娘を知っている。" } },
-        { "hunter", new string[] { "猟師", "○ 行方不明になった娘を探している。", "○ 猟犬が欲しい。", "○ 財宝を貯めている。" } }
+        { "knight", new string[] { "騎士", "○ 国王のためなら何でもする", "○ 凶暴な犬を飼っている", "○ 東洋の財宝の持ち主である、チャイナ服の娘と知り合い" } },
+        { "hunter", new string[] { "猟師", "○ 行方不明になった娘を探している", "○ 猟犬を欲しがっている", "○ 財宝を隠し持っている" } },
+        { "king", new string[] { "国王", "○ 庭師の少年を信頼している", "○ 不死薬を探し求めている", "○ 専属メカニックを持ち、財宝を奪われた場合は城の設備を強化する" } }
     };
 
     // Start is called before the first frame update
