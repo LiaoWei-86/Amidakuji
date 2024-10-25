@@ -18,7 +18,16 @@ public class TextPlayableBehaviour : PlayableBehaviour
     // Called when the owning graph stops playing
     public override void OnGraphStop(Playable playable)
     {
-        this.charaObject.GetComponent<TextMeshPro>().text = this.text;
+        //this.charaObject.GetComponent<TextMeshPro>().text = this.text;
+
+        if (charaObject != null)
+        {
+            var textMeshPro = charaObject.GetComponent<TextMeshPro>();
+            if (textMeshPro != null)
+            {
+                textMeshPro.text = this.text;
+            }
+        }
     }
 
     // Called when the state of the playable is set to Play
@@ -37,7 +46,7 @@ public class TextPlayableBehaviour : PlayableBehaviour
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
         // PlayableTrackのClip上でシークバーが移動するたびに呼ばれ続ける（PrepareFrameの後）
-        if (charaObject == null) { return; }
+        if (charaObject == null || this.text == null) { return; }
         var percent = (float)playable.GetTime() / (float)playable.GetDuration();
 
         this.charaObject.GetComponent<TextMeshPro>().text =

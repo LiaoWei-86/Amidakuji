@@ -567,8 +567,8 @@ public class Act_1_gameController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("LoadScene:Act_1");
-            SceneManager.LoadScene("Act_1");
+            Debug.Log("LoadScene:Act_1_1");
+            SceneManager.LoadScene("Act_1_1");
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {

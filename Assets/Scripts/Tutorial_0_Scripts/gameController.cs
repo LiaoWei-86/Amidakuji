@@ -39,10 +39,13 @@ public class gameController : MonoBehaviour
     public PlayableDirector yoko_lineMessagePlayableDirector; // yoko_lineMessageのPlayableDirector
     private bool hasYoko_LineMessagePlayed = false; //  yoko_lineMessageは再生完了されたか？のブール値;まだ再生完了してない
 
-    public GameObject knight;
-    public GameObject hunter; //  元々は猟師だけど、国王に変えた。スクリプト上は名前を変更するのややこしいのでこのまま保留した。実は国王だ
-    public GameObject knightPrefab;
-    public GameObject hunterPrefab;
+    //public GameObject knight;
+    //public GameObject hunter; //  元々は猟師だけど、国王に変えた。スクリプト上は名前を変更するのややこしいのでこのまま保留した。実は国王だ
+    //public GameObject knightPrefab;
+    //public GameObject hunterPrefab;
+
+    public GameObject character1;
+    public GameObject character2;
 
     public Vector3 offset= new Vector3(0,-2,0);
     public GameObject end1Prefab;
@@ -54,11 +57,25 @@ public class gameController : MonoBehaviour
 
     public GameObject charaInfoPrefab;
 
+    public GameObject end;
+
+    public GameObject move;
+    public PlayableDirector move_pd;
+
+    private bool canToNext = false;
+
+    private bool hasMovePlayed = false;
+
     public characterInfoHoverT0 characterInfoHoverT0Script;
 
     // Start is called before the first frame update
     void Start()
     {
+        character1.SetActive(false);
+        character2.SetActive(false);
+        move.SetActive(false);
+        end.SetActive(false);
+
         if (characterInfoHoverT0Script == null)
         {
             characterInfoHoverT0Script = FindObjectOfType<characterInfoHoverT0>();
@@ -100,6 +117,10 @@ public class gameController : MonoBehaviour
         {
             firstMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
+        if (move_pd != null)
+        {
+            move_pd.stopped += OnPlayableDirectorStopped;
+        }
         if (secondMessagePlayableDirector != null)
         {
             secondMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -129,8 +150,8 @@ public class gameController : MonoBehaviour
             endMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
 
-        CreateHoverAreaCharacter(knight, 1);
-        CreateHoverAreaCharacter(hunter, 3);// ３だから、実は国王
+        CreateHoverAreaCharacter(character1, 1);
+        CreateHoverAreaCharacter(character2, 3);// ３だから、実は国王
     }
 
     // Update is called once per frame
@@ -161,15 +182,17 @@ public class gameController : MonoBehaviour
         else if (hasThirdMessagePlayed == true && !hasCharaMessagePlayed)
         {
             thirdMessage.SetActive(false);
-            knight = Instantiate(knightPrefab, knight.transform.position, Quaternion.identity);
-            hunter = Instantiate(hunterPrefab, hunter.transform.position, Quaternion.identity);
+            //knight = Instantiate(knightPrefab, knight.transform.position, Quaternion.identity);
+            //hunter = Instantiate(hunterPrefab, hunter.transform.position, Quaternion.identity);
+            character1.SetActive(true);
+            character2.SetActive(true);
             charaMessage.SetActive(true);
             charaMessagePlayableDirector.Play();
         }
         else if (hasCharaMessagePlayed == true && !hasEndMessagePlayed)
         {
-            GameObject end1 = Instantiate(end1Prefab, (knight.transform.position + offset), Quaternion.identity);
-            GameObject end2 = Instantiate(end2Prefab, (hunter.transform.position + offset), Quaternion.identity);
+            GameObject end1 = Instantiate(end1Prefab, (character1.transform.position + offset), Quaternion.identity);
+            GameObject end2 = Instantiate(end2Prefab, (character2.transform.position + offset), Quaternion.identity);
             endMessage.SetActive(true);
             endMessagePlayableDirector.Play();
         }
@@ -188,7 +211,17 @@ public class gameController : MonoBehaviour
             yoko_lineMessage.SetActive(true);
             yoko_lineMessagePlayableDirector.Play();
         }
-        else if (hasYoko_LineMessagePlayed == true )
+        else if (hasYoko_LineMessagePlayed == true && !hasMovePlayed)
+        {
+            move.SetActive(true);
+            
+        }
+        else if (hasMovePlayed && !canToNext)
+        {
+            end.SetActive(true);
+            canToNext = true;
+        }
+        else if (canToNext)
         {
             SceneManager.LoadScene("Tutorial_1_Scene");
         }
@@ -256,6 +289,10 @@ public class gameController : MonoBehaviour
         {
             hasEndMessagePlayed = true;
         }
+        else if (director == move_pd)
+        {
+            hasMovePlayed = true;
+        }
     }
 
     void OnDestroy()
@@ -296,6 +333,8 @@ public class gameController : MonoBehaviour
         {
             endMessagePlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
+
+        move_pd.stopped -= OnPlayableDirectorStopped;
     }
 
 }

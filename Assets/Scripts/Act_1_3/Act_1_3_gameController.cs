@@ -35,6 +35,80 @@ public class Act_1_3_gameController : MonoBehaviour
     public GameObject target_Down_Completed; // ゲームオブジェクト 下のゲームターゲット
     public PlayableDirector target_DownCompletedPlayableDirector; // 下のゲームターゲットのPlayableDirector
 
+    public GameObject Dialogue_A;
+    public PlayableDirector Dialogue_A_pd; // ゲームターゲットDialogue_AのPlayableDirector
+
+    public GameObject Dialogue_B;
+    public PlayableDirector Dialogue_B_pd; // ゲームターゲットDialogue_BのPlayableDirector
+
+    public GameObject Dialogue_C;
+    public PlayableDirector Dialogue_C_pd; // ゲームターゲットDialogue_CのPlayableDirector
+
+    public GameObject Dialogue_D;
+    public PlayableDirector Dialogue_D_pd; // ゲームターゲットDialogue_DのPlayableDirector
+
+    public GameObject Dialogue_E;
+    public PlayableDirector Dialogue_E_pd; // ゲームターゲットDialogue_EのPlayableDirector
+
+    public GameObject Dialogue_F;
+    public PlayableDirector Dialogue_F_pd; // ゲームターゲットDialogue_FのPlayableDirector
+
+    public GameObject Dialogue_G;
+    public PlayableDirector Dialogue_G_pd; // ゲームターゲットDialogue_GのPlayableDirector
+
+    public GameObject Dialogue_H;
+    public PlayableDirector Dialogue_H_pd; // ゲームターゲットDialogue_HのPlayableDirector
+
+    public GameObject Dialogue_I; // ゲームターゲットDialogue_I
+    public PlayableDirector Dialogue_I_pd; // ゲームターゲットDialogue_IのPlayableDirector
+
+    public GameObject Dialogue_J; // ゲームターゲットDialogue_ J
+    public PlayableDirector Dialogue_J_pd; // ゲームターゲットDialogue_JのPlayableDirector
+
+    public GameObject Dialogue_K;
+    public PlayableDirector Dialogue_K_pd; // ゲームターゲットDialogue_KのPlayableDirector
+
+    public GameObject Dialogue_L;
+    public PlayableDirector Dialogue_L_pd; // ゲームターゲットDialogue_LのPlayableDirector
+
+    public GameObject Dialogue_M;
+    public PlayableDirector Dialogue_M_pd; // ゲームターゲットDialogue_LのPlayableDirector
+
+    public GameObject end_boy_beer; // 上と同じ
+    public PlayableDirector end_boy_beer_pd;
+
+    public GameObject end_girl_beer; 
+    public PlayableDirector end_girl_beer_pd;
+
+    public GameObject end_hunter_beer;
+    public PlayableDirector end_hunter_beer_pd;
+
+    public GameObject end_boy_ship; 
+    public PlayableDirector end_boy_ship_pd;
+
+    public GameObject end_girl_ship;
+    public PlayableDirector end_girl_ship_pd;
+
+    public GameObject end_hunter_ship;
+    public PlayableDirector end_hunter_ship_pd;
+
+    public GameObject end_boy_castle;
+    public PlayableDirector end_boy_castle_pd;
+
+    public GameObject end_girl_castle;
+    public PlayableDirector end_girl_castle_pd;
+
+    public GameObject end_hunter_castle;
+    public PlayableDirector end_hunter_castle_pd;
+
+    public PlayableDirector dog_treasure_run_pd;
+
+    public PlayableDirector sword_pd;
+
+    public bool _is_targret1_completed = false;
+    public bool _is_targret2_completed = false;
+    public bool _is_targret3_completed = false;
+
     public bool cleared = false; // このステージをクリアできたか？をfalseとマークする（まだクリアできていないということ）
 
     public Transform startpoint_character1; // 左から1番目のスタート点の位置
@@ -68,7 +142,6 @@ public class Act_1_3_gameController : MonoBehaviour
 
     public float speed = 3.0f;
 
-
     public GameObject tooltipPrefab; // 提示枠のプレハブ
     public Material horizontalLineMaterial; // 横線のマテリアル
     public float horizontalLineWidth = 0.05f; // 横線の幅
@@ -77,7 +150,7 @@ public class Act_1_3_gameController : MonoBehaviour
     public GameObject charaInfoPrefab;
 
     public GameObject menu; // menu_controller
-    public Vector3 menuTargetPosition = new Vector3(5.5f, -4.2f, 0); // たどり着いて欲しい座標
+    public Vector3 menuTargetPosition = new Vector3(5.5f, -4.2f, -0.9f); // たどり着いて欲しい座標
     public bool menuIsOnItsPos = false; // メニューは目標座標に着いたかをfalseとマークする
     public float moveSpeed = 1.5f; // メニューの移動スピード
     public TMP_Text cannotENTER; // メニューの「Enter：進む」
@@ -88,6 +161,12 @@ public class Act_1_3_gameController : MonoBehaviour
     public AudioClip itemGotClip;
 
     public AudioSource audioSourceA1_3;
+
+    private bool girlVShunter = false;
+    private bool boyVShunter = false;
+
+    private bool treature_boy_girl = false;
+    private bool treature_boy_hunter = false;
 
     private enum route
     {
@@ -119,19 +198,34 @@ public class Act_1_3_gameController : MonoBehaviour
         menu.SetActive(false);
         failedText.SetActive(false);
         clearedText.SetActive(false);
+        Dialogue_A.SetActive(false);
+        Dialogue_B.SetActive(false); 
+        Dialogue_C.SetActive(false); 
+        Dialogue_D.SetActive(false); 
+        Dialogue_E.SetActive(false);
+        Dialogue_F.SetActive(false); 
+        Dialogue_G.SetActive(false);
+        Dialogue_H.SetActive(false);
+        Dialogue_I.SetActive(false);
+        Dialogue_J.SetActive(false);
+        Dialogue_K.SetActive(false);
+        Dialogue_L.SetActive(false);
+        Dialogue_M.SetActive(false);
+        end_boy_beer.SetActive(false);
+        end_girl_beer.SetActive(false);
+        end_hunter_beer.SetActive(false);
+        end_boy_ship.SetActive(false);
+        end_girl_ship.SetActive(false);
+        end_hunter_ship.SetActive(false);
+        end_boy_castle.SetActive(false);
+        end_girl_castle.SetActive(false);
+        end_hunter_castle.SetActive(false);
 
         bookEvent();
 
         CreateHoverAreaCharacter(character1, 6);
         CreateHoverAreaCharacter(character2, 7);
         CreateHoverAreaCharacter(character3, 2);
-
-        CreateHoverArea(tenGameObjects[0], tenGameObjects[1]);
-        CreateHoverArea(tenGameObjects[1], tenGameObjects[2]);
-        CreateHoverArea(tenGameObjects[3], tenGameObjects[4]);
-        CreateHoverArea(tenGameObjects[4], tenGameObjects[5]);
-        CreateHoverArea(tenGameObjects[6], tenGameObjects[7]);
-        CreateHoverArea(tenGameObjects[7], tenGameObjects[8]);
 
         // Initialize the dictionary and add the points
         pointsDictionary = new Dictionary<int, Vector3>();
@@ -155,6 +249,13 @@ public class Act_1_3_gameController : MonoBehaviour
         {
             Debug.Log("Point " + point.Key + ": " + point.Value);
         }
+
+        CreateHoverArea(tenGameObjects[0], tenGameObjects[1]);
+        CreateHoverArea(tenGameObjects[1], tenGameObjects[2]);
+        CreateHoverArea(tenGameObjects[3], tenGameObjects[4]);
+        CreateHoverArea(tenGameObjects[4], tenGameObjects[5]);
+        CreateHoverArea(tenGameObjects[6], tenGameObjects[7]);
+        CreateHoverArea(tenGameObjects[7], tenGameObjects[8]);
     }
 
     // クリアできなかった場合、メニューの「Enter」の色を灰色にする
@@ -333,7 +434,18 @@ public class Act_1_3_gameController : MonoBehaviour
                 break;
         }
     }
-
+    public void handleResult()
+    {
+        if (_is_targret1_completed && _is_targret2_completed && _is_targret3_completed)
+        {
+            cleared = true;
+            clearedText.SetActive(true);
+        }
+        else
+        {
+            failedText.SetActive(true);
+        }
+    }
     public void handleFinalRoute()
     {
         // 6つのbool変数を使用して条件判断を簡略化する
@@ -510,134 +622,1581 @@ public class Act_1_3_gameController : MonoBehaviour
                 break;
 
             case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7 }, new List<int> { 5, 8 });
+                break;
 
+            case 2:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10 }, new List<int> { 8, 11 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
                 break;
         }
     }
 
-
-
     public void show_A_a()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7 }, new List<int> { 3, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10 }, new List<int> { 6, 9 }, new List<int> { 8, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_A_b()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8 }, new List<int> { 4, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 8, 11 }, new List<int> { 7, 10 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_A_c()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 4, 7, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 }, new List<int> { 8, 8 });
+                Dialogue_D.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10 }, new List<int> { 6, 9 }, new List<int> { 8, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_A_d()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7, 8 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 8, 8 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 8, 11 }, new List<int> { 7, 10 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_A_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7 }, new List<int> { 5, 8 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 6, 9, 10 }, new List<int> { 7, 10, 9 }, new List<int> { 8, 11 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 }, new List<int> { 11, 11 });
+                dog_treasure_run_pd.Play();
+                treature_boy_girl = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+                
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_A_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7 }, new List<int> { 5, 8 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10, 11 }, new List<int> { 8, 11, 10 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                Dialogue_K.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_a_c()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 6 }, new List<int> { 3, 6, 7 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                Dialogue_M.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10 }, new List<int> { 8, 11 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14});
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_a_d()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 8 }, new List<int> { 3, 6 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 8, 8 }, new List<int> { 6, 6 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                boyVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 8, 11 }, new List<int> { 6, 9 }, new List<int> { 7, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 12 }, new List<int> { 10, 10 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 10 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 13 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 11, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 14, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_boy_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_a_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7 }, new List<int> { 3, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10, 9 }, new List<int> { 6, 9, 10 }, new List<int> { 8, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                dog_treasure_run_pd.Play();
+                treature_boy_girl = true;
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_a_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7 }, new List<int> { 3, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10, 11 }, new List<int> { 6, 9 }, new List<int> { 8, 11, 10 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 9 }, new List<int> { 10, 10 });
+                Dialogue_L.SetActive(true);
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 12 }, new List<int> { 10, 10 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 10 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 13 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 11, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 14, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_boy_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_c_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 4, 7, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 }, new List<int> { 8, 8 });
+                Dialogue_D.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10, 9 }, new List<int> { 6, 9, 10 }, new List<int> { 8, 11 });
+
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                dog_treasure_run_pd.Play();
+                treature_boy_girl = true;
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+
+        }
     }
 
     public void show_B_b_c() 
     {
-    
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
+
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 5, 8 }, new List<int> { 4, 7, 6 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 8, 8 }, new List<int> { 6, 6 });
+                Dialogue_C.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 7, 10 }, new List<int> { 8, 11 }, new List<int> { 6, 9 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 9, 12 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 14 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 14, 14 }, new List<int> { 12, 12 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_c_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 4, 7, 6 }, new List<int> { 5, 8 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 }, new List<int> { 8, 8 });
+                Dialogue_D.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 10, 11 }, new List<int> { 6, 9 }, new List<int> { 8, 11, 10 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 9 }, new List<int> { 10, 10 });
+                Dialogue_L.SetActive(true);
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 12 }, new List<int> { 10, 10 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 10 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 10, 13 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 11, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 14, 14 }, new List<int> { 12, 12 }, new List<int> { 13, 13 });
+                end_boy_castle.SetActive(true);
+                handleResult();
+                break;
+
+        }
     }
 
-    public void show_B_d_f()
+    public void show_B_d_f() 
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7, 8 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 8, 8 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 8, 11, 10 }, new List<int> { 7, 10, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                Dialogue_K.SetActive(true);
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_b_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8 }, new List<int> { 4, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9, 10 }, new List<int> { 8, 11 }, new List<int> { 7, 10, 9 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 9, 9 });
+                treature_boy_hunter = true;
+                dog_treasure_run_pd.Play();
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 9, 12 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 14 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 14, 14 }, new List<int> { 12, 12 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_d_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 4, 7, 8 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 8, 8 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9, 10 }, new List<int> { 8, 11 }, new List<int> { 7, 10, 9 });
+
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 9, 9 });
+                dog_treasure_run_pd.Play();
+                treature_boy_hunter = true;
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 9, 12 });
+
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 11 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 11, 14 }, new List<int> { 12, 12 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 14, 14 }, new List<int> { 12, 12 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_b_d()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8, 7 }, new List<int> { 4, 7, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10 }, new List<int> { 8, 11 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_B_b_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8 }, new List<int> { 4, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 8, 11, 10 }, new List<int> { 7, 10, 11 });
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                Dialogue_K.SetActive(true);
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 10, 13 }, new List<int> { 11, 11 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 11 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 11, 14 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 13, 13 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     public void show_C_a_c_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 6 }, new List<int> { 3, 6, 7 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                Dialogue_M.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10, 11 }, new List<int> { 8, 11, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                Dialogue_K.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
     public void show_C_a_c_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 6 }, new List<int> { 3, 6, 7 }, new List<int> { 5, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                Dialogue_M.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9, 10 }, new List<int> { 7, 10, 9 }, new List<int> { 8, 11 });
+
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 }, new List<int> { 11, 11 });
+                dog_treasure_run_pd.Play();
+                treature_boy_girl = true;
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+    
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
     public void show_C_a_d_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 8 }, new List<int> { 3, 6 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 8, 8 }, new List<int> { 6, 6 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                boyVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 8, 11, 10 }, new List<int> { 6, 9 }, new List<int> { 7, 10, 11 });
+                
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 }, new List<int> { 11, 11 });
+                Dialogue_L.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+                
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
     public void show_C_a_d_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3, 4 }, new List<int> { 1, 4, 3 }, new List<int> { 2, 5 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 3 }, new List<int> { 5, 5 });
+                Dialogue_A.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 4, 7, 8 }, new List<int> { 3, 6 }, new List<int> { 5, 8, 7 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 8, 8 }, new List<int> { 6, 6 }, new List<int> { 7, 7 });
+                sword_pd.Play();
+                boyVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 8, 11 }, new List<int> { 6, 9, 10 }, new List<int> { 7, 10, 9 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 9, 9 });
+                Dialogue_H.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 9, 12 });
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 13 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 11, 14 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 14, 14 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_boy_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
     public void show_C_b_c_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 5, 8 }, new List<int> { 4, 7, 6 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 8, 8 }, new List<int> { 6, 6 });
+                Dialogue_C.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 7, 10, 9 }, new List<int> { 8, 11 }, new List<int> { 6, 9, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                treature_boy_hunter = true;
+                dog_treasure_run_pd.Play();
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     } 
     public void show_C_b_c_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6, 7 }, new List<int> { 5, 8 }, new List<int> { 4, 7, 6 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 8, 8 }, new List<int> { 6, 6 });
+                Dialogue_C.SetActive(true);
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 7, 10, 11 }, new List<int> { 8, 11, 10 }, new List<int> { 6, 9 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 9, 9 });
+                Dialogue_J.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 9, 12 });
+                
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 13 }, new List<int> { 12, 12 });
+                end_hunter_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_girl_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 11, 14 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_girl_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 14, 14 }, new List<int> { 13, 13 }, new List<int> { 12, 12 });
+                end_boy_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
     public void show_C_b_d_e()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
-    }
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8, 7 }, new List<int> { 4, 7, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9, 10 }, new List<int> { 7, 10, 9 }, new List<int> { 8, 11 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 }, new List<int> { 11, 11 });
+                dog_treasure_run_pd.Play();
+                treature_boy_girl = true;
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 12 }, new List<int> { 11, 11 });
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 10, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_girl_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 11 });
+                end_boy_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 11, 14 });
+                end_boy_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 13, 13 }, new List<int> { 12, 12 }, new List<int> { 14, 14 });
+                end_hunter_castle.SetActive(true);
+                handleResult();
+                break;
+        }
+    } 
     public void show_C_b_d_f()
     {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 3 }, new List<int> { 1, 4, 5 }, new List<int> { 2, 5, 4 });
+                break;
 
+            case 1:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 5, 5 }, new List<int> { 4, 4 });
+                Dialogue_B.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 3, 6 }, new List<int> { 5, 8, 7 }, new List<int> { 4, 7, 8 });
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                sword_pd.Play();
+                girlVShunter = true;
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 6, 9 }, new List<int> { 7, 10, 11 }, new List<int> { 8, 11, 10 });
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                Dialogue_K.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 9, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                end_boy_beer.SetActive(true);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 10, 13 });
+                end_boy_beer.SetActive(false);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 11 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 11, 14 }, new List<int> { 13, 13 });
+                end_hunter_ship.SetActive(false);
+                break;
+
+            case 11:
+                StartMovement(new List<int> { 12, 12 }, new List<int> { 14, 14 }, new List<int> { 13, 13 });
+                end_girl_castle.SetActive(true);
+                handleResult();
+                break;
+        }
     }
 
     void StartMovement(List<int> character_1_Path, List<int> character_2_Path, List<int> character_3_Path)
@@ -715,6 +2274,33 @@ public class Act_1_3_gameController : MonoBehaviour
         target_UpperPlayableDirector.stopped += OnPlayableDirectorStopped;
         target_MiddlePlayableDirector.stopped += OnPlayableDirectorStopped;
         target_DownPlayableDirector.stopped += OnPlayableDirectorStopped;
+        failedTextPlayableDirector.stopped += OnPlayableDirectorStopped;
+        clearedTextPlayableDirector.stopped += OnPlayableDirectorStopped;
+        Dialogue_A_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_B_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_C_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_D_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_E_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_F_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_G_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_H_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_I_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_J_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_K_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_L_pd.stopped += OnPlayableDirectorStopped;
+        Dialogue_M_pd.stopped += OnPlayableDirectorStopped;
+        end_boy_beer_pd.stopped += OnPlayableDirectorStopped;
+        end_girl_beer_pd.stopped += OnPlayableDirectorStopped;
+        end_hunter_beer_pd.stopped += OnPlayableDirectorStopped;
+        end_boy_ship_pd.stopped += OnPlayableDirectorStopped;
+        end_girl_ship_pd.stopped += OnPlayableDirectorStopped;
+        end_hunter_ship_pd.stopped += OnPlayableDirectorStopped;
+        end_boy_castle_pd.stopped += OnPlayableDirectorStopped;
+        end_girl_castle_pd.stopped += OnPlayableDirectorStopped;
+        end_hunter_castle_pd.stopped += OnPlayableDirectorStopped;
+        dog_treasure_run_pd.stopped += OnPlayableDirectorStopped;
+        sword_pd.stopped += OnPlayableDirectorStopped;
+
     }
 
     void OnPlayableDirectorStopped(PlayableDirector director)
@@ -739,6 +2325,60 @@ public class Act_1_3_gameController : MonoBehaviour
             currentGameMode = GameMode.PlayerPlaying;
             Debug.Log("target_DownPlayableDirector has been played.");
         }
+        else if (director == failedTextPlayableDirector)
+        {
+            currentGameMode = GameMode.WaitForSceneChange;
+            Debug.Log("failedTextPlayableDirector has been played.");
+        }
+        else if (director == clearedTextPlayableDirector)
+        {
+            currentGameMode = GameMode.WaitForSceneChange;
+            Debug.Log("clearedTextPlayableDirector has been played.");
+        }
+        else if (director == Dialogue_A_pd)
+        {
+            _is_targret1_completed = true;
+            target_Upper_Completed.SetActive(true);
+            Debug.Log("Dialogue_A_pd has been played.");
+        }
+        else if (director == sword_pd)
+        {
+            if (girlVShunter)
+            {
+                Dialogue_E.SetActive(true);
+            }
+            else if (boyVShunter)
+            {
+                Dialogue_F.SetActive(true);
+            }
+
+            Debug.Log("sword_pd has been played.");
+        }
+        else if (director == dog_treasure_run_pd)
+        {
+            if (treature_boy_girl)
+            {
+                Dialogue_G.SetActive(true);
+            }
+            else if (treature_boy_hunter)
+            {
+                Dialogue_I.SetActive(true);
+            }
+            
+            Debug.Log("dog_treasure_run_pd has been played.");
+        }
+        else if (director == Dialogue_F_pd)
+        {
+            _is_targret3_completed = true;
+            target_Down_Completed.SetActive(true);
+            Debug.Log("Dialogue_F_pd has been played.");
+        }
+        else if (director == Dialogue_H_pd)
+        {
+            _is_targret2_completed = true;
+            target_Middle_Completed.SetActive(true);
+            Debug.Log("Dialogue_H_pd has been played.");
+        }
     }
 
     void OnDestroy()
@@ -747,6 +2387,32 @@ public class Act_1_3_gameController : MonoBehaviour
         target_UpperPlayableDirector.stopped -= OnPlayableDirectorStopped;
         target_MiddlePlayableDirector.stopped -= OnPlayableDirectorStopped;
         target_DownPlayableDirector.stopped -= OnPlayableDirectorStopped;
+        failedTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
+        clearedTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
+        Dialogue_A_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_B_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_C_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_D_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_E_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_F_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_G_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_H_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_I_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_J_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_K_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_L_pd.stopped -= OnPlayableDirectorStopped;
+        Dialogue_M_pd.stopped -= OnPlayableDirectorStopped;
+        end_boy_beer_pd.stopped -= OnPlayableDirectorStopped;
+        end_girl_beer_pd.stopped -= OnPlayableDirectorStopped;
+        end_hunter_beer_pd.stopped -= OnPlayableDirectorStopped;
+        end_boy_ship_pd.stopped -= OnPlayableDirectorStopped;
+        end_girl_ship_pd.stopped -= OnPlayableDirectorStopped;
+        end_hunter_ship_pd.stopped -= OnPlayableDirectorStopped;
+        end_boy_castle_pd.stopped -= OnPlayableDirectorStopped;
+        end_girl_castle_pd.stopped -= OnPlayableDirectorStopped;
+        end_hunter_castle_pd.stopped -= OnPlayableDirectorStopped;
+        dog_treasure_run_pd.stopped -= OnPlayableDirectorStopped;
+        sword_pd.stopped -= OnPlayableDirectorStopped;
     }
 
     //  waitForSceneChangeに切り替えたら、どのシーンに移動するかをプレイヤーのインプットを待つ
@@ -759,8 +2425,8 @@ public class Act_1_3_gameController : MonoBehaviour
                 if (cleared)
                 {
 
-                    Debug.Log("LoadScene:Act_1_2.5");
-                    SceneManager.LoadScene("Act_1_3.5");
+                    Debug.Log("LoadScene:temporary");
+                    SceneManager.LoadScene("temporary");
 
                 }
             }
@@ -794,13 +2460,13 @@ public class Act_1_3_gameController : MonoBehaviour
         boxCollider.size = new Vector3(1f, 1f, 0.1f);
         boxCollider.isTrigger = true;
 
-        // A1_2_charaHoverAreaScript スクリプトをキャラクターに追加する
+        // A1_3_charaHoverAreaScript スクリプトをキャラクターに追加する
         Act_1_3_charaHoverArea Act_1_3_charaHoverAreaScript = character.AddComponent<Act_1_3_charaHoverArea>();
 
-        // A1_2_charaHoverAreaScript スクリプトの情報番号を設定する
+        // A1_3_charaHoverAreaScript スクリプトの情報番号を設定する
         Act_1_3_charaHoverAreaScript.charaInfoNum = charaInfoNum;
 
-        // A1_2_charaHoverAreaScriptスクリプトを初期化する
+        // A1_3_charaHoverAreaScriptスクリプトを初期化する
         Act_1_3_charaHoverAreaScript.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
 
@@ -829,7 +2495,7 @@ public class Act_1_3_gameController : MonoBehaviour
         Act_1_3_hoverArea A1_3_hoverScript = hoverArea.AddComponent<Act_1_3_hoverArea>();         // 【＊大切】Need changed NOTICE！
         A1_3_hoverScript.Initialize(pointA, pointB, horizontalLineMaterial, horizontalLineWidth, tooltipPrefab);   // A1_3_hoverScript スクリプトを初期化する
 
-        // A1_2_hoverScript スクリプトが追加されたことをデバッグログで表示する
+        // A1_3_hoverScript スクリプトが追加されたことをデバッグログで表示する
         Debug.Log($"A1_3_hoverScript added to {hoverArea.name}");
 
         // ホバーエリアが作成された位置とサイズをデバッグログで表示する

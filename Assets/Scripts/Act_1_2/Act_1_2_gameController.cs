@@ -825,27 +825,32 @@ public class Act_1_2_gameController : MonoBehaviour
 
                     case 6:
                         StartMovement(new List<int> { 8, 8 }, new List<int> { 6, 9 }, new List<int> { 7, 7 });
-                        ending_pirate_sleep.SetActive(true);
+                        
                         break;
 
                     case 7:
+                        StartMovement(new List<int> { 8, 8 }, new List<int> { 9, 9 }, new List<int> { 7, 7 });
+                        ending_pirate_sleep.SetActive(true);
+                        break;
+
+                    case 8:
                         StartMovement(new List<int> { 8, 8 }, new List<int> { 9, 9 }, new List<int> { 7, 10 });
                         ending_pirate_sleep.SetActive(false);
                         break;
 
-                    case 8:
+                    case 9:
                         StartMovement(new List<int> { 8, 8 }, new List<int> { 9, 9 }, new List<int> { 10, 10 });
                         ending_king_fall.SetActive(true);
 
                         break;
 
-                    case 9:
+                    case 10:
                         StartMovement(new List<int> { 8, 11 }, new List<int> { 9, 9 }, new List<int> { 10, 10 });
                         ending_king_fall.SetActive(false);
 
                         break;
 
-                    case 10:
+                    case 11:
                         StartMovement(new List<int> { 11, 11 }, new List<int> { 9, 9 }, new List<int> { 10, 10 });
                         ending_dog_food.SetActive(true);
                         cleared = true;
@@ -1163,9 +1168,17 @@ public class Act_1_2_gameController : MonoBehaviour
             {
                 if (cleared)
                 {
+                    /*
+                     こちらは元々、
+                    正常な順序で Act_1_1 → Act_1_1.5 → Act_1_2 → Act_1_2.5 → Act_1_3 → Act_1_3.5 → Act_1_4 と進む予定でした。
+                    
+                    しかし、stage3とstage4の順番を入れ替えるべきだと感じたため、シーン名を変更せずにコードを調整しました。
+                    
+                    その結果、現在は Act_1_1 → Act_1_1.5 → Act_1_2 → Act_1_3.5 → Act_1_4 → Act_1_2.5 → Act_1_3 という順序になっています。
+                     */
 
-                    Debug.Log("LoadScene:Act_1_2.5");
-                    SceneManager.LoadScene("Act_1_2.5");
+                    Debug.Log("LoadScene:Act_1_3.5");
+                    SceneManager.LoadScene("Act_1_3.5");
 
                 }
             }
