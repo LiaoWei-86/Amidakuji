@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-public class LineMover_CharactorRecords : MonoBehaviour
+public class LineMover_Exit : MonoBehaviour
 {
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private float speed = 1f;
