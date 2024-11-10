@@ -2438,8 +2438,10 @@ public class Act_1_3_gameController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            Debug.Log("LoadScene:TitleScene");
-            SceneManager.LoadScene("TitleScene");
+            //Debug.Log("LoadScene:TitleScene");
+            //SceneManager.LoadScene("TitleScene");
+            Debug.Log("LoadScene:M");
+            SceneManager.LoadScene("M");
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
