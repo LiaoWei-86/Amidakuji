@@ -1005,7 +1005,7 @@ public class Act_1_2_gameController : MonoBehaviour
         }
         else if (director == dialogue_A_PlayableDirector)
         {
-            target_M_CompletedText.SetActive(true);
+            target_N_CompletedText.SetActive(true);
 
             Debug.Log("dialogue_A_PlayableDirector has been played.");
         }
@@ -1029,7 +1029,7 @@ public class Act_1_2_gameController : MonoBehaviour
         }
         else if (director == dialogue_F_PlayableDirector)
         {
-            target_N_CompletedText.SetActive(true);
+            target_M_CompletedText.SetActive(true);
             Debug.Log("dialogue_F_PlayableDirector has been played.");
         }
         else if (director == ending_dog_food_PlayableDirector)
@@ -1190,8 +1190,10 @@ public class Act_1_2_gameController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            Debug.Log("LoadScene:TitleScene");
-            SceneManager.LoadScene("TitleScene");
+            //Debug.Log("LoadScene:TitleScene");
+            //SceneManager.LoadScene("TitleScene");
+            Debug.Log("LoadScene:M");
+            SceneManager.LoadScene("M");
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {

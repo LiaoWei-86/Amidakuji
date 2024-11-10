@@ -149,9 +149,6 @@ public class gameController : MonoBehaviour
         {
             endMessagePlayableDirector.stopped += OnPlayableDirectorStopped;
         }
-
-        CreateHoverAreaCharacter(character1, 1);
-        CreateHoverAreaCharacter(character2, 3);// ３だから、実は国王
     }
 
     // Update is called once per frame
@@ -182,73 +179,11 @@ public class gameController : MonoBehaviour
         else if (hasThirdMessagePlayed == true && !hasCharaMessagePlayed)
         {
             thirdMessage.SetActive(false);
-            //knight = Instantiate(knightPrefab, knight.transform.position, Quaternion.identity);
-            //hunter = Instantiate(hunterPrefab, hunter.transform.position, Quaternion.identity);
-            character1.SetActive(true);
-            character2.SetActive(true);
-            charaMessage.SetActive(true);
-            charaMessagePlayableDirector.Play();
+            SceneManager.LoadScene("Tutorial_NewVersion");
         }
-        else if (hasCharaMessagePlayed == true && !hasEndMessagePlayed)
-        {
-            GameObject end1 = Instantiate(end1Prefab, (character1.transform.position + offset), Quaternion.identity);
-            GameObject end2 = Instantiate(end2Prefab, (character2.transform.position + offset), Quaternion.identity);
-            endMessage.SetActive(true);
-            endMessagePlayableDirector.Play();
-        }
-        else if (hasEndMessagePlayed == true && !hasLineMessagePlayed)
-        {
-            lineMessage.SetActive(true);
-            lineMessagePlayableDirector.Play();
-        }
-        else if(hasLineMessagePlayed == true && !hasPointMessagePlayed)
-        {
-            pointMessage.SetActive(true);
-            pointMessagePlayableDirector.Play();
-        }
-        else if (hasPointMessagePlayed == true && !hasYoko_LineMessagePlayed)
-        {
-            yoko_lineMessage.SetActive(true);
-            yoko_lineMessagePlayableDirector.Play();
-        }
-        else if (hasYoko_LineMessagePlayed == true && !hasMovePlayed)
-        {
-            move.SetActive(true);
-            
-        }
-        else if (hasMovePlayed && !canToNext)
-        {
-            end.SetActive(true);
-            canToNext = true;
-        }
-        else if (canToNext)
-        {
-            SceneManager.LoadScene("Tutorial_1_Scene");
-        }
+        
     }
 
-    void CreateHoverAreaCharacter(GameObject character, int charaInfoNum)
-    {
-        // デバッグログを出力して、キャラクターの情報を表示する
-        Debug.Log($"CreateHoverArea called with character: {character.name}");
-
-        // キャラクターの位置からオフセットを加えた位置を計算する
-        Vector3 charaInfoPosition = character.transform.position + new Vector3(-3, -1, 0);
-
-        // キャラクターに BoxCollider コンポーネントを追加し、ホバーエリアのサイズを設定する
-        BoxCollider boxCollider = character.AddComponent<BoxCollider>();
-        boxCollider.size = new Vector3(1f, 1f, 0.1f);
-        boxCollider.isTrigger = true;
-
-        // characterInfoHoverT0 スクリプトをキャラクターに追加する
-        characterInfoHoverT0 characterInfoHoverT0Script= character.AddComponent<characterInfoHoverT0>();
-
-        // characterInfoHoverT5 スクリプトの情報番号を設定する
-        characterInfoHoverT0Script.charaInfoNum = charaInfoNum;
-
-        // characterInfoHoverT5 スクリプトを初期化する
-        characterInfoHoverT0Script.Initialize(character, charaInfoPrefab, charaInfoPosition);
-    }
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
         Debug.Log("PlayableDirector Stopped: " + director.name);
