@@ -11,10 +11,16 @@ public class switch_explaIconMode : MonoBehaviour
     public GameObject guillotine;
     public GameObject coin;
     public GameObject battle;
+    public GameObject beer;
+    public GameObject gift;
+    public GameObject vomit;
 
-    public battle _battle;
-    public coin _coin;
-    public guillotine _guillotine;
+    public battleScript _battle;
+    public coinScript _coin;
+    public guillotineScript _guillotine;
+    public beerScript _beer;
+    public giftScript _gift;
+    public vomitScript _vomit;
 
     public bool current_mode_on = true;
 
@@ -29,17 +35,30 @@ public class switch_explaIconMode : MonoBehaviour
 
         if (_battle == null)
         {
-            _battle = FindObjectOfType<battle>();
+            _battle = FindObjectOfType<battleScript>();
         }
 
         if (_coin == null)
         {
-            _coin = FindObjectOfType<coin>();
+            _coin = FindObjectOfType<coinScript>();
         }
 
         if (_guillotine == null)
         {
-            _guillotine = FindObjectOfType<guillotine>();
+            _guillotine = FindObjectOfType<guillotineScript>();
+        }
+
+        if (_beer == null)
+        {
+            _beer = FindObjectOfType<beerScript>();
+        }
+        if (_gift == null)
+        {
+            _gift = FindObjectOfType<giftScript>();
+        }
+        if (_vomit == null)
+        {
+            _vomit = FindObjectOfType<vomitScript>();
         }
     }
 
@@ -54,9 +73,31 @@ public class switch_explaIconMode : MonoBehaviour
                 {
                     on_switch.SetActive(false);
                     off_switch.SetActive(true);
-                    _battle.iconExplaMode = false;
-                    _guillotine.iconExplaMode = false;
-                    _coin.iconExplaMode = false;
+                    if (battle != null)
+                    {
+                        _battle.iconExplaMode = false;
+                    }
+                    if (guillotine != null)
+                    {
+                        _guillotine.iconExplaMode = false;
+                    }
+
+                    if (coin != null)
+                    {
+                        _coin.iconExplaMode = false;
+                    }
+                    if (beer != null)
+                    {
+                        _beer.iconExplaMode = false;
+                    }
+                    if (gift != null)
+                    {
+                        _gift.iconExplaMode = false;
+                    }
+                    if (vomit != null)
+                    {
+                        _vomit.iconExplaMode = false;
+                    }
                 }
             }
             else if (!current_mode_on)
@@ -66,9 +107,30 @@ public class switch_explaIconMode : MonoBehaviour
                 {
                     on_switch.SetActive(true);
                     off_switch.SetActive(false);
-                    _battle.iconExplaMode = true;
-                    _guillotine.iconExplaMode = true;
-                    _coin.iconExplaMode = true;
+                    if (battle != null)
+                    {
+                        _battle.iconExplaMode = true;
+                    }
+                    if (guillotine != null)
+                    {
+                        _guillotine.iconExplaMode = true;
+                    }
+                    if (coin != null)
+                    {
+                        _coin.iconExplaMode = true;
+                    }
+                    if (beer != null)
+                    {
+                        _beer.iconExplaMode = true;
+                    }
+                    if (gift != null)
+                    {
+                        _gift.iconExplaMode = true;
+                    }
+                    if (vomit != null)
+                    {
+                        _vomit.iconExplaMode = true;
+                    }
                 }
             }
         }

@@ -90,7 +90,14 @@ public class T_new_hoverArea : MonoBehaviour
                         {
                             T_new_GameController_script.text_mustEncounter.SetActive(false);
                         }
-
+                        if (T_new_GameController_script.text_mustEncounter_1.activeSelf)
+                        {
+                            T_new_GameController_script.text_mustEncounter_1.SetActive(false);
+                        }
+                        if (T_new_GameController_script.pleaseClick.activeSelf)
+                        {
+                            T_new_GameController_script.pleaseClick.SetActive(false);
+                        }
                         if (T_new_GameController_script.failedRoute)
                         {
                             if (T_new_GameController_script.currentMovementIndex > 0)

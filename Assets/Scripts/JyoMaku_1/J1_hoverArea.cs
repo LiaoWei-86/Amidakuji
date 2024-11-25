@@ -11,10 +11,12 @@ public class J1_hoverArea : MonoBehaviour
     private float horizontalLineWidth; // 横線の幅を設定するための変数
     private GameObject tooltipPrefab; // ツールチップのプレハブを保持
     private GameObject tooltipInstance; // インスタンス化されたツールチップを保持
-    private GameObject currentLine; // 現在の横線オブジェクトを保持
+    public GameObject currentLine; // 現在の横線オブジェクトを保持
 
     public J1_GameController J1_GameControllerScript; // J1_GameControllerスクリプトの参照を格納するため
     private Dictionary<int, int[]> horizontalLines = new Dictionary<int, int[]>(); // 横線の情報を保存するディクショナリ
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,46 +78,97 @@ public class J1_hoverArea : MonoBehaviour
         {
             if (currentLine == null)
             {
-                CreateHorizontalLine(); // 横線を生成する
-                Debug.Log("Horizontal line created");
-                J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.leftClickClip);
-                
-                J1_GameControllerScript.isAnyHorizontalLineCreated = true; // 横線が作成されたことをフラグで管理
-
                 if (pointA.name == "circle1")
                 {
-                    J1_GameControllerScript.isHorizontal_1_LineCreated = true;
-                    Debug.Log("J1_GameControllerScript.isHorizontal_1_LineCreated: " + J1_GameControllerScript.isHorizontal_1_LineCreated);
+                    if (J1_GameControllerScript.canCreateLine_1)
+                    {
+                        CreateHorizontalLine(); // 横線を生成する
+                        Debug.Log("Horizontal line created");
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.leftClickClip);
+
+                        J1_GameControllerScript.isAnyHorizontalLineCreated = true; 
+
+                        J1_GameControllerScript.isHorizontal_1_LineCreated = true;
+                        Debug.Log("J1_GameControllerScript.isHorizontal_1_LineCreated: " + J1_GameControllerScript.isHorizontal_1_LineCreated);
+                    }
+                    else if (!J1_GameControllerScript.canCreateLine_1)
+                    {
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.missClip);
+                        Debug.Log("line_1 cannot be created now.");
+                    }
                 }
                 else if (pointA.name == "circle3")
                 {
-                    J1_GameControllerScript.isHorizontal_2_LineCreated = true;
-                    Debug.Log("J1_GameControllerScript.isHorizontal_2_LineCreated: " + J1_GameControllerScript.isHorizontal_2_LineCreated);
+                    if (J1_GameControllerScript.canCreateLine_2)
+                    {
+                        CreateHorizontalLine(); // 横線を生成する
+                        Debug.Log("Horizontal line created");
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.leftClickClip);
+
+                        J1_GameControllerScript.isAnyHorizontalLineCreated = true; 
+
+                        J1_GameControllerScript.isHorizontal_2_LineCreated = true;
+                        Debug.Log("J1_GameControllerScript.isHorizontal_2_LineCreated: " + J1_GameControllerScript.isHorizontal_2_LineCreated);
+                    }
+                    else if (!J1_GameControllerScript.canCreateLine_2)
+                    {
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.missClip);
+                        Debug.Log("line_2 cannot be created now.");
+                    }
                 }
             }
+
         }
         else if (Input.GetMouseButtonDown(1)) // 右クリックが押された時
         {
             if (currentLine != null)
             {
-                // 既存の横線を削除する
-                Destroy(currentLine);
-                currentLine = null;
-                J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.rightClickClip);
+                if (pointA.name == "circle1")
+                {
+                    if (J1_GameControllerScript.canDeleteLine_1)
+                    {
+                        // 既存の横線を削除する
+                        Destroy(currentLine);
+                        currentLine = null;
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.rightClickClip);
 
-                Debug.Log("Horizontal line destroyed");
-                J1_GameControllerScript.isAnyHorizontalLineCreated = false; // 横線が削除されたことをフラグで管理
-            }
+                        Debug.Log("Horizontal line destroyed");
+                        J1_GameControllerScript.isAnyHorizontalLineCreated = false;
 
-            if (pointA.name == "circle1")
-            {
-                J1_GameControllerScript.isHorizontal_1_LineCreated = false;
-                Debug.Log("J1_GameControllerScript.isHorizontal_1_LineCreated: " + J1_GameControllerScript.isHorizontal_1_LineCreated);
-            }
-            else if (pointA.name == "circle3")
-            {
-                J1_GameControllerScript.isHorizontal_2_LineCreated = false;
-                Debug.Log("J1_GameControllerScript.isHorizontal_2_LineCreated: " + J1_GameControllerScript.isHorizontal_2_LineCreated);
+                        J1_GameControllerScript.isHorizontal_1_LineCreated = false;
+                        Debug.Log("J1_GameControllerScript.isHorizontal_1_LineCreated: " + J1_GameControllerScript.isHorizontal_1_LineCreated);
+
+                    }
+                    else if(!J1_GameControllerScript.canDeleteLine_1)
+                    {
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.missClip);
+                        Debug.Log("line_1 cannot be deleted now.");
+                    }
+                }
+                else if (pointA.name == "circle3")
+                {
+                    if (J1_GameControllerScript.canDeleteLine_2)
+                    {
+                        // 既存の横線を削除する
+                        Destroy(currentLine);
+                        currentLine = null;
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.rightClickClip);
+
+                        Debug.Log("Horizontal line destroyed");
+                        J1_GameControllerScript.isAnyHorizontalLineCreated = false;
+
+                        J1_GameControllerScript.isHorizontal_2_LineCreated = false;
+                        Debug.Log("J1_GameControllerScript.isHorizontal_2_LineCreated: " + J1_GameControllerScript.isHorizontal_2_LineCreated);
+
+
+                    }
+                    else if (!J1_GameControllerScript.canDeleteLine_2)
+                    {
+                        J1_GameControllerScript.audioSourceJ1.PlayOneShot(J1_GameControllerScript.missClip);
+                        Debug.Log("line_2 cannot be deleted now.");
+                    }
+                        
+                }
             }
         }
     }
@@ -125,6 +178,7 @@ public class J1_hoverArea : MonoBehaviour
     {
         // 新しい横線用のゲームオブジェクトを作成
         GameObject lineObject = new GameObject("HorizontalLine");
+        lineObject.tag = "HorizontalLine";
         LineRenderer lineRenderer = lineObject.AddComponent<LineRenderer>(); // LineRendererコンポーネントを追加
 
         // LineRendererの設定を行う
@@ -153,4 +207,5 @@ public class J1_hoverArea : MonoBehaviour
             Gizmos.DrawWireCube(midPoint, new Vector3(Vector3.Distance(pointA.transform.position, pointB.transform.position), J1_GameControllerScript.hoverAreaWidth, 0.1f)); // 中間地点に四角形を描画
         }
     }
+
 }

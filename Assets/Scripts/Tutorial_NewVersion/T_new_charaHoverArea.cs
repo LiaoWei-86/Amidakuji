@@ -23,7 +23,7 @@ public class T_new_charaHoverArea : MonoBehaviour
     // キャラクター情報を設定する
     public Dictionary<string, string[]> defaultCharacterInfoDict = new Dictionary<string, string[]>
     {
-        { "knight", new string[] { "騎士", "○ 税金が払えずに悩む", "○ 凶暴な犬を飼っている", "○ 東洋の財宝の持ち主である、チャイナ服の娘と知り合い" } },
+        { "knight", new string[] { "男の人", "○ 税金が払えずに悩む", "○ 凶暴な犬を飼っている", "○ 東洋の財宝の持ち主である、チャイナ服の娘と知り合い" } },
         { "hunter", new string[] { "猟師", "○ 行方不明になった娘を探している", "○ 猟犬を欲しがっている", "○ 財宝を隠し持っている" } },
         { "king", new string[] { "国王", "○ 不死薬を探し求めている", "○ 城の設備のために専属技師を雇っている", "○ 庭師の少年を信頼している" } },
         { "dog", new string[] { "犬", "○ 財宝を見つけると、すぐに盗んでくる", "○ 子供たちと遊ぶのが大好き", "○ 国王が嫌い" } },
@@ -140,16 +140,25 @@ public class T_new_charaHoverArea : MonoBehaviour
         {
             if (t_New_GameController_script.has_knightInfoChecked || t_New_GameController_script.has_kingInfoChecked)
             {
-                
-                if (t_New_GameController_script.has_Text_explainCharaInfo_pd_Played && !t_New_GameController_script.has_show_two_lines_Played)
+
+
+                if (t_New_GameController_script.has_show_cursor_played && !t_New_GameController_script.has_Text_explainCharaInfo_pd_Played)
                 {
+                    //t_New_GameController_script.Text_explainChara.SetActive(false);
+                    t_New_GameController_script.Text_explainCharaInfo.SetActive(true);
+
                     t_New_GameController_script.oneOfCharaInfos_has_checked = true;
 
-                    t_New_GameController_script.cursor_Text_explainCharaInfo.SetActive(false);
-                    t_New_GameController_script.enterRM_Text_explainCharaInfo.SetActive(true);
+                    //t_New_GameController_script.cursor_Text_explainCharaInfo.SetActive(false);
+                    //t_New_GameController_script.enterRM_Text_explainCharaInfo.SetActive(true);
                     if (t_New_GameController_script.show_cursor != null)
                     {
                         t_New_GameController_script.show_cursor.SetActive(false);
+                    }
+
+                    if (t_New_GameController_script.text_c.activeSelf)
+                    {
+                        t_New_GameController_script.text_c.SetActive(false);
                     }
 
                     t_New_GameController_script.audioSourceTn.PlayOneShot(t_New_GameController_script.changeImageClip);

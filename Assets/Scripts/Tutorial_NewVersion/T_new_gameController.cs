@@ -20,6 +20,8 @@ public class T_new_gameController : MonoBehaviour
     public PlayableDirector play_target_pd; // 目標テキストを再生するPlayableDirector
     private bool has_play_target_pd_Played = false;
 
+    public GameObject text_c;
+
     public GameObject beMoved_target; // 目標テキストを移動するGameObject
     public PlayableDirector beMoved_target_pd; // 目標テキストを移動するPlayableDirector
     private bool has_beMoved_target_pd_Played = false;
@@ -33,8 +35,6 @@ public class T_new_gameController : MonoBehaviour
     public GameObject Text_explainCharaInfo; // 説明文　キャラクターInfoについて
     public PlayableDirector Text_explainCharaInfo_pd; // 説明文　キャラクターInfoについてのPlayableDirector
     public bool has_Text_explainCharaInfo_pd_Played = false;
-    public GameObject enterRM_Text_explainCharaInfo;
-    public GameObject cursor_Text_explainCharaInfo;
 
     public bool has_knightInfoChecked = false;
     public bool has_kingInfoChecked = false;
@@ -49,6 +49,12 @@ public class T_new_gameController : MonoBehaviour
     public GameObject show_point; //　点を説明するGameObject
     public PlayableDirector show_point_pd; //　点を説明するPlayableDirector
     private bool has_show_point_pd_Played = false;
+
+    public GameObject expla_createLine; // 線をつなぐアニメーション
+    public PlayableDirector expla_createLine_pd;
+
+    public GameObject createLine_show_point_2; //　線をつなぐアニメーションの後に説明文
+    public PlayableDirector createLine_show_point_2_pd; //　線をつなぐアニメーションの後に説明文のPlayableDirector
 
     public GameObject plotIcon; // プロットアイコン
     public GameObject end_icon_1; // 結末アイコン　左
@@ -65,6 +71,8 @@ public class T_new_gameController : MonoBehaviour
     public GameObject text_mustEncounter; // s_king_aの後に再生する　　横線の必要性を説明するテキスト
     public PlayableDirector text_mustEncounter_pd; // 横線の必要性を説明するテキストのPlayableDirector
     private bool has_text_mustEncounter_pd_Played = false;
+
+    public GameObject text_mustEncounter_1;
 
     public GameObject pleaseClick; // text_mustEncounterの後にすぐ再生してdestroyする　　クリックしてねというアニメーション
     public PlayableDirector pleaseClick_pd; // クリックしてねというアニメーションのPlayableDirector
@@ -137,6 +145,9 @@ public class T_new_gameController : MonoBehaviour
 
     public GameObject show_cursor; // カーソルのアニメーション
     public PlayableDirector show_cursor_pd; // カーソルのアニメーション
+    public bool has_show_cursor_played = false;
+
+    public GameObject short_expla_rule;
 
     public Transform startpoint_character1; // 左から1番目のスタート点の位置
     public Transform startpoint_character2; // 左から2番目のスタート点の位置
@@ -154,6 +165,10 @@ public class T_new_gameController : MonoBehaviour
 
     public GameObject character1; // 左から1番目のキャラクター
     public GameObject character2; // 左から2番目のキャラクター
+
+    public GameObject knight_before;
+    public GameObject knight_after;
+    public GameObject knight_dead;
 
     private Coroutine character1MovementCoroutine; // 左から1番目のキャラクターの移動
     private Coroutine character2MovementCoroutine; // 左から2番目のキャラクターの移動
@@ -181,6 +196,7 @@ public class T_new_gameController : MonoBehaviour
     public AudioClip leftClickClip;
     public AudioClip rightClickClip;
     public AudioClip missClip;
+    public AudioClip deadClip;
 
     public AudioSource audioSourceTn;
 
@@ -216,10 +232,11 @@ public class T_new_gameController : MonoBehaviour
             Debug.Log("Point " + point.Key + ": " + point.Value);
         }
 
-        CreateHoverAreaCharacter(character1, 1); // 騎士：１
-        CreateHoverAreaCharacter(character2, 3); // 国王：３
 
         //  開始時にを非表示にする
+        knight_after.SetActive(false);
+        knight_dead.SetActive(false);
+        text_c.SetActive(false);
         if (beMoved_target != null)
         {
             beMoved_target.SetActive(false);
@@ -239,7 +256,6 @@ public class T_new_gameController : MonoBehaviour
         s_knight_a.SetActive(false);
         Text_explainChara.SetActive(false);
         Text_explainCharaInfo.SetActive(false);
-        enterRM_Text_explainCharaInfo.SetActive(false);
         show_cursor.SetActive(false);
         show_two_lines.SetActive(false);
         tenGameObjects[0].SetActive(false);
@@ -248,15 +264,17 @@ public class T_new_gameController : MonoBehaviour
         end_icon_1.SetActive(false);
         end_icon_2.SetActive(false);
         text_end_icon.SetActive(false);
-        text_charaMochibe.SetActive(false);
         pleaseClick.SetActive(false);
+        text_mustEncounter_1.SetActive(false);
         text_failed.SetActive(false);
         text_cleared.SetActive(false);
         text_horizontalLineCreated.SetActive(false);
         text_mustEncounter.SetActive(false);
         plotIcon.SetActive(false);
+        expla_createLine.SetActive(false);
         switch_iconExplaMode.SetActive(false);
         text_noLineCreated.SetActive(false);
+        text_charaMochibe.SetActive(false);
         s_king_b.SetActive(false);
         s_knight_b.SetActive(false);
         s_king_c.SetActive(false);
@@ -268,7 +286,10 @@ public class T_new_gameController : MonoBehaviour
         s_knight_e.SetActive(false);
         s_king_f.SetActive(false);
         s_knight_f.SetActive(false);
+        createLine_show_point_2.SetActive(false);
+        short_expla_rule.SetActive(false);
 
+        show_cursor_pd.stopped += OnPlayableDirectorStopped;
         play_target_pd.stopped += OnPlayableDirectorStopped;
         beMoved_target_pd.stopped += OnPlayableDirectorStopped;
         s_king_a_pd.stopped += OnPlayableDirectorStopped;
@@ -296,6 +317,8 @@ public class T_new_gameController : MonoBehaviour
         s_king_f_pd.stopped += OnPlayableDirectorStopped;
         s_knight_e_pd.stopped += OnPlayableDirectorStopped;
         s_king_e_pd.stopped += OnPlayableDirectorStopped;
+        expla_createLine_pd.stopped += OnPlayableDirectorStopped;
+        createLine_show_point_2_pd.stopped += OnPlayableDirectorStopped;
     }
 
     // Update is called once per frame
@@ -324,9 +347,12 @@ public class T_new_gameController : MonoBehaviour
                     // 目標は左上に移動された、キャラクター説明も再生された、マウスをキャラクターに合わせる説明文はまだ表示されてない
                     if (has_beMoved_target_pd_Played && has_Text_explainChara_pd_Played && !has_Text_explainCharaInfo_pd_Played) 
                     {
+                        show_cursor.SetActive(true);
+                        show_cursor_pd.Play(); // カーソルのアニメーション
+
                         Text_explainChara.SetActive(false); // キャラクターの説明文を非表示にする
 
-                        Text_explainCharaInfo.SetActive(true); // マウスをキャラクターに合わせる説明文を表示して、プレイする
+                        //Text_explainCharaInfo.SetActive(true); // マウスをキャラクターに合わせる説明文を表示して、プレイする
                     }
 
                     // マウスをキャラクターに合わせる説明文は再生された、縦線2本を説明するアニメーションまだ表示されてない
@@ -342,11 +368,12 @@ public class T_new_gameController : MonoBehaviour
                             {
                                 show_cursor.SetActive(false);
                             }
+
                         }
-                        else if (!oneOfCharaInfos_has_checked) // プレイヤーはマウスをキャラクターに合わせてない
-                        {
-                            show_cursor_pd.Play(); // カーソルのアニメーションをもう1回再生する
-                        }
+                        //else if (!oneOfCharaInfos_has_checked) // プレイヤーはマウスをキャラクターに合わせてない
+                        //{
+                        //    show_cursor_pd.Play(); // カーソルのアニメーションをもう1回再生する
+                        //}
                     }
 
                     // 縦線2本を説明するアニメーションは再生された、点を説明するやつはまだ表示されてない
@@ -476,6 +503,11 @@ public class T_new_gameController : MonoBehaviour
             Destroy(T_new_hoverScript.currentLine);
             character1.transform.position = character1_initial_pos;
             character2.transform.position = character2_initial_pos;
+            text_mustEncounter_1.SetActive(true);
+            short_expla_rule.SetActive(true);
+            knight_before.SetActive(true);
+            knight_after.SetActive(false);
+            knight_dead.SetActive(false);
             if (text_cleared != null)
             {
                 text_cleared.SetActive(false);
@@ -523,16 +555,22 @@ public class T_new_gameController : MonoBehaviour
         {
             case 0:
                 StartMovement(new List<int> { 0, 0 }, new List<int> { 1, 1 });
-                
+                if (text_mustEncounter_1.activeSelf)
+                {
+                    text_mustEncounter_1.SetActive(false);
+                }
                 break;
 
             case 1:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                text_noLineCreated.SetActive(false);
+                enterAlone.SetActive(true);
+
                 break;
 
             case 2:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
-                text_noLineCreated.SetActive(false);
+                enterAlone.SetActive(false);
                 cannot_createLine = true;
                 s_knight_e.SetActive(true);
 
@@ -557,6 +595,7 @@ public class T_new_gameController : MonoBehaviour
 
             case 5:
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 5 });
+                audioSourceTn.PlayOneShot(deadClip);
                 if (text_noLineCreated.activeSelf)
                 {
                     text_noLineCreated.SetActive(false);
@@ -566,6 +605,8 @@ public class T_new_gameController : MonoBehaviour
                     text_horizontalLineCreated.SetActive(false);
                 }
                 s_knight_b.SetActive(true);
+                knight_before.SetActive(false);
+                knight_dead.SetActive(true);
                 enterAlone.SetActive(false);
                 break;
 
@@ -583,6 +624,10 @@ public class T_new_gameController : MonoBehaviour
                 {
                     failed = false;
                 }
+                if (short_expla_rule.activeSelf)
+                {
+                    short_expla_rule.SetActive(false);
+                }
                 currentGameMode = GameMode.TextPlaying;
                 break;
 
@@ -598,12 +643,21 @@ public class T_new_gameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
 
+                if (text_horizontalLineCreated.activeSelf)
+                {
+                    text_horizontalLineCreated.SetActive(false);
+                }
+                if (text_mustEncounter_1.activeSelf)
+                {
+                    text_mustEncounter_1.SetActive(false);
+                }
+                enterAlone.SetActive(true);
                 break;
 
             case 1:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 cannnot_cancell = true;
-
+                enterAlone.SetActive(false);
                 s_knight_f.SetActive(true);
                 if (text_horizontalLineCreated.activeSelf)
                 {
@@ -633,9 +687,13 @@ public class T_new_gameController : MonoBehaviour
                 StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 });
                 enterAlone.SetActive(false);
                 dialogue.SetActive(true);
+                currentGameMode = GameMode.TextPlaying;
+                knight_before.SetActive(false);
                 break;
 
             case 5:
+                
+                knight_after.SetActive(true);
                 dialogue.SetActive(false);
                 StartMovement(new List<int> { 3, 4 }, new List<int> { 4, 3 });
                 enterAlone.SetActive(true);
@@ -699,6 +757,10 @@ public class T_new_gameController : MonoBehaviour
                 {
                     has_cleared_once = true;
                 }
+                if (short_expla_rule.activeSelf)
+                {
+                    short_expla_rule.SetActive(false);
+                }
                 currentGameMode = GameMode.TextPlaying;
                 break;
 
@@ -739,7 +801,6 @@ public class T_new_gameController : MonoBehaviour
         else if (director == Text_explainCharaInfo_pd)
         {
             has_Text_explainCharaInfo_pd_Played = true;
-            show_cursor.SetActive(true);
             Debug.Log("Text_explainCharaInfo_pd has be played.");
         }
         else if (director == show_two_lines_pd) // 縦線2本を説明するアニメーションが再生終わったら、
@@ -878,6 +939,29 @@ public class T_new_gameController : MonoBehaviour
             }
             currentGameMode = GameMode.WaitForSceneChange;
             Debug.Log("text_cleared_pd has be played.");
+        }
+        else if (director == show_cursor_pd)
+        {
+            text_c.SetActive(true);
+            CreateHoverAreaCharacter(character1, 1); // 騎士：１
+            CreateHoverAreaCharacter(character2, 3); // 国王：３
+            has_show_cursor_played = true;
+            Debug.Log("show_cursor_pd has be played.");
+        }
+        else if (director == expla_createLine_pd)
+        {
+            createLine_show_point_2.SetActive(true);
+            Debug.Log("expla_createLine_pd has be played.");
+        }
+        else if (director == createLine_show_point_2_pd)
+        {
+
+            Debug.Log("createLine_show_point_2_pd has be played.");
+        }
+        else if (director == dialogue_pd)
+        {
+            currentGameMode = GameMode.PlayerPlaying;
+            Debug.Log("dialogue_pd has be played.");
         }
     }
 
@@ -1046,5 +1130,8 @@ public class T_new_gameController : MonoBehaviour
         s_king_f_pd.stopped -= OnPlayableDirectorStopped;
         s_knight_e_pd.stopped -= OnPlayableDirectorStopped;
         s_king_e_pd.stopped -= OnPlayableDirectorStopped;
+        expla_createLine_pd.stopped -= OnPlayableDirectorStopped;
+        show_cursor_pd.stopped -= OnPlayableDirectorStopped;
+        createLine_show_point_2_pd.stopped -= OnPlayableDirectorStopped;
     }
 }
