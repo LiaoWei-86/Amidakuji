@@ -7,28 +7,48 @@ using TMPro;
 
 public class J1_GameController : MonoBehaviour
 {
+    public GameObject enterAlone;
+    public GameObject cursor_bling;
+    public GameObject game_start;
+    public PlayableDirector game_start_pd;
+
+    public Transform character1_initial_pos; // 移動する前にキャラクターの居場所
+    public Transform character2_initial_pos; // 移動する前にキャラクターの居場所
+
+    public GameObject gift_opening; // プレゼントの箱はあけられてるアニメーション
+    public PlayableDirector gift_opening_pd; // そのPlayableDirector
+    private bool gift_is_dog = false;
+
     public GameObject JyomakuText; // ゲームオブジェクト JyomakuText
     public PlayableDirector JyomakuTextPlayableDirector; // JyomakuTextのPlayableDirector
 
     public GameObject targetText; // ゲームオブジェクト targetText
     public PlayableDirector targetTextPlayableDirector; // targetTextのPlayableDirector
+    private bool has_targetTextPlayableDirector_played = false;
 
     public GameObject targetCompletedText; // ゲームオブジェクト targetCompletedText
     public PlayableDirector targetCompletedTextPlayableDirector; // targetCompletedTextのPlayableDirector
 
-    public GameObject didnotfriendText; // ゲームオブジェクト didnotfriendText
-    public PlayableDirector didnotfriendTextPlayableDirector; // didnotfriendTextのPlayableDirector
+    public GameObject failed_Text; // ゲームオブジェクト failed_Text
+    public PlayableDirector failed_TextPlayableDirector; // failed_TextのPlayableDirector
 
     public GameObject didnotMetText; // ゲームオブジェクト didnotMetText
     public PlayableDirector didnotMetTextPlayableDirector; // didnotMetTextのPlayableDirector
 
-    public GameObject befriend; //プロットアイコンbefriend
-    public PlayableDirector befriendPlayableDirector; // プロットアイコンbefriendのPlayableDirector
+    public GameObject dialogue_B2; // dialogue_B2
+    public PlayableDirector dialogue_B2_PlayableDirector; //  dialogue_B2のPlayableDirector
 
-    public GameObject becameFriendText; // ゲームオブジェクト becameFriendText
-    public PlayableDirector becameFriendTextPlayableDirector; // becameFriendTextのPlayableDirector
+    public GameObject cleared_Text; // ゲームオブジェクト cleared_Text
+    public PlayableDirector cleared_TextPlayableDirector; // cleared_TextのPlayableDirector
 
-    public PlayableDirector swordPlayableDirector; //  swordのPlayableDirector
+
+    public GameObject s_knight_a;
+    public PlayableDirector s_knight_a_pd;
+    private bool has_s_knight_a_pd_played = false;
+
+    public GameObject s_hunter_a;
+    public PlayableDirector s_hunter_a_pd;
+    private bool has_s_hunter_a_pd_played = false;
 
     // 結末アイコンにたどり着いた時のセリフ
 
@@ -85,7 +105,7 @@ public class J1_GameController : MonoBehaviour
     private Coroutine hunterMovementCoroutine;
 
     public bool hasMovementFinshed = false; //　キャラクターの移動は完成されたか？のブール値
-    public bool theyAreFriend = false; //　騎士と猟師は友人になったか？のブール値
+    public bool cleared = false; //　クリア？のブール値をfalseとマークする
 
     private int currentMovementIndex = 0; // プレイヤーがEnterを押す際にプロットアイコンを生成するために計算用のIndex
 
@@ -108,14 +128,76 @@ public class J1_GameController : MonoBehaviour
     // 遊び終わったらメニューが飛んでくる
     public GameObject menu; // menu_controller
     public Vector3 menuTargetPosition = new Vector3(5.5f, -4.2f, 0); // たどり着いて欲しい座標
+    public Transform menuBackPosition;
     public bool menuIsOnItsPos = false; // メニューは目標座標に着いたかをfalseとマークする
+    public bool menuBack = false;
     public float moveSpeed = 1.5f; // メニューの移動スピード
     public TMP_Text cannotENTER; // メニューの「Enter：進む」
 
+    public bool canCreateLine_1 = true; // 今は上の横線をつなぐことができるか？をtrueとマークする
+    public bool canCreateLine_2 = true; // 今は下の横線をつなぐことができるか？をtrueとマークする
+    public bool canDeleteLine_1 = true; // 今は上の横線を削除することができるか？をtrueとマークする
+    public bool canDeleteLine_2 = true; // 今は下の横線を削除することができるか？をtrueとマークする
+
+    public bool has_cleared_once = false; // 1度クリアできた？をfalseとマークする
+
     public AudioClip leftClickClip;
     public AudioClip rightClickClip;
+    public AudioClip missClip;
+    public AudioClip barkClip;
 
     public AudioSource audioSourceJ1;
+
+    //  追加したセリフ
+
+    public GameObject s_knight_battle_a; // ゲームオブジェクト s_knight_battle_a   バトルアイコンですれ違う前の騎士
+    public PlayableDirector s_knight_battle_a_pd; // s_knight_battle_aのPlayableDirector
+
+    public GameObject s_hunter_battle_a; // ゲームオブジェクト s_hunter_battle_a  バトルアイコンですれ違う前の猟師
+    public PlayableDirector s_hunter_battle_a_pd; // s_hunter_battle_aのPlayableDirector
+
+    public GameObject s_knight_battle_b; // ゲームオブジェクト s_knight_battle_a  バトルアイコンですれ違った後の騎士
+    public PlayableDirector s_knight_battle_b_pd; // s_knight_battle_aのPlayableDirector
+
+    public GameObject s_hunter_battle_b; // ゲームオブジェクト s_hunter_battle_a  バトルアイコンですれ違った後の猟師
+    public PlayableDirector s_hunter_battle_b_pd; // s_hunter_battle_aのPlayableDirector
+
+    public GameObject s_knight_1_beer; // ゲームオブジェクト s_knight_1_beer  ルート1,ビルアイコンの隣の騎士
+    public PlayableDirector s_knight_1_beer_pd; // s_knight_1_beerのPlayableDirector
+
+    public GameObject s_hunter_1_beer; // ゲームオブジェクト s_hunter_1_beer  ルート1,ビルアイコンの隣の猟師
+    public PlayableDirector s_hunter_1_beer_pd; //  s_hunter_1_beerのPlayableDirector
+
+    public GameObject s_knight_2_beer; // ゲームオブジェクト s_knight_2_beer  ルート2,ビルアイコンの隣の騎士
+    public PlayableDirector s_knight_2_beer_pd; // s_knight_1_beerのPlayableDirector
+
+    public GameObject s_hunter_2_beer; // ゲームオブジェクト s_hunter_2_beer  ルート2,ビルアイコンの隣の猟師
+    public PlayableDirector s_hunter_2_beer_pd; //  s_hunter_1_beerのPlayableDirector
+
+    public GameObject s_knight_3_beer_a; // ゲームオブジェクト s_knight_3_beer_a   ルート3: ビルアイコンですれ違う前の騎士
+    public PlayableDirector s_knight_3_beer_a_pd; // s_knight_3_beer_aのPlayableDirector
+
+    public GameObject s_hunter_3_beer_a; // ゲームオブジェクト s_hunter_3_beer_a  ルート3: ビルアイコンですれ違う前の猟師
+    public PlayableDirector s_hunter_3_beer_a_pd; // s_hunter_3_beer_aのPlayableDirector
+
+    public GameObject s_knight_3_beer_b; // ゲームオブジェクト s_knight_3_beer_a  ルート3: ビルアイコンですれ違った後の騎士
+    public PlayableDirector s_knight_3_beer_b_pd; // s_knight_3_beer_aのPlayableDirector
+
+    public GameObject s_hunter_3_beer_b; // ゲームオブジェクト s_hunter_3_beer_a  ルート3: ビルアイコンですれ違った後の猟師
+    public PlayableDirector s_hunter_3_beer_b_pd; // s_hunter_3_beer_aのPlayableDirector
+
+    public GameObject s_knight_4_beer_a; // ゲームオブジェクト s_knight_4_beer_a   ルート4: ビルアイコンですれ違う前の騎士
+    public PlayableDirector s_knight_4_beer_a_pd; // s_knight_4_beer_aのPlayableDirector
+
+    public GameObject s_hunter_4_beer_a; // ゲームオブジェクト s_hunter_4_beer_a  ルート4: ビルアイコンですれ違う前の猟師
+    public PlayableDirector s_hunter_4_beer_a_pd; // s_hunter_4_beer_aのPlayableDirector
+
+    public GameObject s_knight_4_beer_b; // ゲームオブジェクト s_knight_4_beer_a  ルート4: ビルアイコンですれ違った後の騎士
+    public PlayableDirector s_knight_4_beer_b_pd; // s_knight_4_beer_aのPlayableDirector
+
+    public GameObject s_hunter_4_beer_b; // ゲームオブジェクト s_hunter_4_beer_a  ルート4: ビルアイコンですれ違った後の猟師
+    public PlayableDirector s_hunter_4_beer_b_pd; // s_hunter_4_beer_aのPlayableDirector
+
 
     private enum GameMode
     {
@@ -133,21 +215,24 @@ public class J1_GameController : MonoBehaviour
         CreateHoverAreaCharacter(hunter, 2);
 
         //  開始時にを非表示にする
+        s_knight_a.SetActive(false);
+        s_hunter_a.SetActive(false);
+        game_start.SetActive(false);
         if (targetText != null)
         {
             targetText.SetActive(false);
         }
-        if (didnotfriendText != null)
+        if (failed_Text != null)
         {
-            didnotfriendText.SetActive(false);
+            failed_Text.SetActive(false);
         }
         if (didnotMetText != null)
         {
             didnotMetText.SetActive(false);
         }
-        if (becameFriendText != null)
+        if (cleared_Text != null)
         {
-            becameFriendText.SetActive(false);
+            cleared_Text.SetActive(false);
         }
         if (fukidashi_0 != null)
         {
@@ -201,9 +286,31 @@ public class J1_GameController : MonoBehaviour
         {
             menu.SetActive(false);
         }
-
+        dialogue_B2.SetActive(false);
+        gift_opening.SetActive(false);
+        s_knight_battle_a.SetActive(false);
+        s_hunter_battle_a.SetActive(false);
+        s_knight_battle_b.SetActive(false);
+        s_hunter_battle_b.SetActive(false);
+        s_knight_1_beer.SetActive(false);
+        s_hunter_1_beer.SetActive(false);
+        s_knight_2_beer.SetActive(false);
+        s_hunter_2_beer.SetActive(false);
+        s_knight_3_beer_a.SetActive(false);
+        s_hunter_3_beer_a.SetActive(false);
+        s_knight_3_beer_b.SetActive(false);
+        s_hunter_3_beer_b.SetActive(false);
+        s_knight_4_beer_a.SetActive(false);
+        s_hunter_4_beer_a.SetActive(false);
+        s_knight_4_beer_b.SetActive(false);
+        s_hunter_4_beer_b.SetActive(false);
+        enterAlone.SetActive(false);
+        cursor_bling.SetActive(false);
 
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
+        s_knight_a_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_a_pd.stopped += OnPlayableDirectorStopped;
+        game_start_pd.stopped += OnPlayableDirectorStopped;
         if (JyomakuTextPlayableDirector != null)
         {
             JyomakuTextPlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -229,25 +336,25 @@ public class J1_GameController : MonoBehaviour
         {
             didnotMetTextPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
-        if (didnotfriendTextPlayableDirector != null)
+        if (failed_TextPlayableDirector != null)
         {
-            didnotfriendTextPlayableDirector.stopped += OnPlayableDirectorStopped;
+            failed_TextPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
         else
         {
             Debug.LogWarning("didnotfriendTextPlayableDirector is not assigned.");
         }
-        if (befriendPlayableDirector != null)
+        if (dialogue_B2_PlayableDirector != null)
         {
-            befriendPlayableDirector.stopped += OnPlayableDirectorStopped;
+            dialogue_B2_PlayableDirector.stopped += OnPlayableDirectorStopped;
         }
         else
         {
             Debug.LogWarning("befriendPlayableDirector is not assigned.");
         }
-        if (becameFriendTextPlayableDirector != null)
+        if (cleared_TextPlayableDirector != null)
         {
-            becameFriendTextPlayableDirector.stopped += OnPlayableDirectorStopped;
+            cleared_TextPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
         else
         {
@@ -262,14 +369,7 @@ public class J1_GameController : MonoBehaviour
             Debug.LogWarning("dialogue is not assigned.");
         }
 
-        if (swordPlayableDirector != null)
-        {
-            swordPlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
-        else
-        {
-            Debug.LogWarning("dialogue is not assigned.");
-        }
+
 
         if (dialogue_failed_hunterPlayableDirector != null)
         {
@@ -304,19 +404,37 @@ public class J1_GameController : MonoBehaviour
             dialogue_battleBeer_knightPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
 
+        s_knight_battle_a_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_battle_a_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_battle_b_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_battle_b_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_1_beer_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_1_beer_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_2_beer_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_2_beer_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_3_beer_a_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_3_beer_a_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_3_beer_b_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_3_beer_b_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_4_beer_a_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_4_beer_a_pd.stopped += OnPlayableDirectorStopped;
+        s_knight_4_beer_b_pd.stopped += OnPlayableDirectorStopped;
+        s_hunter_4_beer_b_pd.stopped += OnPlayableDirectorStopped;
+        gift_opening_pd.stopped += OnPlayableDirectorStopped;
+
         // Initialize the dictionary and add the points
         pointsDictionary = new Dictionary<int, Vector3>();
 
         // Add knight and hunter start and end points
         pointsDictionary.Add(0, startpoint_knight.position); // 左から1番目のスタート点
         pointsDictionary.Add(1, startpoint_hunter.position); // 左から2番目のスタート点
-        pointsDictionary.Add(6, endtpoint_knight.position);  // 左から1番目の終点
-        pointsDictionary.Add(7, endpoint_hunter.position);   // 左から2番目の終点
+        pointsDictionary.Add(10, endtpoint_knight.position);  // 左から1番目の終点
+        pointsDictionary.Add(11, endpoint_hunter.position);   // 左から2番目の終点
 
         // Add the positions of the other points (4 gameobjects)
         for (int i = 0; i < tenPositions.Length; i++)
         {
-            pointsDictionary.Add(i + 2, tenPositions[i].position); // 点の位置（2から5まで）
+            pointsDictionary.Add(i + 2, tenPositions[i].position); // 点の位置（2から）
         }
 
         // すべての点の座標を表示する（デバッグ用）
@@ -325,8 +443,10 @@ public class J1_GameController : MonoBehaviour
             Debug.Log("Point " + point.Key + ": " + point.Value);
         }
 
-        CreateHoverAreaJ1(tenGameObjects[0],tenGameObjects[1]);
-        CreateHoverAreaJ1(tenGameObjects[2], tenGameObjects[3]);
+        CreateHoverAreaJ1(tenGameObjects[0],tenGameObjects[3]);
+        CreateHoverAreaJ1(tenGameObjects[4], tenGameObjects[7]);
+
+
     }
 
     // Update is called once per frame
@@ -336,6 +456,28 @@ public class J1_GameController : MonoBehaviour
         switch (currentGameMode)
         {
             case GameMode.TextPlaying:
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (has_targetTextPlayableDirector_played && !has_s_knight_a_pd_played)
+                    {
+                        if (enterAlone != null)
+                        {
+                            enterAlone.SetActive(false);
+                        }
+                        s_knight_a.SetActive(true);
+                    }
+                    else if (has_s_knight_a_pd_played && !has_s_hunter_a_pd_played)
+                    {
+                        s_knight_a.SetActive(false);
+                        s_hunter_a.SetActive(true);
+                    }
+                    else if (has_s_hunter_a_pd_played)
+                    {
+                        s_hunter_a.SetActive(false);
+
+                        game_start.SetActive(true);
+                    }
+                }
 
                 break;
 
@@ -370,7 +512,7 @@ public class J1_GameController : MonoBehaviour
         {
             if (menuIsOnItsPos == true)
             {
-                if (theyAreFriend)
+                if (cleared)
                 {
 
                     Debug.Log("LoadScene:JyoMaku_1.5_YiChi");
@@ -381,13 +523,63 @@ public class J1_GameController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("LoadScene:JyoMaku_1");
-            SceneManager.LoadScene("JyoMaku_1");
+            currentMovementIndex = 0;
+            isAnyHorizontalLineCreated = false;
+            isHorizontal_1_LineCreated = false;
+            isHorizontal_2_LineCreated = false;
+            DestroyAllHorizontalLinesInScene();
+            canCreateLine_1 = true;
+            canCreateLine_2 = true;
+            canDeleteLine_1 = true;
+            canDeleteLine_2 = true;
+            knight.transform.position = character1_initial_pos.position;
+            hunter.transform.position = character2_initial_pos.position;
+            gift_is_dog = false;
+            if (dog != null)
+            {
+                dog.SetActive(false);
+            }
+            if (gift_opening != null)
+            {
+                gift_opening.SetActive(false);
+            }
+            if (failed_Text != null)
+            {
+                failed_Text.SetActive(false);
+            }
+            if (cleared_Text != null)
+            {
+                cleared_Text.SetActive(false);
+            }
+            if (didnotMetText != null)
+            {
+                didnotMetText.SetActive(false);
+            }
+            if (dialogue_failed_knight != null)
+            {
+                dialogue_failed_knight.SetActive(false);
+            }
+            if(dialogue_OE_hunter != null)
+            {
+                dialogue_OE_hunter.SetActive(false);
+            }
+            if (dialogue_beer_knight != null)
+            {
+                dialogue_beer_knight.SetActive(false);
+            }
+            if (dialogue_battleBeer_hunter != null)
+            {
+                dialogue_battleBeer_hunter.SetActive(false);
+            }
+            StartCoroutine(MoveMenuBack(menuBackPosition.position, moveSpeed));
+            currentGameMode = GameMode.PlayerPlaying;
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            Debug.Log("LoadScene:TitleScene");
-            SceneManager.LoadScene("TitleScene");
+            //Debug.Log("LoadScene:TitleScene");
+            //SceneManager.LoadScene("TitleScene");
+            Debug.Log("LoadScene:M");
+            SceneManager.LoadScene("M");
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -397,190 +589,470 @@ public class J1_GameController : MonoBehaviour
 
     public void ChangeTextColor(TMP_Text tmp)
     {
-        if (theyAreFriend == false)
+        if (cleared == false)
         {
             tmp.color = Color.gray; // もし`failed`は`true`であれば，テキストの色を灰色に変える
         }
     }
 
+    //  プレイヤーがEnterを押すと、キャラクターの移動＋プロットアイコンの生成＋ストーリーメッセージの生成を一つずつ表示される
     public void charaMoveAndAnimationLogic()
     {
-        //  このモードでは、プレイヤーがEnterを押すと、キャラクターの移動＋プロットアイコンの生成＋ストーリーメッセージの生成を一つずつ表示される
-
-
-        /*
-           　　　　    「騎士」0　　　　　「猟師」1
-                           ||                ||
-                 circle1   ○2     circle2   ○3
-                           ||                ||
-                 circle3   ○4     circle4   ○5
-                           ||                ||
-       　　　　　　   「結末」6　　　　　「結末」7
-        */
-
-        if (isHorizontal_1_LineCreated == true && isHorizontal_2_LineCreated == false) // 失敗：戦っただけで終わった
+        if (isHorizontal_1_LineCreated == true && isHorizontal_2_LineCreated == false) // ルート２　失敗：戦っただけで終わった
         {
-            switch (currentMovementIndex)
-            {
-                case 0:
-                    StartMovement(new List<int> { 0, 2, 3 }, new List<int> { 1, 3, 2 });
-                    break;
-                case 1:
-                    StartMovement(new List<int> { 3, 3 }, new List<int> { 2, 2 }); // キャラクターを止まらせてアニメーションを再生する
-                    swordPlayableDirector.Play();
-                    break;
-                case 2:
-                    StartMovement(new List<int> { 3, 5 }, new List<int> { 2, 4 });
-                    break;
-                case 3:
-                    StartMovement(new List<int> { 5, 5 }, new List<int> { 4, 6 });
-
-                    break;
-                case 4:
-                    StartMovement(new List<int> { 5, 5 }, new List<int> { 6, 6 }); // 猟師が着いたから、止まらせて吹き出しを表示する
-                    dialogue_failed_hunter.SetActive(true);
-
-                    break;
-
-                case 5:
-                    StartMovement(new List<int> { 5, 7 }, new List<int> { 6, 6 });
-
-                    break;
-
-                case 6:
-                    StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 }); // 騎士も着いたから、止まらせて吹き出しを表示する
-                    dialogue_failed_knight.SetActive(true);
-
-                    hasMovementFinshed = true;
-
-                    break;
-            }
+            charaMoveRoute2();
 
         }
-        else if (isHorizontal_1_LineCreated == true && isHorizontal_2_LineCreated == true) // 成功：戦って酒場に行った
+        else if (isHorizontal_1_LineCreated == true && isHorizontal_2_LineCreated == true) // ルート４　成功
         {
-            switch (currentMovementIndex)
-            {
-                case 0:
-                    StartMovement(new List<int> { 0, 2, 3 }, new List<int> { 1, 3, 2 });
-                    break;
-
-                case 1:
-                    StartMovement(new List<int> { 3, 3 }, new List<int> { 2, 2 });
-                    swordPlayableDirector.Play();
-                    break;
-
-                case 2:
-                    StartMovement(new List<int> { 3, 5, 4 }, new List<int> { 2, 4, 5 });
-
-                    break;
-                case 3:
-                    StartMovement(new List<int> { 4, 4 }, new List<int> { 5, 5 });
-                    befriendPlayableDirector.Play();
-
-                    break;
-
-                case 4:
-                    StartMovement(new List<int> { 4, 6 }, new List<int> { 5, 5 });
-                    break;
-
-                case 5:
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 5 });
-                    dialogue_battleBeer_knight.SetActive(true);
-
-                    break;
-
-                case 6:
-
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 7 });
-
-                    break;
-
-                case 7:
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 });
-                    dialogue_battleBeer_hunter.SetActive(true);
-
-                    hasMovementFinshed = true;
-                    break;
-            }
+            charaMoveRoute4();
         }
-        else if (isHorizontal_1_LineCreated == false && isHorizontal_2_LineCreated == true) // 成功：酒場だけに行った
+        else if (isHorizontal_1_LineCreated == false && isHorizontal_2_LineCreated == true) // ルート３　失敗：酒場だけ
         {
-            switch (currentMovementIndex)
-            {
-                case 0:
-                    StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 3 });
-                    break;
-                case 1:
-                    StartMovement(new List<int> { 2, 4, 5 }, new List<int> { 3, 5, 4 });
-                    break;
-                case 2:
-                    StartMovement(new List<int> { 5, 5 }, new List<int> { 4, 4 });
-                    befriendPlayableDirector.Play();
-                    break;
-                case 3:
-                    StartMovement(new List<int> { 5, 5 }, new List<int> { 4, 6 });
-
-                    break;
-
-                case 4:
-                    StartMovement(new List<int> { 5, 5 }, new List<int> { 6, 6 });
-                    dialogue_beer_hunter.SetActive(true);
-
-                    break;
-
-                case 5:
-                    StartMovement(new List<int> { 5, 7 }, new List<int> { 6, 6 });
-
-                    break;
-
-                case 6:
-                    StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 });
-                    dialogue_beer_knight.SetActive(true);
-
-                    hasMovementFinshed = true;
-                    break;
-            }
+            charaMoveRoute3();
 
         }
-        else if (isHorizontal_1_LineCreated == false && isHorizontal_2_LineCreated == false) // 失敗：そのまま吐いた
+        else if (isHorizontal_1_LineCreated == false && isHorizontal_2_LineCreated == false) // ルート１　失敗：出会わなかった
         {
-            switch (currentMovementIndex)
-            {
-                case 0:
-                    StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 3 });
+            charaMoveRoute1();
+        }
+    }
+    
+    /*
+       　　　　    「騎士」0　　　　　   「猟師」1
+                       ||                   ||
+                       ○2    ○3    ○4    ○5
+                       ||                   ||
+                       ○6    ○7    ○8    ○9
+                       ||                   ||
+   　　　　　　   「結末」10　　　　     「結末」11
+    */
+    public void charaMoveRoute1()
+    {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
+            case 1:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canDeleteLine_1 = false;
+                canCreateLine_1 = false;
+                s_knight_battle_a.SetActive(true);
+                break;
 
-                    break;
-                case 1:
-                    StartMovement(new List<int> { 2, 4 }, new List<int> { 3, 5 });
+            case 2:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                s_knight_battle_a.SetActive(false);
+                s_hunter_battle_a.SetActive(true);
+                break;
 
-                    break;
+            case 3:
+                StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 9 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                s_hunter_battle_a.SetActive(false);
+                break;
 
-                case 2:
-                    StartMovement(new List<int> { 4, 6 }, new List<int> { 5, 5 });
+            case 4:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canDeleteLine_2 = false;
+                s_knight_1_beer.SetActive(true);
+                canCreateLine_2 = false;
+                break;
 
-                    break;
+            case 5:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                s_knight_1_beer.SetActive(false);
+                s_hunter_1_beer.SetActive(true);
+                break;
 
-                case 3:
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 5 });
-                    dialogue_OE_knight.SetActive(true);
+            case 6:
+                StartMovement(new List<int> { 6, 10 }, new List<int> { 9, 9 });
+                s_hunter_1_beer.SetActive(false);
+                enterAlone.SetActive(true);
+                break;
 
-                    break;
+            case 7:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 });
+                enterAlone.SetActive(false);
+                dialogue_OE_knight.SetActive(true);
+                break;
 
-                case 4:
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 7 });
+            case 8:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 11 });
+                dialogue_OE_knight.SetActive(false);
+                enterAlone.SetActive(true);
+                break;
 
-                    break;
+            case 9:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                dialogue_OE_hunter.SetActive(true);
 
-                case 5:
-                    StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 });
-                    dialogue_OE_hunter.SetActive(true);
+                hasMovementFinshed = true;
+                break;
 
-                    hasMovementFinshed = true;
+        }
+    }
 
-                    break;
+    public void charaMoveRoute2()
+    {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
 
-            }
+            case 1:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 }); // キャラクターを止まらせてセリフを表示する
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canCreateLine_1 = false;
+                canDeleteLine_1 = false;
+                s_knight_battle_a.SetActive(true);
+
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                s_knight_battle_a.SetActive(false);
+                s_hunter_battle_a.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
+                s_hunter_battle_a.SetActive(false);
+
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 }); // 止まらせて吹き出しを表示する
+                fukidashi_0.SetActive(true);
+
+                break;
+
+            case 5:
+                fukidashi_0.SetActive(false);
+                StartMovement(new List<int> { 3, 5 }, new List<int> { 4, 2 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
+                enterAlone.SetActive(false);
+                s_hunter_battle_b.SetActive(true);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
+                s_knight_battle_b.SetActive(true);
+                s_hunter_battle_b.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 5, 9 }, new List<int> { 2, 6 });
+                s_knight_battle_b.SetActive(false);
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canDeleteLine_2 = false;
+                canCreateLine_2 = false;
+                s_hunter_2_beer.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                s_hunter_2_beer.SetActive(false);
+                s_knight_2_beer.SetActive(true);
+                break;
+
+            case 11:
+                s_knight_2_beer.SetActive(false);
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 10 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 12:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 });
+                enterAlone.SetActive(false);
+                dialogue_failed_hunter.SetActive(true);
+                break;
+
+            case 13:
+                dialogue_failed_hunter.SetActive(false);
+                StartMovement(new List<int> { 9, 11 }, new List<int> { 10, 10 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 14:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                gift_opening.SetActive(true);
+                dialogue_failed_knight.SetActive(true);
+
+                hasMovementFinshed = true;
+
+                break;
+        }
+    }
+
+    public void charaMoveRoute3()
+    {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
+            case 1:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canCreateLine_1 = false;
+                canDeleteLine_1 = false;
+                s_knight_battle_a.SetActive(true);
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                s_knight_battle_a.SetActive(false);
+                s_hunter_battle_a.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 9 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                s_hunter_battle_a.SetActive(false);
+
+                break;
+
+            case 4:
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canDeleteLine_2 = false;
+                canCreateLine_2 = false;
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                s_knight_3_beer_a.SetActive(true);
+
+                break;
+
+            case 5:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                s_knight_3_beer_a.SetActive(false);
+                s_hunter_3_beer_a.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 6, 7 }, new List<int> { 9, 8 });
+                enterAlone.SetActive(true);
+                s_hunter_3_beer_a.SetActive(false);
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 7, 7 }, new List<int> { 8, 8 });
+                enterAlone.SetActive(false);
+                fukidashi.SetActive(true);
+                break;
+
+            case 8:
+                fukidashi.SetActive(false);
+                StartMovement(new List<int> { 7, 9 }, new List<int> { 8, 6 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 9:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                s_hunter_3_beer_b.SetActive(true);
+                break;
+
+            case 10:
+                s_hunter_3_beer_b.SetActive(false);
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                s_knight_3_beer_b.SetActive(true);
+                break;
+
+            case 11:
+                s_knight_3_beer_b.SetActive(false);
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 10 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 12:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 });
+                dialogue_beer_hunter.SetActive(true);
+                break;
+
+            case 13:
+                StartMovement(new List<int> { 9, 11 }, new List<int> { 10, 10 });
+                dialogue_beer_hunter.SetActive(false);
+                enterAlone.SetActive(true);
+
+                break;
+
+            case 14:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 });
+                dialogue_beer_knight.SetActive(true);
+                gift_opening.SetActive(true);
+
+                hasMovementFinshed = true;
+                break;
+        }
+    }
+
+    public void charaMoveRoute4()
+    {
+        switch (currentMovementIndex)
+        {
+            case 0:
+                StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
+
+            case 1:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 }); // キャラクターを止まらせてセリフを表示する
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canCreateLine_1 = false;
+                canDeleteLine_1 = false;
+                s_knight_battle_a.SetActive(true);
+
+                break;
+
+            case 2:
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                s_knight_battle_a.SetActive(false);
+                s_hunter_battle_a.SetActive(true);
+                break;
+
+            case 3:
+                StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
+                s_hunter_battle_a.SetActive(false);
+
+                break;
+
+            case 4:
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 }); // 止まらせて吹き出しを表示する
+                fukidashi_0.SetActive(true);
+
+                break;
+
+            case 5:
+                fukidashi_0.SetActive(false);
+                StartMovement(new List<int> { 3, 5 }, new List<int> { 4, 2 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 6:
+                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
+                enterAlone.SetActive(false);
+                s_hunter_battle_b.SetActive(true);
+
+                break;
+
+            case 7:
+                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
+                s_knight_battle_b.SetActive(true);
+                s_hunter_battle_b.SetActive(false);
+                break;
+
+            case 8:
+                StartMovement(new List<int> { 5, 9 }, new List<int> { 2, 6 });
+                s_knight_battle_b.SetActive(false);
+                enterAlone.SetActive(true);
+                cursor_bling.SetActive(true);
+                break;
+
+            case 9:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                enterAlone.SetActive(false);
+                cursor_bling.SetActive(false);
+                canCreateLine_2 = false;
+                canDeleteLine_2 = false;
+                s_hunter_4_beer_a.SetActive(true);
+                break;
+
+            case 10:
+                StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
+                s_hunter_4_beer_a.SetActive(false);
+                s_knight_4_beer_a.SetActive(true);
+
+                break;
+
+            case 11:
+                s_knight_4_beer_a.SetActive(false);
+                StartMovement(new List<int> { 9, 8 }, new List<int> { 6, 7 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 12:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 8, 8 }, new List<int> { 7, 7 });
+                dialogue_B2.SetActive(true);
+                break;
+
+            case 13:
+                dialogue_B2.SetActive(false);
+                StartMovement(new List<int> { 8, 6 }, new List<int> { 7, 9 });
+                enterAlone.SetActive(true);
+                break;
+
+            case 14:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                enterAlone.SetActive(false);
+                s_knight_4_beer_b.SetActive(true);
+                break;
+
+            case 15:
+                StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
+                s_knight_4_beer_b.SetActive(false);
+                s_hunter_4_beer_b.SetActive(true);
+                break;
+
+            case 16:
+                StartMovement(new List<int> { 6, 10 }, new List<int> { 9, 9 });
+                s_hunter_4_beer_b.SetActive(false);
+                enterAlone.SetActive(true);
+                break;
+
+            case 17:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 });
+                enterAlone.SetActive(false);
+                dialogue_battleBeer_knight.SetActive(true);
+                break;
+
+            case 18:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 11 });
+                enterAlone.SetActive(true);
+                dialogue_battleBeer_knight.SetActive(false);
+                break;
+
+            case 19:
+                StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 });
+                enterAlone.SetActive(false);
+                dialogue_battleBeer_hunter.SetActive(true);
+                gift_opening.SetActive(true);
+                gift_is_dog = true;
+                break;
         }
     }
 
@@ -657,7 +1129,10 @@ public class J1_GameController : MonoBehaviour
         Debug.Log($"BoxCollider created with size: {boxCollider.size}");   // BoxCollider のサイズをデバッグログで表示する
 
         hoverArea.transform.position = midPoint;   // ホバーエリアの位置を中間点に設定する
-        hoverArea.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);   // ホバーエリアの回転を、点Aから点Bへの方向に基づいて設定する
+        // 【new！】ここを必ず注意してください！こう書いてください！
+        // LookRotationを使って向きを設定し、水平方向に回転させます。
+        hoverArea.transform.LookAt(pointB.transform);
+        hoverArea.transform.Rotate(0, 90, 0);  // Colliderの長辺が点Aと点Bに向くようにしてください。
 
         // J1hoverScript スクリプトをホバーエリアに追加する
         J1_hoverArea J1hoverScript = hoverArea.AddComponent<J1_hoverArea>();         // Need changed NOTICE！
@@ -693,10 +1168,6 @@ public class J1_GameController : MonoBehaviour
         J1_charaHoverAreaScript.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
 
-    private void ShowNewCharacter()
-    {
-        fukidashi.SetActive(true);
-    }
 
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
@@ -709,24 +1180,39 @@ public class J1_GameController : MonoBehaviour
         }
         else if (director == targetTextPlayableDirector)
         {
-            currentGameMode = GameMode.PlayerPlaying;
-
+            //currentGameMode = GameMode.PlayerPlaying;
+            has_targetTextPlayableDirector_played = true;
+            enterAlone.SetActive(true);
             Debug.Log(" targetText Timeline playback completed.");
-            Debug.Log("GameMode.PlayerPlayingに切り替える");
+            //Debug.Log("GameMode.PlayerPlayingに切り替える");
+        }
+        else if (director == game_start_pd)
+        {
+            game_start.SetActive(false);
+            currentGameMode = GameMode.PlayerPlaying;
         }
         else if(director == targetCompletedTextPlayableDirector)
         {
-            theyAreFriend = true;
-            Debug.Log("they are friend:" + theyAreFriend);
+            cleared = true;
 
             currentGameMode = GameMode.WaitForSceneChange;
         }
-        else if (director == didnotfriendTextPlayableDirector)
+        else if (director == failed_TextPlayableDirector)
         {
             currentGameMode = GameMode.WaitForSceneChange;
 
-            Debug.Log(" didnotfriendText Timeline playback completed.");
+            Debug.Log("failed_Text Timeline playback completed.");
             Debug.Log("GameMode.WaitForSceneChangeに切り替える");
+        }
+        else if (director == s_knight_a_pd)
+        {
+            has_s_knight_a_pd_played = true;
+            Debug.Log("s_knight_a_pd playback completed.");
+        }
+        else if (director == s_hunter_a_pd)
+        {
+            has_s_hunter_a_pd_played = true;
+            Debug.Log("s_hunter_a_pd playback completed.");
         }
         else if (director == didnotMetTextPlayableDirector)
         {
@@ -735,52 +1221,130 @@ public class J1_GameController : MonoBehaviour
             Debug.Log(" didnotMetText Timeline playback completed.");
             Debug.Log("GameMode.WaitForSceneChangeに切り替える");
         }
-        else if (director == befriendPlayableDirector)
+        else if (director == dialogue_B2_PlayableDirector)
         {
-            becameFriendText.SetActive(true);
-            becameFriendTextPlayableDirector.Play(); 
-            Debug.Log(" befriend Timeline playback completed.");
+            
+            Debug.Log(" dialogue_B2_PlayableDirector playback completed.");
         }
-        else if (director == becameFriendTextPlayableDirector)
+        else if (director == cleared_TextPlayableDirector)
         {
-            ShowNewCharacter();
-
-            Debug.Log("becameFriendText Timeline playback completed.");
+            Debug.Log("cleared_Text Timeline playback completed.");
         }
         else if (director == dialogue)
         {
-            dog.SetActive(true);
-
             Debug.Log("dialogue Timeline playback completed.");
-        }
-        else if (director == swordPlayableDirector)
-        {
-            fukidashi_0.SetActive(true);
-
-            Debug.Log("swordPlayableDirector Timeline playback completed.");
         }
         else if(director == dialogue_failed_knightPlayableDirector)
         {
-            didnotfriendText.SetActive(true);
-            didnotfriendTextPlayableDirector.Play();
+            failed_Text.SetActive(true);
+            failed_TextPlayableDirector.Play();
         }
         else if (director == dialogue_beer_knightPlayableDirector)
         {
-            targetCompletedText.SetActive(true);
+            failed_Text.SetActive(true);
+            failed_TextPlayableDirector.Play();
         }
         else if (director == dialogue_battleBeer_hunterPlayableDirector)
         {
             targetCompletedText.SetActive(true);
+            cleared_Text.SetActive(true);
         }
         else if (director == dialogue_OE_hunterPlayableDirector)
         {
             didnotMetText.SetActive(true);
             didnotMetTextPlayableDirector.Play();
         }
+        else if (director == s_knight_battle_a)
+        {
+
+            Debug.Log("s_knight_battle_a has played.");
+        }
+        else if (director == s_hunter_battle_a)
+        {
+            Debug.Log("s_hunter_battle_a has played.");
+        }
+        else if (director == s_knight_battle_b)
+        {
+
+            Debug.Log("s_knight_battle_b has played.");
+        }
+        else if (director == s_hunter_battle_b)
+        {
+            Debug.Log("s_hunter_battle_b has played.");
+        }
+        else if (director == s_knight_1_beer)
+        {
+
+            Debug.Log("s_knight_1_beer has played.");
+        }
+        else if (director == s_hunter_1_beer)
+        {
+            Debug.Log("s_hunter_1_beer has played.");
+        }
+        else if (director == s_knight_2_beer)
+        {
+
+            Debug.Log("s_knight_2_beer has played.");
+        }
+        else if (director == s_hunter_2_beer)
+        {
+            Debug.Log("s_hunter_2_beer has played.");
+        }
+        else if (director == s_knight_3_beer_a)
+        {
+
+            Debug.Log("s_knight_3_beer_a has played.");
+        }
+        else if (director == s_hunter_3_beer_a)
+        {
+
+            Debug.Log("s_hunter_3_beer_a has played.");
+        }
+        else if (director == s_knight_3_beer_b)
+        {
+
+            Debug.Log("s_knight_3_beer_b has played.");
+        }
+        else if (director == s_hunter_3_beer_b)
+        {
+
+            Debug.Log("s_hunter_3_beer_b has played.");
+        }
+        else if (director == s_knight_4_beer_a)
+        {
+
+            Debug.Log("s_knight_4_beer_a has played.");
+        }
+        else if (director == s_hunter_4_beer_a)
+        {
+
+            Debug.Log("s_hunter_4_beer_a has played.");
+        }
+        else if (director == s_knight_4_beer_b)
+        {
+
+            Debug.Log("s_knight_4_beer_b has played.");
+        }
+        else if (director == s_hunter_4_beer_b)
+        {
+
+            Debug.Log("s_hunter_4_beer_b has played.");
+        }
+        else if (director == gift_opening_pd)
+        {
+            if (gift_is_dog)
+            {
+                dog.SetActive(true);
+                audioSourceJ1.PlayOneShot(barkClip);
+            }
+            Debug.Log("gift_opening_pd has played.");
+        }
     }
     void OnDestroy()
     {
         // イベントのサブスクライブを解除して、メモリリークを防ぐ
+        s_knight_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_a_pd.stopped -= OnPlayableDirectorStopped;
         if (JyomakuTextPlayableDirector != null)
         {
             JyomakuTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
@@ -796,9 +1360,9 @@ public class J1_GameController : MonoBehaviour
             targetCompletedTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (didnotfriendTextPlayableDirector != null)
+        if (failed_TextPlayableDirector != null)
         {
-            didnotfriendTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
+            failed_TextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
         if (didnotMetTextPlayableDirector != null)
@@ -806,24 +1370,19 @@ public class J1_GameController : MonoBehaviour
             didnotMetTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (befriendPlayableDirector != null)
+        if (dialogue_B2_PlayableDirector != null)
         {
-            befriendPlayableDirector.stopped -= OnPlayableDirectorStopped;
+            dialogue_B2_PlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (becameFriendTextPlayableDirector != null)
+        if (cleared_TextPlayableDirector != null)
         {
-            becameFriendTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
+            cleared_TextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
         if (dialogue != null)
         {
             dialogue.stopped -= OnPlayableDirectorStopped;
-        }
-
-        if (swordPlayableDirector != null)
-        {
-            swordPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
         if (dialogue_failed_hunterPlayableDirector != null)
@@ -857,6 +1416,56 @@ public class J1_GameController : MonoBehaviour
         if (dialogue_OE_knightPlayableDirector != null)
         {
             dialogue_OE_knightPlayableDirector.stopped -= OnPlayableDirectorStopped;
+        }
+
+        s_knight_battle_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_battle_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_battle_b_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_battle_b_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_1_beer_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_1_beer_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_2_beer_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_2_beer_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_3_beer_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_3_beer_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_3_beer_b_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_3_beer_b_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_4_beer_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_4_beer_a_pd.stopped -= OnPlayableDirectorStopped;
+        s_knight_4_beer_b_pd.stopped -= OnPlayableDirectorStopped;
+        s_hunter_4_beer_b_pd.stopped -= OnPlayableDirectorStopped;
+        gift_opening_pd.stopped -= OnPlayableDirectorStopped;
+        game_start_pd.stopped -= OnPlayableDirectorStopped;
+    }
+
+    IEnumerator MoveMenuBack(Vector3 targetPosition, float m_speed)
+    {
+        while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
+        {
+            menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed * 6);
+            yield return null;
+        }
+        menuIsOnItsPos = false;
+        menuBack = true;
+        menu.SetActive(false);
+    }
+
+    void DestroyAllHorizontalLinesInScene()
+    {
+        // シーンの中にある全ての 「HorizontalLine」 GameObjectを探して以下の配列に集める
+        GameObject[] horizontalLines = GameObject.FindGameObjectsWithTag("HorizontalLine");
+
+        if (horizontalLines.Length == 0)
+        {
+            Debug.Log("No HorizontalLine objects found in the scene.");
+            return;
+        }
+
+        // 全部削除する
+        foreach (GameObject line in horizontalLines)
+        {
+            Destroy(line);
+            Debug.Log($"Destroyed HorizontalLine: {line.name}");
         }
     }
 }
