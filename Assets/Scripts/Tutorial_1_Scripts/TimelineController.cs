@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Timeline;
 
 public class TimelineController : MonoBehaviour
 {
     public GameObject introduceMessage; // 歓迎メッセージのGameObject
+    public PlayableDirector introduceM_pd;
+    private bool introduceM_pd_start = true;
+    private bool introduceM_pd_played = false;
+
     public GameObject firstActMessage; // 序幕メッセージのGameObject
     public PlayableDirector firstActPlayableDirector;  // 序幕メッセージのPlayableDirector
+    private bool fstAM_pd_start = false;
+    private bool fstAM_pd_played = false;
 
     private enum GameMode
     {
@@ -15,11 +22,13 @@ public class TimelineController : MonoBehaviour
     }
 
     private GameMode currentGameMode = GameMode.TextPlaying;  // デフォルトゲームモードはTextPlaying
-    private bool isFirstActPlaying = false;  // 序幕メッセージが再生中かどうかを示すブール値、初期値はfalse
+
 
     void Start()
     {
+        firstActMessage.SetActive(false);
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
+        introduceM_pd.stopped += OnPlayableDirectorStopped;
         if (firstActPlayableDirector != null)
         {
             firstActPlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -32,35 +41,41 @@ public class TimelineController : MonoBehaviour
 
     void Update()
     {
-        // Enterキーが押されたかどうかをチェック
-        if (Input.GetKeyDown(KeyCode.Return))
+        // Enterキーが押されたかどうかをチェック修正→マウスの左クリック
+        if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
         {
             switch (currentGameMode)
             {
                 case GameMode.TextPlaying:
-                    if (!isFirstActPlaying) // 序幕メッセージが再生中でない場合
+
+                    if (introduceM_pd_start && !introduceM_pd_played && !fstAM_pd_played)
                     {
-                        if (introduceMessage != null) // 歓迎メッセージがnullでない場合
-                        {
-                            introduceMessage.SetActive(false); // デフォルトの歓迎メッセージを非表示にする
-                        }
-
-                        if (firstActMessage != null)  // 序幕メッセージがnullでない場合
-                        {
-                            firstActMessage.SetActive(true);  // 序幕メッセージを表示する
-                        }
-
-                        // 播放 Timeline
-                        if (firstActPlayableDirector != null)  // 序幕メッセージのPlayableDirectorがnullでない場合
-                        {
-                            firstActPlayableDirector.Play();  // 序幕メッセージのPlayableDirectorを再生する
-                            isFirstActPlaying = true;  // 再生中とマークする
-                        }
-                        else
-                        {
-                            Debug.LogWarning("PlayableDirector is not assigned.");
-                        }
+                        introduceM_pd.time = introduceM_pd.duration;
+                        introduceM_pd.Evaluate();
+                        introduceM_pd_start = false;
+                        introduceM_pd_played = true;
                     }
+                    else if (!introduceM_pd_start && introduceM_pd_played && !fstAM_pd_start && !fstAM_pd_played)
+                    {
+                        introduceMessage.SetActive(false); // デフォルトの歓迎メッセージを非表示にする
+
+                        firstActMessage.SetActive(true);  // 序幕メッセージを表示する
+                        fstAM_pd_start = true;
+                    }
+                    else if (fstAM_pd_start )
+                    {
+                        Debug.Log("stop!");
+                        firstActPlayableDirector.time = firstActPlayableDirector.duration;
+                        firstActPlayableDirector.Evaluate();
+
+                        fstAM_pd_start = false;
+                        fstAM_pd_played = true;
+                    }
+                    else if(!fstAM_pd_start && fstAM_pd_played)
+                    {
+                        SceneManager.LoadScene("JyoMaku_before_0");
+                    }
+
                     break;
 
                 case GameMode.WaitForSceneChange:
@@ -73,11 +88,18 @@ public class TimelineController : MonoBehaviour
 
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
+        if (director == introduceM_pd)
+        {
+            introduceM_pd_played = true;
+            introduceM_pd_start = false;
+            Debug.Log("introduceM_pd playback completed.");
+        }
         if (director == firstActPlayableDirector)
         {
-            isFirstActPlaying = false;  // 再生完了とマークする
-            currentGameMode = GameMode.WaitForSceneChange;  // シーン切り替え待ちモードに変更する
-            Debug.Log("Timeline playback completed.");
+            fstAM_pd_played = true;
+            fstAM_pd_start = false;
+            currentGameMode = GameMode.WaitForSceneChange;
+            Debug.Log("firstActPlayableDirector playback completed.");
         }
     }
 
@@ -88,6 +110,7 @@ public class TimelineController : MonoBehaviour
         {
             firstActPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
+        introduceM_pd.stopped -= OnPlayableDirectorStopped;
     }
 
     /*

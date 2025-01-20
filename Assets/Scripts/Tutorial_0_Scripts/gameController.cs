@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -14,10 +15,12 @@ public class gameController : MonoBehaviour
     public GameObject secondMessage; // ゲームオブジェクト secondMessage（開始メッセージ1）
     public PlayableDirector secondMessagePlayableDirector; // secondMessageのPlayableDirector
     private bool hasSecondMessagePlayed = false; //  secondMessageは再生完了されたか？のブール値;まだ再生完了してない
+    private bool scM_pd_halfClick = false;
 
     public GameObject thirdMessage; // ゲームオブジェクト thirdMessage（開始メッセージ1）
     public PlayableDirector thirdMessagePlayableDirector; // thirdMessageのPlayableDirector
     private bool hasThirdMessagePlayed = false; //  thirdMessageは再生完了されたか？のブール値;まだ再生完了してない
+    private bool thdM_pd_halfClick = false;
 
     public GameObject charaMessage; // ゲームオブジェクト charaMessage（開始メッセージ1）
     public PlayableDirector charaMessagePlayableDirector; // charaMessageのPlayableDirector
@@ -156,7 +159,13 @@ public class gameController : MonoBehaviour
     {
         Debug.Log("hasLineMessagePlayed:"+hasLineMessagePlayed);
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (!hasFirstMessagePlayed && Input.GetMouseButtonDown(0)) //　FirstMessageは始まる時勝手に再生するから、まだ再生終わってない間クリックすると、timelineの最後に設置する
+        {
+            firstMessagePlayableDirector.time = firstMessagePlayableDirector.duration;
+            firstMessagePlayableDirector.Evaluate();
+        }
+
+        if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
         {
             HandleEnterPress();
         }
@@ -164,19 +173,34 @@ public class gameController : MonoBehaviour
 
     void HandleEnterPress()
     {
-        if (hasFirstMessagePlayed == true && !hasSecondMessagePlayed)
+
+        if (hasFirstMessagePlayed == true && !scM_pd_halfClick && !hasSecondMessagePlayed)
         {
             firstMessage.SetActive(false);
             secondMessage.SetActive(true);
             secondMessagePlayableDirector.Play();
+            scM_pd_halfClick = true; //　secondMessage再生始める
         }
-        else if(hasSecondMessagePlayed == true && !hasThirdMessagePlayed)
+        else if (scM_pd_halfClick && !hasSecondMessagePlayed) //　secondMessage再生始めて、まだ終わってない間
+        {
+            scM_pd_halfClick = false; // secondMessage再生終わる
+            secondMessagePlayableDirector.time = secondMessagePlayableDirector.duration;
+            secondMessagePlayableDirector.Evaluate();
+        }
+        else if(hasSecondMessagePlayed == true && !scM_pd_halfClick && !thdM_pd_halfClick && !hasThirdMessagePlayed)
         {
             secondMessage.SetActive(false);
             thirdMessage.SetActive(true);
             thirdMessagePlayableDirector.Play();
+            thdM_pd_halfClick = true;
         }
-        else if (hasThirdMessagePlayed == true && !hasCharaMessagePlayed)
+        else if(thdM_pd_halfClick && !hasThirdMessagePlayed)
+        {
+            thdM_pd_halfClick = false;
+            thirdMessagePlayableDirector.time = thirdMessagePlayableDirector.duration;
+            thirdMessagePlayableDirector.Evaluate();
+        }
+        else if (hasThirdMessagePlayed == true && !thdM_pd_halfClick)
         {
             thirdMessage.SetActive(false);
             SceneManager.LoadScene("Tutorial_NewVersion");
@@ -195,12 +219,13 @@ public class gameController : MonoBehaviour
         }
         else if (director == secondMessagePlayableDirector)
         {
+            scM_pd_halfClick = false; // secondMessage再生終わる
             hasSecondMessagePlayed = true;
-
 
         }
         else if (director == thirdMessagePlayableDirector)
         {
+            thdM_pd_halfClick = false;
             hasThirdMessagePlayed = true;
 
         }

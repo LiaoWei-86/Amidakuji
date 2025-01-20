@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class J0_5_GameController : MonoBehaviour
 {
     public PlayableDirector j0_5_starting;
+    private bool start = true;
 
     public bool canToNextStage = false;
 
@@ -28,11 +29,21 @@ public class J0_5_GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Return) && canToNextStage)
+        if(Input.GetMouseButtonDown(0))
         {
-            SceneManager.LoadScene("JyoMaku_1");
+            if(start && !canToNextStage)
+            {
+                j0_5_starting.time = j0_5_starting.duration;
+                j0_5_starting.Evaluate();
+                start = false;
+                canToNextStage = true;
+            }
+            else if(!start && canToNextStage)
+            {
+                SceneManager.LoadScene("JyoMaku_1");
+            }
         }
+
     }
 
     void OnPlayableDirectorStopped(PlayableDirector director)
@@ -40,7 +51,7 @@ public class J0_5_GameController : MonoBehaviour
         if(director == j0_5_starting)
         {
             canToNextStage = true;
-
+            start = false;
             Debug.Log("canToNextStage:" + canToNextStage);
         }
     }

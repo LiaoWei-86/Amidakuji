@@ -21,7 +21,7 @@ public class beerScript : MonoBehaviour
     }
 
     // マウスがキャラクターの上に入った時の処理
-    void OnMouseEnter()
+    private void OnMouseEnter()
     {
         Debug.Log("beer");
         if (iconExplaMode)
@@ -33,7 +33,7 @@ public class beerScript : MonoBehaviour
     }
 
     // マウスがキャラクターから離れたときの処理
-    void OnMouseExit()
+    private void OnMouseExit()
     {
         if (iconExplaMode)
         {

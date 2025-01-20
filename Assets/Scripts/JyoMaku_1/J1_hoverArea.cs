@@ -57,6 +57,7 @@ public class J1_hoverArea : MonoBehaviour
             tooltipInstance = Instantiate(tooltipPrefab, transform.position, Quaternion.identity);
             Debug.Log($"Tooltip instantiated at {transform.position}");
         }
+        J1_GameControllerScript.currentGameMode = J1_GameController.GameMode.choosing;
     }
 
     // マウスがオブジェクトから離れた際の処理
@@ -68,6 +69,7 @@ public class J1_hoverArea : MonoBehaviour
             Destroy(tooltipInstance);
             Debug.Log("Tooltip destroyed");
         }
+        J1_GameControllerScript.currentGameMode = J1_GameController.GameMode.PlayerPlaying;
     }
 
     // マウスがオブジェクト上にある際の処理

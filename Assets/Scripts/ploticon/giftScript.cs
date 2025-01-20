@@ -40,7 +40,7 @@ public class giftScript : MonoBehaviour
             if (instance != null)
             {
                 Destroy(instance);
-                Debug.Log("instance_coin destroyed");
+                Debug.Log("instance_gift destroyed");
             }
         }
 
