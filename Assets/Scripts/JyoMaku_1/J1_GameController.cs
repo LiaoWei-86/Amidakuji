@@ -8,9 +8,10 @@ using TMPro;
 public class J1_GameController : MonoBehaviour
 {
     public GameObject enterAlone;
-    public GameObject cursor_bling;
     public GameObject game_start;
     public PlayableDirector game_start_pd;
+    private bool game_start_played = false;
+    [SerializeField] private float frameRate = 60.0f;
 
     public Transform character1_initial_pos; // 移動する前にキャラクターの居場所
     public Transform character2_initial_pos; // 移動する前にキャラクターの居場所
@@ -29,56 +30,75 @@ public class J1_GameController : MonoBehaviour
     public GameObject targetCompletedText; // ゲームオブジェクト targetCompletedText
     public PlayableDirector targetCompletedTextPlayableDirector; // targetCompletedTextのPlayableDirector
 
-    public GameObject failed_Text; // ゲームオブジェクト failed_Text
-    public PlayableDirector failed_TextPlayableDirector; // failed_TextのPlayableDirector
+    public GameObject targetText_2; // ゲームオブジェクト targetText
+    public PlayableDirector targetText_2_PlayableDirector; // targetTextのPlayableDirector
+    private bool has_targetText_2_PlayableDirector_played = false;
 
-    public GameObject didnotMetText; // ゲームオブジェクト didnotMetText
-    public PlayableDirector didnotMetTextPlayableDirector; // didnotMetTextのPlayableDirector
+    public GameObject targetCompletedText_2; // ゲームオブジェクト targetCompletedText
+    public PlayableDirector targetCompletedText_2_PlayableDirector; // targetCompletedTextのPlayableDirector
 
     public GameObject dialogue_B2; // dialogue_B2
     public PlayableDirector dialogue_B2_PlayableDirector; //  dialogue_B2のPlayableDirector
-
-    public GameObject cleared_Text; // ゲームオブジェクト cleared_Text
-    public PlayableDirector cleared_TextPlayableDirector; // cleared_TextのPlayableDirector
-
+    private bool has_dialogue_B2_started = false;
+    private bool has_dialogue_B2_played = false;
+    private bool has_dialogue_B2_p2_started = false;
+    private bool has_dialogue_B2_p1_played = false;
 
     public GameObject s_knight_a;
     public PlayableDirector s_knight_a_pd;
     private bool has_s_knight_a_pd_played = false;
+    private bool has_s_knight_a_pd_started = false;
 
     public GameObject s_hunter_a;
     public PlayableDirector s_hunter_a_pd;
     private bool has_s_hunter_a_pd_played = false;
+    private bool has_s_hunter_a_pd_started = false;
 
     // 結末アイコンにたどり着いた時のセリフ
 
     // 失敗の場合
     public GameObject dialogue_failed_hunter; // ゲームオブジェクト dialogue_failed_hunter
     public PlayableDirector dialogue_failed_hunterPlayableDirector; // dialogue_failed_hunterのPlayableDirector
+    private bool has_dialogue_failed_hunter_started = false;
+    private bool has_dialogue_failed_hunter_played = false;
 
     public GameObject dialogue_failed_knight; // ゲームオブジェクト dialogue_failed_knight
     public PlayableDirector dialogue_failed_knightPlayableDirector; // dialogue_failed_knightのPlayableDirector
+    private bool has_dialogue_failed_knight_played = false;
+    private bool has_dialogue_failed_knight_started = false;
 
     // 酒場だけに行った場合
     public GameObject dialogue_beer_hunter; // ゲームオブジェクト dialogue_beer_hunter
     public PlayableDirector dialogue_beer_hunterPlayableDirector; // dialogue_beer_hunterのPlayableDirector
+    private bool has_dialogue_beer_hunter_started = false;
+    private bool has_dialogue_beer_hunter_played = false;
 
     public GameObject dialogue_beer_knight; // ゲームオブジェクト dialogue_beer_knight
     public PlayableDirector dialogue_beer_knightPlayableDirector; // dialogue_beer_knightのPlayableDirector
+    private bool has_dialogue_beer_knight_played = false;
+    private bool has_dialogue_beer_knight_started = false;
 
     // 戦って酒場だけに行った場合
     public GameObject dialogue_battleBeer_hunter; // ゲームオブジェクト dialogue_battleBeer_hunter
     public PlayableDirector dialogue_battleBeer_hunterPlayableDirector; // dialogue_battleBeer_hunterのPlayableDirector
+    private bool has_dialogue_battleBeer_hunter_started = false;
+    private bool has_dialogue_battleBeer_hunter_played = false;
 
     public GameObject dialogue_battleBeer_knight; // ゲームオブジェクト dialogue_battleBeer_knight
     public PlayableDirector dialogue_battleBeer_knightPlayableDirector; // dialogue_battleBeer_knightのPlayableDirector
+    private bool has_dialogue_battleBeer_knight_played = false;
+    private bool has_dialogue_battleBeer_knight_started = false;
 
     // 線を引かず、そのまま結末アイコンにたどり着いた場合
     public GameObject dialogue_OE_hunter; // ゲームオブジェクト dialogue_OE_hunter
     public PlayableDirector dialogue_OE_hunterPlayableDirector; // dialogue_OE_hunterのPlayableDirector
+    private bool has_dialogue_OE_hunter_started = false;
+    private bool has_dialogue_OE_hunter_played = false;
 
     public GameObject dialogue_OE_knight; // ゲームオブジェクト dialogue_OE_knight
     public PlayableDirector dialogue_OE_knightPlayableDirector; // dialogue_OE_knightのPlayableDirector
+    private bool has_dialogue_OE_knight_started = false;
+    private bool has_dialogue_OE_knight_played = false;
 
     public Transform startpoint_knight; // 騎士のスタート点の位置
     public Transform startpoint_hunter; // 猟師のスタート点の位置
@@ -93,9 +113,24 @@ public class J1_GameController : MonoBehaviour
 
     public GameObject fukidashi_0; // 吹き出し-0  のゲームオブジェクト
     public PlayableDirector dialogue_0; // セリフ-0  のPlayableDirector
+    private bool has_diaolgue_0_started = false;
+    private bool has_diaolgue_0_played = false;
+    private bool has_diaolgue_0_p2_started = false;
+    private bool has_diaolgue_0_p1_played = false;
+    private bool has_diaolgue_0_p3_started = false;
+    private bool has_diaolgue_0_p2_played = false;
+    private bool has_diaolgue_0_p4_started = false;
+    private bool has_diaolgue_0_p3_played = false;
+    private bool has_diaolgue_0_p5_started = false;
+    private bool has_diaolgue_0_p4_played = false;
 
     public GameObject fukidashi; // 吹き出しのゲームオブジェクト
     public PlayableDirector dialogue; // セリフのPlayableDirector
+    private bool has_diaolgue_started = false;
+    private bool has_diaolgue_played = false;
+    private bool has_diaolgue_p2_started = false;
+    private bool has_diaolgue_p1_played = false;
+
     public GameObject dog; // 犬
 
     public GameObject knight;
@@ -125,14 +160,6 @@ public class J1_GameController : MonoBehaviour
 
     public GameObject charaInfoPrefab;
 
-    // 遊び終わったらメニューが飛んでくる
-    public GameObject menu; // menu_controller
-    public Vector3 menuTargetPosition = new Vector3(5.5f, -4.2f, 0); // たどり着いて欲しい座標
-    public Transform menuBackPosition;
-    public bool menuIsOnItsPos = false; // メニューは目標座標に着いたかをfalseとマークする
-    public bool menuBack = false;
-    public float moveSpeed = 1.5f; // メニューの移動スピード
-    public TMP_Text cannotENTER; // メニューの「Enter：進む」
 
     public bool canCreateLine_1 = true; // 今は上の横線をつなぐことができるか？をtrueとマークする
     public bool canCreateLine_2 = true; // 今は下の横線をつなぐことができるか？をtrueとマークする
@@ -152,60 +179,92 @@ public class J1_GameController : MonoBehaviour
 
     public GameObject s_knight_battle_a; // ゲームオブジェクト s_knight_battle_a   バトルアイコンですれ違う前の騎士
     public PlayableDirector s_knight_battle_a_pd; // s_knight_battle_aのPlayableDirector
+    private bool has_s_knight_battle_a_started = false;
+    private bool has_s_knight_battle_a_played = false;
 
     public GameObject s_hunter_battle_a; // ゲームオブジェクト s_hunter_battle_a  バトルアイコンですれ違う前の猟師
     public PlayableDirector s_hunter_battle_a_pd; // s_hunter_battle_aのPlayableDirector
+    private bool has_s_hunter_battle_a_started = false;
+    private bool has_s_hunter_battle_a_played = false;
 
     public GameObject s_knight_battle_b; // ゲームオブジェクト s_knight_battle_a  バトルアイコンですれ違った後の騎士
     public PlayableDirector s_knight_battle_b_pd; // s_knight_battle_aのPlayableDirector
+    private bool has_s_knight_battle_b_started = false;
+    private bool has_s_knight_battle_b_played = false;
 
     public GameObject s_hunter_battle_b; // ゲームオブジェクト s_hunter_battle_a  バトルアイコンですれ違った後の猟師
     public PlayableDirector s_hunter_battle_b_pd; // s_hunter_battle_aのPlayableDirector
+    private bool has_s_hunter_battle_b_started = false;
+    private bool has_s_hunter_battle_b_played = false;
 
     public GameObject s_knight_1_beer; // ゲームオブジェクト s_knight_1_beer  ルート1,ビルアイコンの隣の騎士
     public PlayableDirector s_knight_1_beer_pd; // s_knight_1_beerのPlayableDirector
+    private bool has_s_knight_1_beer_started = false;
+    private bool has_s_knight_1_beer_played = false;
 
     public GameObject s_hunter_1_beer; // ゲームオブジェクト s_hunter_1_beer  ルート1,ビルアイコンの隣の猟師
     public PlayableDirector s_hunter_1_beer_pd; //  s_hunter_1_beerのPlayableDirector
+    private bool has_s_hunter_1_beer_started = false;
+    private bool has_s_hunter_1_beer_played = false;
 
     public GameObject s_knight_2_beer; // ゲームオブジェクト s_knight_2_beer  ルート2,ビルアイコンの隣の騎士
     public PlayableDirector s_knight_2_beer_pd; // s_knight_1_beerのPlayableDirector
+    private bool has_s_knight_2_beer_started = false;
+    private bool has_s_knight_2_beer_played = false;
 
     public GameObject s_hunter_2_beer; // ゲームオブジェクト s_hunter_2_beer  ルート2,ビルアイコンの隣の猟師
     public PlayableDirector s_hunter_2_beer_pd; //  s_hunter_1_beerのPlayableDirector
+    private bool has_s_hunter_2_beer_started = false;
+    private bool has_s_hunter_2_beer_played = false;
 
     public GameObject s_knight_3_beer_a; // ゲームオブジェクト s_knight_3_beer_a   ルート3: ビルアイコンですれ違う前の騎士
     public PlayableDirector s_knight_3_beer_a_pd; // s_knight_3_beer_aのPlayableDirector
+    private bool has_s_knight_3_beer_a_started = false;
+    private bool has_s_knight_3_beer_a_played = false;
 
     public GameObject s_hunter_3_beer_a; // ゲームオブジェクト s_hunter_3_beer_a  ルート3: ビルアイコンですれ違う前の猟師
     public PlayableDirector s_hunter_3_beer_a_pd; // s_hunter_3_beer_aのPlayableDirector
+    private bool has_s_hunter_3_beer_a_started = false;
+    private bool has_s_hunter_3_beer_a_played = false;
 
     public GameObject s_knight_3_beer_b; // ゲームオブジェクト s_knight_3_beer_a  ルート3: ビルアイコンですれ違った後の騎士
     public PlayableDirector s_knight_3_beer_b_pd; // s_knight_3_beer_aのPlayableDirector
+    private bool has_s_knight_3_beer_b_started = false;
+    private bool has_s_knight_3_beer_b_played = false;
 
     public GameObject s_hunter_3_beer_b; // ゲームオブジェクト s_hunter_3_beer_a  ルート3: ビルアイコンですれ違った後の猟師
     public PlayableDirector s_hunter_3_beer_b_pd; // s_hunter_3_beer_aのPlayableDirector
+    private bool has_s_hunter_3_beer_b_started = false;
+    private bool has_s_hunter_3_beer_b_played = false;
 
     public GameObject s_knight_4_beer_a; // ゲームオブジェクト s_knight_4_beer_a   ルート4: ビルアイコンですれ違う前の騎士
     public PlayableDirector s_knight_4_beer_a_pd; // s_knight_4_beer_aのPlayableDirector
+    private bool has_s_knight_4_beer_a_started = false;
+    private bool has_s_knight_4_beer_a_played = false;
 
     public GameObject s_hunter_4_beer_a; // ゲームオブジェクト s_hunter_4_beer_a  ルート4: ビルアイコンですれ違う前の猟師
     public PlayableDirector s_hunter_4_beer_a_pd; // s_hunter_4_beer_aのPlayableDirector
+    private bool has_s_hunter_4_beer_a_started = false;
+    private bool has_s_hunter_4_beer_a_played = false;
 
     public GameObject s_knight_4_beer_b; // ゲームオブジェクト s_knight_4_beer_a  ルート4: ビルアイコンですれ違った後の騎士
     public PlayableDirector s_knight_4_beer_b_pd; // s_knight_4_beer_aのPlayableDirector
+    private bool has_s_knight_4_beer_b_started = false;
+    private bool has_s_knight_4_beer_b_played = false;
 
     public GameObject s_hunter_4_beer_b; // ゲームオブジェクト s_hunter_4_beer_a  ルート4: ビルアイコンですれ違った後の猟師
     public PlayableDirector s_hunter_4_beer_b_pd; // s_hunter_4_beer_aのPlayableDirector
+    private bool has_s_hunter_4_beer_b_started = false;
+    private bool has_s_hunter_4_beer_b_played = false;
 
-
-    private enum GameMode
+    public enum GameMode
     {
         TextPlaying, // ゲーム開始時のテキストが再生中
         PlayerPlaying, // プレイヤーが操作している状態
-        WaitForSceneChange // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
+        WaitForSceneChange, // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
+        choosing // プレイヤーは横線を接続してるなどの時
     }
-    private GameMode currentGameMode = GameMode.TextPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
+    public GameMode currentGameMode = GameMode.TextPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
 
 
     // Start is called before the first frame update
@@ -222,17 +281,9 @@ public class J1_GameController : MonoBehaviour
         {
             targetText.SetActive(false);
         }
-        if (failed_Text != null)
+        if (targetText_2 != null)
         {
-            failed_Text.SetActive(false);
-        }
-        if (didnotMetText != null)
-        {
-            didnotMetText.SetActive(false);
-        }
-        if (cleared_Text != null)
-        {
-            cleared_Text.SetActive(false);
+            targetText_2.SetActive(false);
         }
         if (fukidashi_0 != null)
         {
@@ -282,10 +333,6 @@ public class J1_GameController : MonoBehaviour
         {
             dialogue_battleBeer_knight.SetActive(false);
         }
-        if( menu != null)
-        {
-            menu.SetActive(false);
-        }
         dialogue_B2.SetActive(false);
         gift_opening.SetActive(false);
         s_knight_battle_a.SetActive(false);
@@ -304,8 +351,8 @@ public class J1_GameController : MonoBehaviour
         s_hunter_4_beer_a.SetActive(false);
         s_knight_4_beer_b.SetActive(false);
         s_hunter_4_beer_b.SetActive(false);
+        targetCompletedText_2.SetActive(false);
         enterAlone.SetActive(false);
-        cursor_bling.SetActive(false);
 
         // PlayableDirectorがnullでないことを確認し、再生完了イベントをサブスクライブ
         s_knight_a_pd.stopped += OnPlayableDirectorStopped;
@@ -332,18 +379,6 @@ public class J1_GameController : MonoBehaviour
         {
             targetCompletedTextPlayableDirector.stopped += OnPlayableDirectorStopped;
         }
-        if (didnotMetTextPlayableDirector != null)
-        {
-            didnotMetTextPlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
-        if (failed_TextPlayableDirector != null)
-        {
-            failed_TextPlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
-        else
-        {
-            Debug.LogWarning("didnotfriendTextPlayableDirector is not assigned.");
-        }
         if (dialogue_B2_PlayableDirector != null)
         {
             dialogue_B2_PlayableDirector.stopped += OnPlayableDirectorStopped;
@@ -351,14 +386,6 @@ public class J1_GameController : MonoBehaviour
         else
         {
             Debug.LogWarning("befriendPlayableDirector is not assigned.");
-        }
-        if (cleared_TextPlayableDirector != null)
-        {
-            cleared_TextPlayableDirector.stopped += OnPlayableDirectorStopped;
-        }
-        else
-        {
-            Debug.LogWarning(" becameFriendTextPlayableDirector is not assigned.");
         }
         if (dialogue != null)
         {
@@ -421,6 +448,7 @@ public class J1_GameController : MonoBehaviour
         s_knight_4_beer_b_pd.stopped += OnPlayableDirectorStopped;
         s_hunter_4_beer_b_pd.stopped += OnPlayableDirectorStopped;
         gift_opening_pd.stopped += OnPlayableDirectorStopped;
+        targetText_2_PlayableDirector.stopped += OnPlayableDirectorStopped;
 
         // Initialize the dictionary and add the points
         pointsDictionary = new Dictionary<int, Vector3>();
@@ -443,40 +471,274 @@ public class J1_GameController : MonoBehaviour
             Debug.Log("Point " + point.Key + ": " + point.Value);
         }
 
-        CreateHoverAreaJ1(tenGameObjects[0],tenGameObjects[3]);
-        CreateHoverAreaJ1(tenGameObjects[4], tenGameObjects[7]);
-
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         switch (currentGameMode)
         {
             case GameMode.TextPlaying:
-                if (Input.GetKeyDown(KeyCode.Return))
+                pauseAni();
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
                 {
-                    if (has_targetTextPlayableDirector_played && !has_s_knight_a_pd_played)
+                    if (has_targetText_2_PlayableDirector_played && !has_s_knight_a_pd_started && !has_s_knight_a_pd_played && !has_s_hunter_a_pd_started && !has_s_hunter_a_pd_played)
                     {
                         if (enterAlone != null)
                         {
                             enterAlone.SetActive(false);
                         }
                         s_knight_a.SetActive(true);
+                        has_s_knight_a_pd_started = true;
                     }
-                    else if (has_s_knight_a_pd_played && !has_s_hunter_a_pd_played)
+                    else if (has_s_knight_a_pd_started && !has_s_knight_a_pd_played && !has_s_hunter_a_pd_started && !has_s_hunter_a_pd_played)
+                    {
+                        s_knight_a_pd.time = s_knight_a_pd.duration;
+                        s_knight_a_pd.Evaluate();
+                    }
+                    else if (!has_s_knight_a_pd_started && has_s_knight_a_pd_played && !has_s_hunter_a_pd_started && !has_s_hunter_a_pd_played)
                     {
                         s_knight_a.SetActive(false);
                         s_hunter_a.SetActive(true);
+                        has_s_hunter_a_pd_started = true;
                     }
-                    else if (has_s_hunter_a_pd_played)
+                    else if (has_s_hunter_a_pd_started && !has_s_hunter_a_pd_played)
+                    {
+                        s_hunter_a_pd.time = s_hunter_a_pd.duration;
+                        s_hunter_a_pd.Evaluate();
+                    }
+                    else if (!has_s_hunter_a_pd_started && has_s_hunter_a_pd_played && !game_start_played)
                     {
                         s_hunter_a.SetActive(false);
-
+                        CreateHoverAreaJ1(tenGameObjects[0], tenGameObjects[3]);
+                        CreateHoverAreaJ1(tenGameObjects[4], tenGameObjects[7]);
                         game_start.SetActive(true);
                     }
+
+                    if (has_dialogue_failed_hunter_started && !has_dialogue_failed_hunter_played)
+                    {
+                        dialogue_failed_hunterPlayableDirector.time = dialogue_failed_hunterPlayableDirector.duration;
+                        dialogue_failed_hunterPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_failed_knight_started && !has_dialogue_failed_knight_played)
+                    {
+                        dialogue_failed_knightPlayableDirector.time = dialogue_failed_knightPlayableDirector.duration;
+                        dialogue_failed_knightPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_beer_hunter_started && !has_dialogue_beer_hunter_played)
+                    {
+                        dialogue_beer_hunterPlayableDirector.time = dialogue_beer_hunterPlayableDirector.duration;
+                        dialogue_beer_hunterPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_beer_knight_started && !has_dialogue_beer_knight_played)
+                    {
+                        dialogue_beer_knightPlayableDirector.time = dialogue_beer_knightPlayableDirector.duration;
+                        dialogue_beer_knightPlayableDirector.Evaluate();
+                    }
+
+                    if(has_dialogue_battleBeer_hunter_started && !has_dialogue_battleBeer_hunter_played)
+                    {
+                        dialogue_battleBeer_hunterPlayableDirector.time = dialogue_battleBeer_hunterPlayableDirector.duration;
+                        dialogue_battleBeer_hunterPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_battleBeer_knight_started && !has_dialogue_battleBeer_knight_played)
+                    {
+                        dialogue_battleBeer_knightPlayableDirector.time = dialogue_battleBeer_knightPlayableDirector.duration;
+                        dialogue_battleBeer_knightPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_OE_hunter_started && !has_dialogue_OE_hunter_played)
+                    {
+                        dialogue_OE_hunterPlayableDirector.time = dialogue_OE_hunterPlayableDirector.duration;
+                        dialogue_OE_hunterPlayableDirector.Evaluate();
+                    }
+
+                    if (has_dialogue_OE_knight_started && !has_dialogue_OE_knight_played)
+                    {
+                        dialogue_OE_knightPlayableDirector.time = dialogue_OE_knightPlayableDirector.duration;
+                        dialogue_OE_knightPlayableDirector.Evaluate();
+                    }
+
+                    if (has_s_knight_battle_a_started && !has_s_knight_battle_a_played)
+                    {
+                        s_knight_battle_a_pd.time = s_knight_battle_a_pd.duration;
+                        s_knight_battle_a_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_battle_b_started && !has_s_knight_battle_b_played)
+                    {
+                        s_knight_battle_b_pd.time = s_knight_battle_b_pd.duration;
+                        s_knight_battle_b_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_battle_a_started && !has_s_hunter_battle_a_played)
+                    {
+                        s_hunter_battle_a_pd.time = s_hunter_battle_a_pd.duration;
+                        s_hunter_battle_a_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_battle_b_started && !has_s_hunter_battle_b_played)
+                    {
+                        s_hunter_battle_b_pd.time = s_hunter_battle_b_pd.duration;
+                        s_hunter_battle_b_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_1_beer_started && !has_s_knight_1_beer_played)
+                    {
+                        s_knight_1_beer_pd.time = s_knight_1_beer_pd.duration;
+                        s_knight_1_beer_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_1_beer_started && !has_s_hunter_1_beer_played)
+                    {
+                        s_hunter_1_beer_pd.time = s_hunter_1_beer_pd.duration;
+                        s_hunter_1_beer_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_2_beer_started && !has_s_knight_2_beer_played)
+                    {
+                        s_knight_2_beer_pd.time = s_knight_2_beer_pd.duration;
+                        s_knight_2_beer_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_2_beer_started && !has_s_hunter_2_beer_played)
+                    {
+                        s_hunter_2_beer_pd.time = s_hunter_2_beer_pd.duration;
+                        s_hunter_2_beer_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_3_beer_a_started && !has_s_knight_3_beer_a_played)
+                    {
+                        s_knight_3_beer_a_pd.time = s_knight_3_beer_a_pd.duration;
+                        s_knight_3_beer_a_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_3_beer_b_started && !has_s_knight_3_beer_b_played)
+                    {
+                        s_knight_3_beer_b_pd.time = s_knight_3_beer_b_pd.duration;
+                        s_knight_3_beer_b_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_3_beer_a_started && !has_s_hunter_3_beer_a_played)
+                    {
+                        s_hunter_3_beer_a_pd.time = s_hunter_3_beer_a_pd.duration;
+                        s_hunter_3_beer_a_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_3_beer_b_started && !has_s_hunter_3_beer_b_played)
+                    {
+                        s_hunter_3_beer_b_pd.time = s_hunter_3_beer_b_pd.duration;
+                        s_hunter_3_beer_b_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_4_beer_a_started && !has_s_knight_4_beer_a_played)
+                    {
+                        s_knight_4_beer_a_pd.time = s_knight_4_beer_a_pd.duration;
+                        s_knight_4_beer_a_pd.Evaluate();
+                    }
+
+                    if (has_s_knight_4_beer_b_started && !has_s_knight_4_beer_b_played)
+                    {
+                        s_knight_4_beer_b_pd.time = s_knight_4_beer_b_pd.duration;
+                        s_knight_4_beer_b_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_4_beer_a_started && !has_s_hunter_4_beer_a_played)
+                    {
+                        s_hunter_4_beer_a_pd.time = s_hunter_4_beer_a_pd.duration;
+                        s_hunter_4_beer_a_pd.Evaluate();
+                    }
+
+                    if (has_s_hunter_4_beer_b_started && !has_s_hunter_4_beer_b_played)
+                    {
+                        s_hunter_4_beer_b_pd.time = s_hunter_4_beer_b_pd.duration;
+                        s_hunter_4_beer_b_pd.Evaluate();
+                    }
+
+                    if (has_diaolgue_started && !has_diaolgue_p1_played && !has_diaolgue_p2_started && !has_diaolgue_played)
+                    {
+                        dialogue.time = FrameToTime(321);
+                        dialogue.Evaluate();
+                    }
+                    else if(has_diaolgue_started && has_diaolgue_p1_played && !has_diaolgue_p2_started && !has_diaolgue_played)
+                    {
+                        dialogue.Play();
+                        has_diaolgue_p2_started = true;
+                    }
+                    else if(has_diaolgue_started && has_diaolgue_p1_played && has_diaolgue_p2_started && !has_diaolgue_played)
+                    {
+                        dialogue.time = dialogue.duration;
+                        dialogue.Evaluate();
+                    }
+
+                    if (has_dialogue_B2_started && !has_dialogue_B2_p1_played && !has_dialogue_B2_p2_started && !has_dialogue_B2_played)
+                    {
+                        dialogue_B2_PlayableDirector.time = FrameToTime(821);
+                        dialogue_B2_PlayableDirector.Evaluate();
+                    }
+                    else if (has_dialogue_B2_started && has_dialogue_B2_p1_played && !has_dialogue_B2_p2_started && !has_dialogue_B2_played)
+                    {
+                        dialogue_B2_PlayableDirector.Play();
+                        has_dialogue_B2_p2_started = true;
+                    }
+                    else if (has_dialogue_B2_started && has_dialogue_B2_p1_played && has_dialogue_B2_p2_started && !has_dialogue_B2_played)
+                    {
+                        dialogue_B2_PlayableDirector.time = dialogue_B2_PlayableDirector.duration;
+                        dialogue_B2_PlayableDirector.Evaluate();
+                    }
+
+                    //if(has_diaolgue_0_started && !has_diaolgue_0_p1_played && !has_diaolgue_0_p2_started && !has_diaolgue_0_p2_played && !has_diaolgue_0_p3_started && !has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.time = FrameToTime(600);
+                    //    dialogue_0.Evaluate();
+                    //}
+                    //else if(has_diaolgue_0_started && has_diaolgue_0_p1_played && !has_diaolgue_0_p2_started && !has_diaolgue_0_p2_played && !has_diaolgue_0_p3_started && !has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.Play();
+                    //    has_diaolgue_0_p2_started = true;
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && !has_diaolgue_0_p2_played && !has_diaolgue_0_p3_started && !has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.time = FrameToTime(1320);
+                    //    dialogue_0.Evaluate();
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && !has_diaolgue_0_p3_started && !has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.Play();
+                    //    has_diaolgue_0_p3_started = true;
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && has_diaolgue_0_p3_started && !has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.time = FrameToTime(1755);
+                    //    dialogue_0.Evaluate();
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && has_diaolgue_0_p3_started && has_diaolgue_0_p3_played && !has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.Play();
+                    //    has_diaolgue_0_p4_started = true;
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && has_diaolgue_0_p3_started && has_diaolgue_0_p3_played && has_diaolgue_0_p4_started && !has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.time = FrameToTime(2316);
+                    //    dialogue_0.Evaluate();
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && has_diaolgue_0_p3_started && has_diaolgue_0_p3_played && has_diaolgue_0_p4_started && has_diaolgue_0_p4_played && !has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.Play();
+                    //    has_diaolgue_0_p5_started = true;
+                    //}
+                    //else if (has_diaolgue_0_started && has_diaolgue_0_p1_played && has_diaolgue_0_p2_started && has_diaolgue_0_p2_played && has_diaolgue_0_p3_started && has_diaolgue_0_p3_played && has_diaolgue_0_p4_started && has_diaolgue_0_p4_played && has_diaolgue_0_p5_started && !has_diaolgue_0_played)
+                    //{
+                    //    dialogue_0.time = dialogue_0.duration;
+                    //    dialogue_0.Evaluate();
+                    //}
+
                 }
 
                 break;
@@ -484,7 +746,7 @@ public class J1_GameController : MonoBehaviour
             case GameMode.PlayerPlaying:
 
                 // Enterキーが押されたかどうかをチェック
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
                 {
                     charaMoveAndAnimationLogic();
                 }
@@ -494,85 +756,82 @@ public class J1_GameController : MonoBehaviour
 
             case GameMode.WaitForSceneChange:
                 // シーンを切り替える
-                ChangeTextColor(cannotENTER);
+                enterAlone.SetActive(true);
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
+                {
+                    SceneManager.LoadScene("M");
+                }
+                    
 
-                menu.SetActive(true);
-                StartCoroutine(MoveMenuToTarget(menuTargetPosition, moveSpeed));
+                break;
 
-                waitForSceneChange_Menu();
+            case GameMode.choosing:
 
                 break;
         }
 
     }
 
-    public void waitForSceneChange_Menu()
+    public void pauseAni()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (has_dialogue_B2_started)
         {
-            if (menuIsOnItsPos == true)
+            Debug.Log($"dialogue_B2 time right now: {dialogue_B2_PlayableDirector.time}");
+
+            if (dialogue_B2_PlayableDirector.time >= FrameToTime(821) && !has_dialogue_B2_p1_played)
             {
-                if (cleared)
-                {
-
-                    Debug.Log("LoadScene:JyoMaku_1.5_YiChi");
-                    SceneManager.LoadScene("JyoMaku_1.5_YiChi");
-
-                }
+                Debug.Log("stop the timeline dialogue_B2!");
+                dialogue_B2_PlayableDirector.Pause();
+                has_dialogue_B2_p1_played = true;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        //else if (has_diaolgue_0_started)
+        //{
+        //    Debug.Log($"dialogue_0 time right now: {dialogue_0.time}");
+
+        //    if (dialogue_0.time >= FrameToTime(600) && !has_diaolgue_0_p1_played)
+        //    {
+        //        Debug.Log("1 stop the timeline dialogue_0!");
+        //        dialogue_0.Pause();
+        //        has_diaolgue_0_p1_played = true;
+        //    }
+        //    else if(dialogue_0.time >= FrameToTime(1320) && !has_diaolgue_0_p2_played)
+        //    {
+        //        Debug.Log("2 stop the timeline dialogue_0!");
+        //        dialogue_0.Pause();
+        //        has_diaolgue_0_p2_played = true;
+        //    }
+        //    else if (dialogue_0.time >= FrameToTime(1755) && !has_diaolgue_0_p3_played)
+        //    {
+        //        Debug.Log("3 stop the timeline dialogue_0!");
+        //        dialogue_0.Pause();
+        //        has_diaolgue_0_p3_played = true;
+        //    }
+        //    else if (dialogue_0.time >= FrameToTime(2316) && !has_diaolgue_0_p4_played)
+        //    {
+        //        Debug.Log("4 stop the timeline dialogue_0!");
+        //        dialogue_0.Pause();
+        //        has_diaolgue_0_p4_played = true;
+        //    }
+        //}
+        else if (has_diaolgue_started)
         {
-            currentMovementIndex = 0;
-            isAnyHorizontalLineCreated = false;
-            isHorizontal_1_LineCreated = false;
-            isHorizontal_2_LineCreated = false;
-            DestroyAllHorizontalLinesInScene();
-            canCreateLine_1 = true;
-            canCreateLine_2 = true;
-            canDeleteLine_1 = true;
-            canDeleteLine_2 = true;
-            knight.transform.position = character1_initial_pos.position;
-            hunter.transform.position = character2_initial_pos.position;
-            gift_is_dog = false;
-            if (dog != null)
+            Debug.Log($"dialogue time right now: {dialogue.time}");
+
+            if (dialogue.time >= FrameToTime(321) && !has_diaolgue_p1_played)
             {
-                dog.SetActive(false);
+                Debug.Log("stop the timeline dialogue!");
+                dialogue.Pause();
+                has_diaolgue_p1_played = true;
             }
-            if (gift_opening != null)
-            {
-                gift_opening.SetActive(false);
-            }
-            if (failed_Text != null)
-            {
-                failed_Text.SetActive(false);
-            }
-            if (cleared_Text != null)
-            {
-                cleared_Text.SetActive(false);
-            }
-            if (didnotMetText != null)
-            {
-                didnotMetText.SetActive(false);
-            }
-            if (dialogue_failed_knight != null)
-            {
-                dialogue_failed_knight.SetActive(false);
-            }
-            if(dialogue_OE_hunter != null)
-            {
-                dialogue_OE_hunter.SetActive(false);
-            }
-            if (dialogue_beer_knight != null)
-            {
-                dialogue_beer_knight.SetActive(false);
-            }
-            if (dialogue_battleBeer_hunter != null)
-            {
-                dialogue_battleBeer_hunter.SetActive(false);
-            }
-            StartCoroutine(MoveMenuBack(menuBackPosition.position, moveSpeed));
-            currentGameMode = GameMode.PlayerPlaying;
+        }
+    }
+
+    public void waitForSceneChange_Menu()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            reTry();
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
@@ -586,14 +845,179 @@ public class J1_GameController : MonoBehaviour
             Application.Quit(); // ゲームを閉じる
         }
     }
-
-    public void ChangeTextColor(TMP_Text tmp)
+    public void reTry()
     {
-        if (cleared == false)
+        currentMovementIndex = 0;
+        isAnyHorizontalLineCreated = false;
+        isHorizontal_1_LineCreated = false;
+        isHorizontal_2_LineCreated = false;
+        DestroyAllHorizontalLinesInScene();
+        canCreateLine_1 = true;
+        canCreateLine_2 = true;
+        canDeleteLine_1 = true;
+        canDeleteLine_2 = true;
+        knight.transform.position = character1_initial_pos.position;
+        hunter.transform.position = character2_initial_pos.position;
+        gift_is_dog = false;
+        if (dog != null)
         {
-            tmp.color = Color.gray; // もし`failed`は`true`であれば，テキストの色を灰色に変える
+            dog.SetActive(false);
         }
+        if (gift_opening != null)
+        {
+            gift_opening.SetActive(false);
+        }
+
+        if (dialogue_failed_knight != null)
+        {
+            dialogue_failed_knight.SetActive(false);
+        }
+        if (dialogue_OE_hunter != null)
+        {
+            dialogue_OE_hunter.SetActive(false);
+        }
+        if (dialogue_beer_knight != null)
+        {
+            dialogue_beer_knight.SetActive(false);
+        }
+        if (dialogue_battleBeer_hunter != null)
+        {
+            dialogue_battleBeer_hunter.SetActive(false);
+        }
+        s_knight_a.SetActive(false);
+        s_hunter_a.SetActive(false);
+        game_start.SetActive(false);
+        if (fukidashi_0 != null)
+        {
+            fukidashi_0.SetActive(false);
+        }
+        if (fukidashi != null)
+        {
+            fukidashi.SetActive(false);
+        }
+        if (dog != null)
+        {
+            dog.SetActive(false);
+        }
+        if (targetCompletedText != null)
+        {
+            targetCompletedText.SetActive(false);
+        }
+        if (dialogue_failed_hunter != null)
+        {
+            dialogue_failed_hunter.SetActive(false);
+        }
+        if (dialogue_OE_knight != null)
+        {
+            dialogue_OE_knight.SetActive(false);
+        }
+        if (dialogue_beer_hunter != null)
+        {
+            dialogue_beer_hunter.SetActive(false);
+        }
+        if (dialogue_battleBeer_knight != null)
+        {
+            dialogue_battleBeer_knight.SetActive(false);
+        }
+        dialogue_B2.SetActive(false);
+        gift_opening.SetActive(false);
+        s_knight_battle_a.SetActive(false);
+        s_hunter_battle_a.SetActive(false);
+        s_knight_battle_b.SetActive(false);
+        s_hunter_battle_b.SetActive(false);
+        s_knight_1_beer.SetActive(false);
+        s_hunter_1_beer.SetActive(false);
+        s_knight_2_beer.SetActive(false);
+        s_hunter_2_beer.SetActive(false);
+        s_knight_3_beer_a.SetActive(false);
+        s_hunter_3_beer_a.SetActive(false);
+        s_knight_3_beer_b.SetActive(false);
+        s_hunter_3_beer_b.SetActive(false);
+        s_knight_4_beer_a.SetActive(false);
+        s_hunter_4_beer_a.SetActive(false);
+        s_knight_4_beer_b.SetActive(false);
+        s_hunter_4_beer_b.SetActive(false);
+        targetCompletedText_2.SetActive(false);
+        enterAlone.SetActive(false);
+        has_dialogue_B2_started = false;
+        has_dialogue_B2_played = false;
+        has_s_knight_a_pd_played = false;
+        has_s_knight_a_pd_started = false;
+        has_s_hunter_a_pd_played = false;
+        has_s_hunter_a_pd_started = false;
+        has_dialogue_failed_hunter_started = false;
+        has_dialogue_failed_hunter_played = false;
+        has_dialogue_failed_knight_played = false;
+        has_dialogue_failed_knight_started = false;
+        has_dialogue_beer_hunter_started = false;
+        has_dialogue_beer_hunter_played = false;
+        has_dialogue_beer_knight_played = false;
+        has_dialogue_beer_knight_started = false;
+        has_dialogue_battleBeer_hunter_started = false;
+        has_dialogue_battleBeer_hunter_played = false;
+        has_dialogue_battleBeer_knight_played = false;
+        has_dialogue_battleBeer_knight_started = false;
+        has_dialogue_OE_hunter_started = false;
+        has_dialogue_OE_hunter_played = false;
+        has_dialogue_OE_knight_started = false;
+        has_dialogue_OE_knight_played = false;
+        has_s_knight_battle_a_started = false;
+        has_s_knight_battle_a_played = false;
+        has_s_hunter_battle_a_started = false;
+        has_s_hunter_battle_a_played = false;
+        has_s_knight_battle_b_started = false;
+        has_s_knight_battle_b_played = false;
+        has_s_hunter_battle_b_started = false;
+        has_s_hunter_battle_b_played = false;
+        has_s_knight_1_beer_started = false;
+        has_s_knight_1_beer_played = false;
+        has_s_hunter_1_beer_started = false;
+        has_s_hunter_1_beer_played = false;
+        has_s_knight_2_beer_started = false;
+        has_s_knight_2_beer_played = false;
+        has_s_hunter_2_beer_started = false;
+        has_s_hunter_2_beer_played = false;
+        has_s_knight_3_beer_a_started = false;
+        has_s_knight_3_beer_a_played = false;
+        has_s_hunter_3_beer_a_started = false;
+        has_s_hunter_3_beer_a_played = false;
+        has_s_knight_3_beer_b_started = false;
+        has_s_knight_3_beer_b_played = false;
+        has_s_hunter_3_beer_b_started = false;
+        has_s_hunter_3_beer_b_played = false;
+        has_s_knight_4_beer_a_started = false;
+        has_s_knight_4_beer_a_played = false;
+        has_s_knight_4_beer_b_started = false;
+        has_s_knight_4_beer_b_played = false;
+        has_s_hunter_4_beer_b_started = false;
+        has_s_hunter_4_beer_b_played = false;
+        has_s_hunter_4_beer_a_started = false;
+        has_s_hunter_4_beer_a_played = false;
+        has_diaolgue_0_started = false;
+        has_diaolgue_0_played = false;
+        has_diaolgue_started = false;
+        has_diaolgue_played = false;
+        game_start_played = false;
+        has_diaolgue_0_p2_started = false;
+        has_diaolgue_0_p1_played = false;
+        has_diaolgue_0_p3_started = false;
+        has_diaolgue_0_p2_played = false;
+        has_diaolgue_0_p4_started = false;
+        has_diaolgue_0_p3_played = false;
+        has_diaolgue_0_p5_started = false;
+        has_diaolgue_0_p4_played = false;
+        has_diaolgue_p2_started = false;
+        has_diaolgue_p1_played = false;
+
+        currentGameMode = GameMode.PlayerPlaying;
     }
+    //public void ChangeTextColor(TMP_Text tmp)
+    //{
+    //    if (cleared == false)
+    //    {
+    //        tmp.color = Color.gray; // もし`failed`は`true`であれば，テキストの色を灰色に変える
+    //    }
+    //}
 
     //  プレイヤーがEnterを押すと、キャラクターの移動＋プロットアイコンの生成＋ストーリーメッセージの生成を一つずつ表示される
     public void charaMoveAndAnimationLogic()
@@ -617,7 +1041,7 @@ public class J1_GameController : MonoBehaviour
             charaMoveRoute1();
         }
     }
-    
+
     /*
        　　　　    「騎士」0　　　　　   「猟師」1
                        ||                   ||
@@ -634,36 +1058,38 @@ public class J1_GameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
             case 1:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canDeleteLine_1 = false;
                 canCreateLine_1 = false;
                 s_knight_battle_a.SetActive(true);
+                has_s_knight_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 2:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 s_knight_battle_a.SetActive(false);
                 s_hunter_battle_a.SetActive(true);
+                has_s_hunter_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 3:
                 StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 9 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 s_hunter_battle_a.SetActive(false);
                 break;
 
             case 4:
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canDeleteLine_2 = false;
                 s_knight_1_beer.SetActive(true);
+                has_s_knight_1_beer_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 canCreateLine_2 = false;
                 break;
 
@@ -671,6 +1097,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 s_knight_1_beer.SetActive(false);
                 s_hunter_1_beer.SetActive(true);
+                has_s_hunter_1_beer_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 6:
@@ -683,6 +1111,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 });
                 enterAlone.SetActive(false);
                 dialogue_OE_knight.SetActive(true);
+                has_dialogue_OE_knight_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 8:
@@ -695,6 +1125,8 @@ public class J1_GameController : MonoBehaviour
                 enterAlone.SetActive(false);
                 StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 });
                 dialogue_OE_hunter.SetActive(true);
+                has_dialogue_OE_hunter_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 hasMovementFinshed = true;
                 break;
@@ -709,16 +1141,16 @@ public class J1_GameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
 
             case 1:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 }); // キャラクターを止まらせてセリフを表示する
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canCreateLine_1 = false;
                 canDeleteLine_1 = false;
                 s_knight_battle_a.SetActive(true);
+                has_s_knight_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 break;
 
@@ -726,18 +1158,23 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 s_knight_battle_a.SetActive(false);
                 s_hunter_battle_a.SetActive(true);
+                has_s_hunter_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 3:
                 StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
                 s_hunter_battle_a.SetActive(false);
-
+                enterAlone.SetActive(true);
                 break;
 
             case 4:
                 StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 }); // 止まらせて吹き出しを表示する
                 fukidashi_0.SetActive(true);
-
+                has_diaolgue_0_started = true;
+                enterAlone.SetActive(false);
+                currentGameMode = GameMode.TextPlaying;
+                
                 break;
 
             case 5:
@@ -750,34 +1187,40 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
                 enterAlone.SetActive(false);
                 s_hunter_battle_b.SetActive(true);
+                has_s_hunter_battle_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 7:
                 StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
                 s_knight_battle_b.SetActive(true);
                 s_hunter_battle_b.SetActive(false);
+                has_s_knight_battle_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 8:
                 StartMovement(new List<int> { 5, 9 }, new List<int> { 2, 6 });
                 s_knight_battle_b.SetActive(false);
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
 
             case 9:
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canDeleteLine_2 = false;
                 canCreateLine_2 = false;
                 s_hunter_2_beer.SetActive(true);
+                has_s_hunter_2_beer_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 10:
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 s_hunter_2_beer.SetActive(false);
                 s_knight_2_beer.SetActive(true);
+                has_s_knight_2_beer_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 11:
@@ -790,6 +1233,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 });
                 enterAlone.SetActive(false);
                 dialogue_failed_hunter.SetActive(true);
+                has_dialogue_failed_hunter_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 13:
@@ -803,6 +1248,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 });
                 gift_opening.SetActive(true);
                 dialogue_failed_knight.SetActive(true);
+                has_dialogue_failed_knight_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 hasMovementFinshed = true;
 
@@ -817,38 +1264,40 @@ public class J1_GameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
             case 1:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canCreateLine_1 = false;
                 canDeleteLine_1 = false;
                 s_knight_battle_a.SetActive(true);
+                has_s_knight_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 2:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 s_knight_battle_a.SetActive(false);
                 s_hunter_battle_a.SetActive(true);
+                has_s_hunter_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 3:
                 StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 9 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 s_hunter_battle_a.SetActive(false);
 
                 break;
 
             case 4:
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canDeleteLine_2 = false;
                 canCreateLine_2 = false;
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 s_knight_3_beer_a.SetActive(true);
+                has_s_knight_3_beer_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 break;
 
@@ -856,6 +1305,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 s_knight_3_beer_a.SetActive(false);
                 s_hunter_3_beer_a.SetActive(true);
+                has_s_hunter_3_beer_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 6:
@@ -868,6 +1319,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 7, 7 }, new List<int> { 8, 8 });
                 enterAlone.SetActive(false);
                 fukidashi.SetActive(true);
+                has_diaolgue_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 8:
@@ -880,12 +1333,16 @@ public class J1_GameController : MonoBehaviour
                 enterAlone.SetActive(false);
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 s_hunter_3_beer_b.SetActive(true);
+                has_s_hunter_3_beer_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 10:
                 s_hunter_3_beer_b.SetActive(false);
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 s_knight_3_beer_b.SetActive(true);
+                has_s_knight_3_beer_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 11:
@@ -898,6 +1355,8 @@ public class J1_GameController : MonoBehaviour
                 enterAlone.SetActive(false);
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 10, 10 });
                 dialogue_beer_hunter.SetActive(true);
+                has_dialogue_beer_hunter_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 13:
@@ -911,7 +1370,9 @@ public class J1_GameController : MonoBehaviour
                 enterAlone.SetActive(false);
                 StartMovement(new List<int> { 11, 11 }, new List<int> { 10, 10 });
                 dialogue_beer_knight.SetActive(true);
+                has_dialogue_beer_knight_started = true;
                 gift_opening.SetActive(true);
+                currentGameMode = GameMode.TextPlaying;
 
                 hasMovementFinshed = true;
                 break;
@@ -925,16 +1386,16 @@ public class J1_GameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
 
             case 1:
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 }); // キャラクターを止まらせてセリフを表示する
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canCreateLine_1 = false;
                 canDeleteLine_1 = false;
                 s_knight_battle_a.SetActive(true);
+                has_s_knight_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 break;
 
@@ -942,18 +1403,22 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 s_knight_battle_a.SetActive(false);
                 s_hunter_battle_a.SetActive(true);
+                has_s_hunter_battle_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 3:
                 StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
                 s_hunter_battle_a.SetActive(false);
-
+                enterAlone.SetActive(true);
                 break;
 
             case 4:
                 StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 }); // 止まらせて吹き出しを表示する
                 fukidashi_0.SetActive(true);
-
+                has_diaolgue_0_started = true;
+                enterAlone.SetActive(false);
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 5:
@@ -966,35 +1431,41 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
                 enterAlone.SetActive(false);
                 s_hunter_battle_b.SetActive(true);
+                has_s_hunter_battle_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 break;
 
             case 7:
                 StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
                 s_knight_battle_b.SetActive(true);
+                has_s_knight_battle_a_started = true;
                 s_hunter_battle_b.SetActive(false);
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 8:
                 StartMovement(new List<int> { 5, 9 }, new List<int> { 2, 6 });
                 s_knight_battle_b.SetActive(false);
                 enterAlone.SetActive(true);
-                cursor_bling.SetActive(true);
                 break;
 
             case 9:
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 enterAlone.SetActive(false);
-                cursor_bling.SetActive(false);
                 canCreateLine_2 = false;
                 canDeleteLine_2 = false;
                 s_hunter_4_beer_a.SetActive(true);
+                has_s_hunter_4_beer_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 10:
                 StartMovement(new List<int> { 9, 9 }, new List<int> { 6, 6 });
                 s_hunter_4_beer_a.SetActive(false);
                 s_knight_4_beer_a.SetActive(true);
+                has_s_knight_4_beer_a_started = true;
+                currentGameMode = GameMode.TextPlaying;
 
                 break;
 
@@ -1008,6 +1479,8 @@ public class J1_GameController : MonoBehaviour
                 enterAlone.SetActive(false);
                 StartMovement(new List<int> { 8, 8 }, new List<int> { 7, 7 });
                 dialogue_B2.SetActive(true);
+                has_dialogue_B2_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 13:
@@ -1020,12 +1493,16 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 enterAlone.SetActive(false);
                 s_knight_4_beer_b.SetActive(true);
+                has_s_knight_4_beer_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 15:
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 9, 9 });
                 s_knight_4_beer_b.SetActive(false);
                 s_hunter_4_beer_b.SetActive(true);
+                has_s_hunter_4_beer_b_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 16:
@@ -1038,6 +1515,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 10, 10 }, new List<int> { 9, 9 });
                 enterAlone.SetActive(false);
                 dialogue_battleBeer_knight.SetActive(true);
+                has_dialogue_battleBeer_knight_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 break;
 
             case 18:
@@ -1050,6 +1529,8 @@ public class J1_GameController : MonoBehaviour
                 StartMovement(new List<int> { 10, 10 }, new List<int> { 11, 11 });
                 enterAlone.SetActive(false);
                 dialogue_battleBeer_hunter.SetActive(true);
+                has_dialogue_battleBeer_hunter_started = true;
+                currentGameMode = GameMode.TextPlaying;
                 gift_opening.SetActive(true);
                 gift_is_dog = true;
                 break;
@@ -1096,16 +1577,6 @@ public class J1_GameController : MonoBehaviour
         }
     }
 
-    IEnumerator MoveMenuToTarget(Vector3 targetPosition, float m_speed)
-    {
-        while (menu.transform.position != targetPosition)
-        {
-            menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed);
-            yield return null;
-        }
-        menuIsOnItsPos = true;
-   
-    }
 
 
 
@@ -1168,7 +1639,22 @@ public class J1_GameController : MonoBehaviour
         J1_charaHoverAreaScript.Initialize(character, charaInfoPrefab, charaInfoPosition);
     }
 
+    public float FrameToTime(int frame)
+    {
+        if (frameRate <= 0)
+        {
+            Debug.LogError("frameRateはマイナスだったらダメ！");
+            return 0f;
+        }
 
+        if (frame < 0)
+        {
+            Debug.LogError("int frameはマイナスだったらダメ！");
+            return 0f;
+        }
+
+        return frame / frameRate;
+    }
     void OnPlayableDirectorStopped(PlayableDirector director)
     {
         if (director == JyomakuTextPlayableDirector)
@@ -1182,153 +1668,218 @@ public class J1_GameController : MonoBehaviour
         {
             //currentGameMode = GameMode.PlayerPlaying;
             has_targetTextPlayableDirector_played = true;
-            enterAlone.SetActive(true);
+            targetText_2.SetActive(true);
+            
             Debug.Log(" targetText Timeline playback completed.");
             //Debug.Log("GameMode.PlayerPlayingに切り替える");
+        }
+        else if (director == targetText_2_PlayableDirector)
+        {
+            has_targetText_2_PlayableDirector_played = true;
+            enterAlone.SetActive(true);
+            Debug.Log(" targetText_2 Timeline playback completed.");
         }
         else if (director == game_start_pd)
         {
             game_start.SetActive(false);
+            enterAlone.SetActive(true);
+            game_start_played = true;
             currentGameMode = GameMode.PlayerPlaying;
         }
-        else if(director == targetCompletedTextPlayableDirector)
+        else if (director == targetCompletedTextPlayableDirector)
         {
-            cleared = true;
-
-            currentGameMode = GameMode.WaitForSceneChange;
-        }
-        else if (director == failed_TextPlayableDirector)
-        {
-            currentGameMode = GameMode.WaitForSceneChange;
-
-            Debug.Log("failed_Text Timeline playback completed.");
-            Debug.Log("GameMode.WaitForSceneChangeに切り替える");
+            Debug.Log("targetCompletedTextPlayableDirector playback completed.");
         }
         else if (director == s_knight_a_pd)
         {
             has_s_knight_a_pd_played = true;
+            has_s_knight_a_pd_started = false;
             Debug.Log("s_knight_a_pd playback completed.");
         }
         else if (director == s_hunter_a_pd)
         {
             has_s_hunter_a_pd_played = true;
+            has_s_hunter_a_pd_started = false;
             Debug.Log("s_hunter_a_pd playback completed.");
-        }
-        else if (director == didnotMetTextPlayableDirector)
-        {
-            currentGameMode = GameMode.WaitForSceneChange;
-
-            Debug.Log(" didnotMetText Timeline playback completed.");
-            Debug.Log("GameMode.WaitForSceneChangeに切り替える");
         }
         else if (director == dialogue_B2_PlayableDirector)
         {
-            
+            has_dialogue_B2_started = false;
+            has_dialogue_B2_played = true;
             Debug.Log(" dialogue_B2_PlayableDirector playback completed.");
-        }
-        else if (director == cleared_TextPlayableDirector)
-        {
-            Debug.Log("cleared_Text Timeline playback completed.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
         else if (director == dialogue)
         {
+            has_diaolgue_played = true;
+            has_diaolgue_started = false;
             Debug.Log("dialogue Timeline playback completed.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if(director == dialogue_failed_knightPlayableDirector)
+        else if (director == dialogue_0)
         {
-            failed_Text.SetActive(true);
-            failed_TextPlayableDirector.Play();
+            has_diaolgue_0_played = true;
+            has_diaolgue_0_started = false;
+            Debug.Log("dialogue_0 Timeline playback completed.");
+            currentGameMode = GameMode.PlayerPlaying;
+        }
+        else if (director == dialogue_failed_knightPlayableDirector)
+        {
+            has_dialogue_failed_knight_played = true;
+            has_dialogue_failed_knight_started = false;
+            targetCompletedText.SetActive(true);
+            currentGameMode = GameMode.WaitForSceneChange;
         }
         else if (director == dialogue_beer_knightPlayableDirector)
         {
-            failed_Text.SetActive(true);
-            failed_TextPlayableDirector.Play();
+            has_dialogue_beer_knight_played = true;
+            has_dialogue_beer_knight_started = false;
+            currentGameMode = GameMode.WaitForSceneChange;
         }
         else if (director == dialogue_battleBeer_hunterPlayableDirector)
         {
+            has_dialogue_battleBeer_hunter_played = true;
+            has_dialogue_battleBeer_hunter_started = false;
+            targetCompletedText_2.SetActive(true);
+            currentGameMode = GameMode.WaitForSceneChange;
+        }
+        else if (director == dialogue_battleBeer_knightPlayableDirector)
+        {
+            has_dialogue_battleBeer_knight_played = true;
+            has_dialogue_battleBeer_knight_started = false;
             targetCompletedText.SetActive(true);
-            cleared_Text.SetActive(true);
+            currentGameMode = GameMode.PlayerPlaying;
+        }
+        else if (director == dialogue_OE_knightPlayableDirector)
+        {
+            has_dialogue_OE_knight_played = true;
+            has_dialogue_OE_knight_started = false;
+            currentGameMode = GameMode.PlayerPlaying;
         }
         else if (director == dialogue_OE_hunterPlayableDirector)
         {
-            didnotMetText.SetActive(true);
-            didnotMetTextPlayableDirector.Play();
+            has_dialogue_OE_hunter_played = true;
+            has_dialogue_OE_hunter_started = false;
+            currentGameMode = GameMode.WaitForSceneChange;
         }
-        else if (director == s_knight_battle_a)
+        else if (director == dialogue_beer_hunterPlayableDirector)
         {
-
+            has_dialogue_beer_hunter_played = true;
+            has_dialogue_beer_hunter_started = false;
+            targetCompletedText_2.SetActive(true);
+            currentGameMode = GameMode.PlayerPlaying;
+        }
+        else if (director == s_knight_battle_a_pd)
+        {
+            has_s_knight_battle_a_played = true;
+            has_s_knight_battle_a_started = false;
             Debug.Log("s_knight_battle_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_battle_a)
+        else if (director == s_hunter_battle_a_pd)
         {
+            has_s_hunter_battle_a_played = true;
+            has_s_hunter_battle_a_started = false;
             Debug.Log("s_hunter_battle_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_battle_b)
+        else if (director == s_knight_battle_b_pd)
         {
-
+            has_s_knight_battle_b_played = true;
+            has_s_knight_battle_b_started = false;
             Debug.Log("s_knight_battle_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_battle_b)
+        else if (director == s_hunter_battle_b_pd)
         {
+            has_s_hunter_battle_b_played = true;
+            has_s_hunter_battle_b_started = false;
             Debug.Log("s_hunter_battle_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_1_beer)
+        else if (director == s_knight_1_beer_pd)
         {
-
+            has_s_knight_1_beer_played = true;
+            has_s_knight_1_beer_started=false;
             Debug.Log("s_knight_1_beer has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_1_beer)
+        else if (director == s_hunter_1_beer_pd)
         {
+            has_s_hunter_1_beer_played = true;
+            has_s_hunter_1_beer_started = false;
             Debug.Log("s_hunter_1_beer has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_2_beer)
+        else if (director == s_knight_2_beer_pd)
         {
-
+            has_s_knight_2_beer_played = true;
+            has_s_knight_2_beer_started = false;
             Debug.Log("s_knight_2_beer has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_2_beer)
+        else if (director == s_hunter_2_beer_pd)
         {
+            has_s_hunter_2_beer_played = true;
+            has_s_hunter_2_beer_started = false;
             Debug.Log("s_hunter_2_beer has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_3_beer_a)
+        else if (director == s_knight_3_beer_a_pd)
         {
-
+            has_s_knight_3_beer_a_played = true;
+            has_s_knight_3_beer_a_started = false;
             Debug.Log("s_knight_3_beer_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_3_beer_a)
+        else if (director == s_hunter_3_beer_a_pd)
         {
-
+            has_s_hunter_3_beer_a_played = true;
+            has_s_hunter_3_beer_a_started = false;
             Debug.Log("s_hunter_3_beer_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_3_beer_b)
+        else if (director == s_knight_3_beer_b_pd)
         {
-
+            has_s_knight_3_beer_b_played = true;
+            has_s_knight_3_beer_b_started = false;
             Debug.Log("s_knight_3_beer_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_3_beer_b)
+        else if (director == s_hunter_3_beer_b_pd)
         {
-
+            has_s_hunter_3_beer_b_played = true;
+            has_s_hunter_3_beer_b_started = false;
             Debug.Log("s_hunter_3_beer_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_4_beer_a)
+        else if (director == s_knight_4_beer_a_pd)
         {
-
+            has_s_knight_4_beer_a_played = true;
+            has_s_knight_4_beer_a_started = false;
             Debug.Log("s_knight_4_beer_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_4_beer_a)
+        else if (director == s_hunter_4_beer_a_pd)
         {
-
+            has_s_hunter_4_beer_a_played = true;
+            has_s_hunter_4_beer_a_started = false;
             Debug.Log("s_hunter_4_beer_a has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_knight_4_beer_b)
+        else if (director == s_knight_4_beer_b_pd)
         {
-
+            has_s_knight_4_beer_b_played = true;
+            has_s_knight_4_beer_b_started = false;
             Debug.Log("s_knight_4_beer_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
-        else if (director == s_hunter_4_beer_b)
+        else if (director == s_hunter_4_beer_b_pd)
         {
-
+            has_s_hunter_4_beer_b_played = true;
+            has_s_hunter_4_beer_b_started = false;
             Debug.Log("s_hunter_4_beer_b has played.");
+            currentGameMode = GameMode.PlayerPlaying;
         }
         else if (director == gift_opening_pd)
         {
@@ -1360,25 +1911,12 @@ public class J1_GameController : MonoBehaviour
             targetCompletedTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (failed_TextPlayableDirector != null)
-        {
-            failed_TextPlayableDirector.stopped -= OnPlayableDirectorStopped;
-        }
-
-        if (didnotMetTextPlayableDirector != null)
-        {
-            didnotMetTextPlayableDirector.stopped -= OnPlayableDirectorStopped;
-        }
 
         if (dialogue_B2_PlayableDirector != null)
         {
             dialogue_B2_PlayableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
-        if (cleared_TextPlayableDirector != null)
-        {
-            cleared_TextPlayableDirector.stopped -= OnPlayableDirectorStopped;
-        }
 
         if (dialogue != null)
         {
@@ -1436,19 +1974,9 @@ public class J1_GameController : MonoBehaviour
         s_hunter_4_beer_b_pd.stopped -= OnPlayableDirectorStopped;
         gift_opening_pd.stopped -= OnPlayableDirectorStopped;
         game_start_pd.stopped -= OnPlayableDirectorStopped;
+        targetCompletedText_2_PlayableDirector.stopped -= OnPlayableDirectorStopped;
     }
 
-    IEnumerator MoveMenuBack(Vector3 targetPosition, float m_speed)
-    {
-        while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
-        {
-            menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed * 6);
-            yield return null;
-        }
-        menuIsOnItsPos = false;
-        menuBack = true;
-        menu.SetActive(false);
-    }
 
     void DestroyAllHorizontalLinesInScene()
     {

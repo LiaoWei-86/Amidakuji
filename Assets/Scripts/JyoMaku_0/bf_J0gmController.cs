@@ -8,6 +8,8 @@ public class bf_J0gmController : MonoBehaviour
 {
 
     public PlayableDirector starting;
+    private bool start = true;
+    private bool played = false;
 
     public GameObject character1;
     public GameObject character2;
@@ -38,13 +40,24 @@ public class bf_J0gmController : MonoBehaviour
         switch (currentGameMode)
         {
             case GameMode.TextPlaying:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (start && !played)
+                    {
+                        starting.time = starting.duration;
+                        starting.Evaluate();
+                        start = false;
+                        played = true;
+                        currentGameMode = GameMode.WaitForSceneChange;
+                    }
+                }
 
                 break;
 
             case GameMode.WaitForSceneChange:
 
                 // Enterキーが押されたかどうかをチェック
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
                 {
                     SceneManager.LoadScene("JyoMaku_0");
                 }
@@ -58,6 +71,8 @@ public class bf_J0gmController : MonoBehaviour
     {
         if (director == starting)
         {
+            played = true;
+            start = false;
             currentGameMode = GameMode.WaitForSceneChange;  // シーン切り替え待ちモードに変更する
             Debug.Log("starting Timeline playback completed.");
         }

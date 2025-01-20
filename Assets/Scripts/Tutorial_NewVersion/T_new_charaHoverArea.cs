@@ -23,13 +23,13 @@ public class T_new_charaHoverArea : MonoBehaviour
     // キャラクター情報を設定する
     public Dictionary<string, string[]> defaultCharacterInfoDict = new Dictionary<string, string[]>
     {
-        { "knight", new string[] { "男の人", "○ 税金が払えずに悩む", "○ 凶暴な犬を飼っている", "○ 東洋の財宝の持ち主である、チャイナ服の娘と知り合い" } },
-        { "hunter", new string[] { "猟師", "○ 行方不明になった娘を探している", "○ 猟犬を欲しがっている", "○ 財宝を隠し持っている" } },
-        { "king", new string[] { "国王", "○ 不死薬を探し求めている", "○ 城の設備のために専属技師を雇っている", "○ 庭師の少年を信頼している" } },
+        { "knight", new string[] { "男の人 クリス", "○ 税金が払えずに悩む", "○ 犬が大好き", "○ 遠い東の地を見に行ってみたい" } },
+        { "hunter", new string[] { "猟師 フリント", "○ 行方不明になった娘を探している", "○ 猟犬を欲しがっている", "○ 財宝を隠し持っている" } },
+        { "king", new string[] { "国王 レグナー", "○ 不死薬を探し求めている", "○ 城の設備のために専属技師を雇っている", "○ 庭師の少年を信頼している" } },
         { "dog", new string[] { "犬", "○ 財宝を見つけると、すぐに盗んでくる", "○ 子供たちと遊ぶのが大好き", "○ 国王が嫌い" } },
-        { "pirate", new string[] { "海賊", "○ 養女が一人いる", "○ 財宝を狂ったように渇望し、誰であろうと奪いに行く", "○ 極悪非道、財宝のために多くの人を殺した" } },
-        { "boy", new string[] { "少年", "○ 父親は殺された、復讐したい", "○ 東洋の武術を学びたい", "○ 純粋な愛に対する憧れがある" } },
-        { "girl", new string[] { "少女", "○ 自分の過去を知りたい", "○ 自分の母親が誰なのか知りたい", "○ 純粋な愛に対する憧れがある" } }
+        { "pirate", new string[] { "海賊 ", "○ 養女が一人いる", "○ 財宝を狂ったように渇望し、誰であろうと奪いに行く", "○ 極悪非道、財宝のために多くの人を殺した" } },
+        { "boy", new string[] { "少年 ", "○ 父親は殺された、復讐したい", "○ 東洋の武術を学びたい", "○ 純粋な愛に対する憧れがある" } },
+        { "girl", new string[] { "少女 ", "○ 自分の過去を知りたい", "○ 自分の母親が誰なのか知りたい", "○ 純粋な愛に対する憧れがある" } }
     };
 
     // Start is called before the first frame update
@@ -146,7 +146,7 @@ public class T_new_charaHoverArea : MonoBehaviour
                 {
                     //t_New_GameController_script.Text_explainChara.SetActive(false);
                     t_New_GameController_script.Text_explainCharaInfo.SetActive(true);
-
+                    t_New_GameController_script.has_Text_explainCharaInfo_pd_Started = true;
                     t_New_GameController_script.oneOfCharaInfos_has_checked = true;
 
                     //t_New_GameController_script.cursor_Text_explainCharaInfo.SetActive(false);

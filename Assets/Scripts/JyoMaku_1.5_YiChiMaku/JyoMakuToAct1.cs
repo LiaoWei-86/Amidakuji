@@ -29,7 +29,7 @@ public class JyoMakuToAct1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && canToNextStage)
+        if (Input.GetMouseButtonDown(0) && canToNextStage)
         {
             SceneManager.LoadScene("Act_1_1");
         }

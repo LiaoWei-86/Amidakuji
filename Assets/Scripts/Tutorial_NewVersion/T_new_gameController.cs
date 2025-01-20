@@ -13,27 +13,32 @@ public class T_new_gameController : MonoBehaviour
     public Vector3 character2_initial_pos = new Vector3(2, 3, -0.2f); // 移動する前にキャラクターの居場所
 
     public GameObject enterAlone;
+    public GameObject mouseIcon;
 
     public GameObject switch_iconExplaMode;
     public GameObject Text_target;
     public GameObject play_target; // 目標テキストを再生するGameObject
     public PlayableDirector play_target_pd; // 目標テキストを再生するPlayableDirector
+    private bool has_play_target_pd_Started = true;
     private bool has_play_target_pd_Played = false;
 
     public GameObject text_c;
 
     public GameObject beMoved_target; // 目標テキストを移動するGameObject
     public PlayableDirector beMoved_target_pd; // 目標テキストを移動するPlayableDirector
+    private bool has_beMoved_target_pd_Started = false;
     private bool has_beMoved_target_pd_Played = false;
 
     public GameObject target_cirlcle; // 目標達成時の●
 
     public GameObject Text_explainChara; // 説明文　キャラクターについて
     public PlayableDirector Text_explainChara_pd; // 説明文　キャラクターについてのPlayableDirector
+    private bool has_Text_explainChara_pd_Started = false;
     private bool has_Text_explainChara_pd_Played = false;
 
     public GameObject Text_explainCharaInfo; // 説明文　キャラクターInfoについて
     public PlayableDirector Text_explainCharaInfo_pd; // 説明文　キャラクターInfoについてのPlayableDirector
+    public bool has_Text_explainCharaInfo_pd_Started = false;
     public bool has_Text_explainCharaInfo_pd_Played = false;
 
     public bool has_knightInfoChecked = false;
@@ -44,10 +49,12 @@ public class T_new_gameController : MonoBehaviour
 
     public GameObject show_two_lines; // 線が出て来るアニメーション
     public PlayableDirector show_two_lines_pd; // 線が出て来るアニメーション
+    public bool has_show_two_lines_Started = false;
     public bool has_show_two_lines_Played = false;
 
     public GameObject show_point; //　点を説明するGameObject
     public PlayableDirector show_point_pd; //　点を説明するPlayableDirector
+    private bool has_show_point_pd_Started = false;
     private bool has_show_point_pd_Played = false;
 
     public GameObject expla_createLine; // 線をつなぐアニメーション
@@ -62,15 +69,18 @@ public class T_new_gameController : MonoBehaviour
 
     public GameObject text_end_icon; // 結末アイコンを説明するテキスト
     public PlayableDirector text_end_icon_pd; // 結末アイコンを説明するテキストのPlayableDirector
+    private bool has_text_end_icon_pd_Started = false;
     private bool has_text_end_icon_pd_Played = false;
 
     public GameObject text_charaMochibe; // 開始時点のキャラクターセリフ：キャラクター各自の要求や野望、願いなどを説明するテキスト
     public PlayableDirector text_charaMochibe_pd; // 開始時点のキャラクターセリフを説明するテキストのPlayableDirector
+    private bool has_text_charaMochibe_pd_Started = false;
     private bool has_text_charaMochibe_pd_Played = false;
 
     public GameObject text_mustEncounter; // s_king_aの後に再生する　　横線の必要性を説明するテキスト
     public PlayableDirector text_mustEncounter_pd; // 横線の必要性を説明するテキストのPlayableDirector
-    private bool has_text_mustEncounter_pd_Played = false;
+    public bool has_text_mustEncounter_pd_Started = false;
+    public bool has_text_mustEncounter_pd_Played = false;
 
     public GameObject text_mustEncounter_1;
 
@@ -79,72 +89,94 @@ public class T_new_gameController : MonoBehaviour
 
     public GameObject text_failed; // 横線を引かずにキャラクターを結末アイコンに移動させたら、ダメだよと説明するテキスト
     public PlayableDirector text_failed_pd; // このPlayableDirector
+    private bool has_text_failed_pd_Started = false;
     private bool has_text_failed_pd_Played = false;
 
     public GameObject text_cleared; // クリアルート終わったら
     public PlayableDirector text_cleared_pd; // このPlayableDirector
+    private bool has_text_cleared_pd_Started = false;
     private bool has_text_cleared_pd_Played = false;
 
     public GameObject text_horizontalLineCreated; // 横線を引いたらすぐ再生する　　横線を引いた後はEnterを押してねと説明するテキスト
     public PlayableDirector text_horizontalLineCreated_pd; // このPlayableDirector
+    public bool has_text_horizontalLineCreated_pd_Started = false;
     public bool has_text_horizontalLineCreated_pd_Played = false;
 
     public bool _isHoriz_line_Created = false; // 横線は接続された？のブール値をfalseとマークする
 
     public GameObject text_noLineCreated; // 横線を引かずにEnterを押した場合を再生する　　Enterを押してねと説明するテキスト
     public PlayableDirector text_noLineCreated_pd; // このPlayableDirector
+    private bool has_text_noLineCreated_pd_Started = false;
     private bool has_text_noLineCreated_pd_Played = false;
 
     public GameObject s_knight_b; // 騎士＋ギロチンのセリフ
     public PlayableDirector s_knight_b_pd; // このPlayableDirector
+    private bool has_s_knight_b_pd_Started = false;
     private bool has_s_knight_b_pd_Played = false;
 
     public GameObject s_king_b; // 国王＋お金のセリフ
     public PlayableDirector s_king_b_pd; // このPlayableDirector
+    private bool has_s_king_b_pd_Started = false;
     private bool has_s_king_b_pd_Played = false;
 
     public GameObject s_knight_c; // 騎士＋お金のセリフ
     public PlayableDirector s_knight_c_pd; // このPlayableDirector
+    private bool has_s_knight_c_pd_Started = false;
     private bool has_s_knight_c_pd_Played = false;
 
     public GameObject s_king_c; // 国王＋ギロチンのセリフ
     public PlayableDirector s_king_c_pd; // このPlayableDirector
+    private bool has_s_king_c_pd_Started = false;
     private bool has_s_king_c_pd_Played = false;
 
     public GameObject s_knight_a; // セリフs_knight_aのGameObject
     public PlayableDirector s_knight_a_pd; // s_knight_a の　PlayableDirector
+    private bool has_s_knight_a_Started = false;
     private bool has_s_knight_a_Played = false;
 
     public GameObject s_king_a; // セリフs_king_aのGameObject
     public PlayableDirector s_king_a_pd; // s_king_a の　PlayableDirector
+    private bool has_s_king_a_Started = false;
     private bool has_s_king_a_Played = false;
 
     public GameObject s_knight_d; // セリフ　国王　クリアルート　途中のGameObject
     public PlayableDirector s_knight_d_pd; // PlayableDirector
+    private bool has_s_knight_d_pd_Started = false;
     private bool has_s_knight_d_pd_Played = false;
 
     public GameObject s_king_d; // セリフ 騎士　クリアルート　途中　のGameObject
     public PlayableDirector s_king_d_pd; // PlayableDirector
+    private bool has_s_king_d_pd_Started = false;
     private bool has_s_king_d_pd_Played = false;
 
     public GameObject dialogue; // 吹き出しのGameObject
     public PlayableDirector dialogue_pd; // s_king_a の　PlayableDirector
+    private bool has_dialogue_Started = false;
     private bool has_dialogue_Played = false;
 
     public GameObject s_king_e; // セリフ国王　失敗ルート　途中のGameObject
     public PlayableDirector s_king_e_pd; // 　PlayableDirector
+    private bool has_s_king_e_pd_Started = false;
+    private bool has_s_king_e_pd_Played = false;
 
     public GameObject s_knight_e; // セリフ　騎士　失敗ルート　途中のGameObject
     public PlayableDirector s_knight_e_pd; // 　PlayableDirector
+    private bool has_s_knight_e_pd_Started = false;
+    private bool has_s_knight_e_pd_Played = false;
 
     public GameObject s_king_f; // セリフ国王　クリアルート　出会う前　のGameObject
     public PlayableDirector s_king_f_pd; // 　PlayableDirector
+    private bool has_s_king_f_pd_Started = false;
+    private bool has_s_king_f_pd_Played = false;
 
     public GameObject s_knight_f; // セリフ　騎士　クリアルート　出会う前　のGameObject
     public PlayableDirector s_knight_f_pd; // 　PlayableDirector
+    private bool has_s_knight_f_pd_Started = false;
+    private bool has_s_knight_f_pd_Played = false;
 
     public GameObject show_cursor; // カーソルのアニメーション
     public PlayableDirector show_cursor_pd; // カーソルのアニメーション
+    public bool has_show_cursor_started = false;
     public bool has_show_cursor_played = false;
 
     public GameObject short_expla_rule;
@@ -186,12 +218,20 @@ public class T_new_gameController : MonoBehaviour
     public GameObject charaInfoPrefab;
 
     public GameObject menu; // menu_controller
-    public Vector3 menuTargetPosition = new Vector3(5.5f, -4.2f, 0); // たどり着いて欲しい座標
-    public Transform menuBackPosition;
-    public bool menuIsOnItsPos = false; // メニューは目標座標に着いたかをfalseとマークする
-    public bool menuBack = false;
-    public float moveSpeed = 1.5f; // メニューの移動スピード
-    public TMP_Text cannotENTER; // メニューの「Enter：進む」
+    //public GameObject menuTargetPosition; // たどり着いて欲しい座標
+    //public Transform menuBackPosition;
+    //public bool menuIsOnItsPos = false; // メニューは目標座標に着いたかをfalseとマークする
+    //public bool menuBack = false;
+    //public float moveSpeed = 4.0f; // メニューの移動スピード
+    //private bool Menu_is_Moving = false;
+    //private Vector3 targetPosition;
+    private bool onMenu = false;
+    private bool menu_switch_on = false;
+    public GameObject image_menu_hover_white;
+    public GameObject image_menu_button;
+    public GameObject image_menu_button_pressed;
+
+    public switch_explaIconMode switch_Expla_script;
 
     public AudioClip leftClickClip;
     public AudioClip rightClickClip;
@@ -201,16 +241,19 @@ public class T_new_gameController : MonoBehaviour
     public AudioSource audioSourceTn;
 
     public AudioClip changeImageClip;
+
     public enum GameMode
     {
-        TextPlaying, // ゲーム開始時のテキストが再生中
+        //TextPlaying, // ゲーム開始時のテキストが再生中
         PlayerPlaying, // プレイヤーが操作している状態
-        WaitForSceneChange // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
+        WaitForSceneChange, // 現シーンのゲーム内容が終了し、プレイヤーがEnterを押すのを待って次のシーンに切り替える
+        choosing // プレイヤーは横線を接続してるなどの時
     }
-    public GameMode currentGameMode = GameMode.TextPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
+    public GameMode currentGameMode = GameMode.PlayerPlaying; // 現シーン開始時にゲームモードをStartTextPlayingに設定
     // Start is called before the first frame update
     void Start()
     {
+
         // Initialize the dictionary and add the points
         pointsDictionary = new Dictionary<int, Vector3>();
 
@@ -237,6 +280,7 @@ public class T_new_gameController : MonoBehaviour
         knight_after.SetActive(false);
         knight_dead.SetActive(false);
         text_c.SetActive(false);
+        mouseIcon.SetActive(false);
         if (beMoved_target != null)
         {
             beMoved_target.SetActive(false);
@@ -288,6 +332,8 @@ public class T_new_gameController : MonoBehaviour
         s_knight_f.SetActive(false);
         createLine_show_point_2.SetActive(false);
         short_expla_rule.SetActive(false);
+        menu.SetActive(false);
+        image_menu_hover_white.SetActive(false);
 
         show_cursor_pd.stopped += OnPlayableDirectorStopped;
         play_target_pd.stopped += OnPlayableDirectorStopped;
@@ -324,45 +370,110 @@ public class T_new_gameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("currentGameMode:" + currentGameMode);
         switch (currentGameMode)
         {
-            case GameMode.TextPlaying:
+            //case GameMode.TextPlaying:
 
-                break;
+            //    if (menu_switch_on)
+            //    {
+            //        waitForSceneChange_Menu();
+            //    }
+            //    break;
 
             case GameMode.PlayerPlaying:
-
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (onMenu )
                 {
-                    Debug.Log("currentMovementIndex" + currentMovementIndex);
-                    if (has_play_target_pd_Played && !has_beMoved_target_pd_Played) // 目標は表示すされたが、まだ左上に移動されてない
+                    return;
+                }
+                if (switch_Expla_script.mouseOn)
+                {
+                    return;
+                }
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
+                {
+                    Debug.Log("currentMovementIndex: " + currentMovementIndex);
+
+                    if(has_play_target_pd_Started && !has_play_target_pd_Played)
+                    {
+                        play_target_pd.time = play_target_pd.duration;
+                        play_target_pd.Evaluate();
+                    }
+
+                    else if (has_play_target_pd_Played && !has_beMoved_target_pd_Started && !has_beMoved_target_pd_Played) // 目標は表示すされたが、まだ左上に移動されてない
                     {
                         //Destroy(play_target); // 最初の目標と説明文を削除する
                         //Destroy(Text_target); // 上と同じ
                         play_target.SetActive(false); // 最初の目標と説明文を非表示にする
                         Text_target.SetActive(false); // 上と同じ
                         beMoved_target.SetActive(true); // 目標を左上に移動するアニメーションを表示して、プレイする
+                        has_beMoved_target_pd_Started = true;
+                    }
+
+                    else if (has_beMoved_target_pd_Started && !has_beMoved_target_pd_Played)
+                    {
+                        beMoved_target_pd.time = beMoved_target_pd.duration;
+                        beMoved_target_pd.Evaluate();
+
+                        enterAlone.SetActive(true);
+                    }
+
+                    else if(has_beMoved_target_pd_Played && !has_Text_explainChara_pd_Started && !has_Text_explainChara_pd_Played)
+                    {
+                        enterAlone.SetActive(false);
+                        Text_explainChara.SetActive(true);
+                        has_Text_explainChara_pd_Started = true;
+                    }
+                    else if(has_Text_explainChara_pd_Started && !has_Text_explainChara_pd_Played)
+                    {
+
+                        Text_explainChara_pd.time = Text_explainChara_pd.duration;
+                        Text_explainChara_pd.Evaluate();
                     }
 
                     // 目標は左上に移動された、キャラクター説明も再生された、マウスをキャラクターに合わせる説明文はまだ表示されてない
-                    if (has_beMoved_target_pd_Played && has_Text_explainChara_pd_Played && !has_Text_explainCharaInfo_pd_Played) 
+                    else if (has_beMoved_target_pd_Played && has_Text_explainChara_pd_Played && !has_Text_explainCharaInfo_pd_Played && !has_show_cursor_started && !has_show_cursor_played) 
                     {
                         show_cursor.SetActive(true);
                         show_cursor_pd.Play(); // カーソルのアニメーション
+                        has_show_cursor_started = true;
 
                         Text_explainChara.SetActive(false); // キャラクターの説明文を非表示にする
 
                         //Text_explainCharaInfo.SetActive(true); // マウスをキャラクターに合わせる説明文を表示して、プレイする
                     }
 
+                    else if (has_show_cursor_started && !has_show_cursor_played)
+                    {
+                        show_cursor_pd.time = show_cursor_pd.duration;
+                        show_cursor_pd.Evaluate();
+                    }
+
+                    else if (has_Text_explainCharaInfo_pd_Started && !has_Text_explainCharaInfo_pd_Played)
+                    {
+                        Text_explainCharaInfo_pd.time = Text_explainCharaInfo_pd.duration;
+                        Text_explainCharaInfo_pd.Evaluate();
+                    }
+
+                    else if (!oneOfCharaInfos_has_checked && has_show_cursor_played) // プレイヤーはマウスをキャラクターに合わせてない
+                    {
+                        Debug.Log("please check charaInfo");
+                        show_cursor_pd.time = 0;      // ０秒にリセットする
+                        show_cursor_pd.Evaluate();    // 更新する
+                        show_cursor_pd.Play(); // カーソルのアニメーションをもう1回再生する
+                        has_show_cursor_started = true;
+                        has_show_cursor_played = false;
+                    }
+
                     // マウスをキャラクターに合わせる説明文は再生された、縦線2本を説明するアニメーションまだ表示されてない
-                    if (has_Text_explainCharaInfo_pd_Played && !has_show_two_lines_Played)
+                    else if (has_Text_explainCharaInfo_pd_Played && !has_show_two_lines_Started && !has_show_two_lines_Played)
                     {
                         if (oneOfCharaInfos_has_checked) // プレイヤーはマウスをキャラクターに合わせた
                         {
                             Text_explainCharaInfo.SetActive(false); // マウスをキャラクターに合わせる説明文を非表示にする
 
                             show_two_lines.SetActive(true); // 縦線2本を説明するアニメーションを表示する（再生終わったら、本当の縦線2本を表示すると予約した）
+                            has_show_two_lines_Started = true;
 
                             if (show_cursor.activeSelf)
                             {
@@ -370,101 +481,178 @@ public class T_new_gameController : MonoBehaviour
                             }
 
                         }
-                        //else if (!oneOfCharaInfos_has_checked) // プレイヤーはマウスをキャラクターに合わせてない
-                        //{
-                        //    show_cursor_pd.Play(); // カーソルのアニメーションをもう1回再生する
-                        //}
+                    }
+
+                    else if (has_show_two_lines_Started && !has_show_two_lines_Played)
+                    {
+                        show_two_lines_pd.time = show_two_lines_pd.duration;
+                        show_two_lines_pd.Evaluate();
                     }
 
                     // 縦線2本を説明するアニメーションは再生された、点を説明するやつはまだ表示されてない
-                    if (has_show_two_lines_Played && !has_show_point_pd_Played)
+                    else if (!has_show_two_lines_Started && has_show_two_lines_Played && !has_show_point_pd_Started && !has_show_point_pd_Played)
                     {
                         //Destroy(show_two_lines); // 縦線2本を説明するアニメーションを削除
                         //Destroy(show_cursor); // カーソルのアニメーションを削除
                         show_two_lines.SetActive(false); // 縦線2本を説明するアニメーションを非表示にする
-                        show_cursor.SetActive(false); // カーソルのアニメーションを非表示にする
+                        if (show_cursor.activeSelf) // カーソルのアニメーションを非表示にする
+                        {
+                            show_cursor.SetActive(false);
+                        }
                         plotIcon.SetActive(true);
                         switch_iconExplaMode.SetActive(true);
                         tenGameObjects[0].SetActive(true); // 本当の点を表示する
                         tenGameObjects[3].SetActive(true); // 本当の点を表示する
                         show_point.SetActive(true); // 点を説明する文を再生する
+                        has_show_point_pd_Started = true;
+                    }
+
+                    else if (has_show_point_pd_Started && !has_show_point_pd_Played)
+                    {
+                        show_point_pd.time = show_point_pd.duration;
+                        show_point_pd.Evaluate();
                     }
 
                     // 点の説明文は再生された、結末アイコンの説明文はまだ再生されてない
-                    if (has_show_point_pd_Played && !has_text_end_icon_pd_Played)
+                    else if (!has_show_point_pd_Started && has_show_point_pd_Played && !has_text_end_icon_pd_Started && !has_text_end_icon_pd_Played)
                     {
                         show_point.SetActive(false); // 点の説明文を非表示にする
                         end_icon_1.SetActive(true); // 結末アイコンを表示する
                         end_icon_2.SetActive(true); // 結末アイコンを表示する
                         text_end_icon.SetActive(true); // 結末アイコンの説明文を再生する
+                        has_text_end_icon_pd_Started = true;
+                    }
+
+                    else if (has_text_end_icon_pd_Started && !has_text_end_icon_pd_Played)
+                    {
+                        text_end_icon_pd.time = text_end_icon_pd.duration;
+                        text_end_icon_pd.Evaluate();
                     }
 
                     // 結末アイコンの説明文は再生された、キャラクターの開始時点のセリフの説明文はまだ再生されてない
-                    if (has_text_end_icon_pd_Played && !has_text_charaMochibe_pd_Played )
+                    else if (!has_text_end_icon_pd_Started && has_text_end_icon_pd_Played && !has_text_charaMochibe_pd_Started &&!has_text_charaMochibe_pd_Played )
                     {
                         text_end_icon.SetActive(false); // 結末アイコンの説明文を非表示にする
                         text_charaMochibe.SetActive(true); // キャラクターの開始時点のセリフの説明文を再生する
+                        has_text_charaMochibe_pd_Started = true;
+                    }
+
+                    else if (has_text_charaMochibe_pd_Started && !has_text_charaMochibe_pd_Played)
+                    {
+                        text_charaMochibe_pd.time = text_charaMochibe_pd.duration;
+                        text_charaMochibe_pd.Evaluate();
                     }
 
                     // キャラクターの開始時点のセリフの説明文は再生された、騎士の最初のセリフはまだ再生されてない
-                    if (has_text_charaMochibe_pd_Played && !has_s_knight_a_Played)
+                    else if (!has_text_charaMochibe_pd_Started && has_text_charaMochibe_pd_Played && !has_s_knight_a_Started && !has_s_knight_a_Played)
                     {
                         text_charaMochibe.SetActive(false); // キャラクターの開始時点のセリフの説明文を非表示にする
                         s_knight_a.SetActive(true); // 騎士の最初のセリフを再生する
+                        has_s_knight_a_Started = true;
+                    }
+
+                    else if(has_s_knight_a_Started && !has_s_knight_a_Played)
+                    {
+                        s_knight_a_pd.time = s_knight_a_pd.duration;
+                        s_knight_a_pd.Evaluate();
                     }
 
                     // 騎士の最初のセリフは再生された、国王の最初のセリフはまだ再生されてない
-                    if (has_s_knight_a_Played && !has_s_king_a_Played)
+                    else if (!has_s_knight_a_Started && has_s_knight_a_Played && !has_s_king_a_Started && !has_s_king_a_Played)
                     {
                         s_knight_a.SetActive(false); // 騎士の最初のセリフを非表示にする
                         s_king_a.SetActive(true); // 国王の最初のセリフを再生する
+                        has_s_king_a_Started = true;
+                    }
+
+                    else if (has_s_king_a_Started && !has_s_king_a_Played)
+                    {
+                        s_king_a_pd.time = s_king_a_pd.duration;
+                        s_king_a_pd.Evaluate();
                     }
 
                     // 国王の最初のセリフは再生された、横線で出会う必要性の説明文はまだ再生されてない
-                    if (has_s_king_a_Played && !has_text_mustEncounter_pd_Played)
+                    else if (!has_s_king_a_Started && has_s_king_a_Played && !has_text_mustEncounter_pd_Started && !has_text_mustEncounter_pd_Played)
                     {
                         s_king_a.SetActive(false); // 国王の最初のセリフを非表示にする
                         
                         CreateHoverArea(tenGameObjects[0], tenGameObjects[3]);
+
+                        //T_new_hoverArea t_New_Hover = FindObjectOfType<T_new_hoverArea>();
+                        
+
                         text_mustEncounter.SetActive(true); // 横線で出会う必要性の説明文再生する
+                        has_text_mustEncounter_pd_Started = true;
+                    }
+
+                    else if(has_text_mustEncounter_pd_Started && !has_text_mustEncounter_pd_Played)
+                    {
+                        text_mustEncounter_pd.time = text_mustEncounter_pd.duration;
+                        text_mustEncounter_pd.Evaluate();
                     }
 
                     // 横線で出会う必要性の説明文は再生された、
-                    if (has_text_mustEncounter_pd_Played)
+                    else if (!has_text_mustEncounter_pd_Started && has_text_mustEncounter_pd_Played)
                     {
-                        if (_isHoriz_line_Created  )
+                        if (text_mustEncounter.activeSelf)
                         {
-                            clearedRoute = true;
-                            cleared_character_move_logic();
+                            text_mustEncounter.SetActive(false);
                         }
-                        else if (!_isHoriz_line_Created)
+                        if (!_isHoriz_line_Created)
                         {
                             failedRoute = true;
-
-                            text_mustEncounter.SetActive(false);
-
                             if (!has_text_noLineCreated_pd_Played)
                             {
                                 text_noLineCreated.SetActive(true);
-                                currentGameMode = GameMode.TextPlaying;
+                                has_text_noLineCreated_pd_Started = true;
+                                //currentGameMode = GameMode.TextPlaying;
                             }
-                            
+
                             failed_character_move_logic();
                         }
+                        else if (_isHoriz_line_Created)
+                        {
+                            clearedRoute = true;
+                            cleared_character_move_logic();
+
+                        }
                     }
+                    
+                    
                 }
 
                 break;
 
             case GameMode.WaitForSceneChange:
-
+                if (menu_switch_on)
+                {
+                    waitForSceneChange_Menu();
+                }
+                Debug.Log("now is gamemode wait for scene change");
                 // シーンを切り替える
+                if (Input.GetMouseButtonDown(0))  // Input.GetKeyDown(KeyCode.Return)
+                {
+                    if (failed)
+                    {
+                        Debug.Log("LoadScene:Tutorial_N_knight_dead");
+                        SceneManager.LoadScene("Tutorial_N_knight_dead");
+                    }
+                    else if (!failed)
+                    {
+                        Debug.Log("LoadScene:JyoMaku_before_0");
+                        SceneManager.LoadScene("JyoMaku_before_0");
+                    }
+                }
                 //Debug.Log("failedのブール値は：" + failed);
-                ChangeTextColor(cannotENTER);
+                //ChangeTextColor(cannotENTER);
 
-                menu.SetActive(true);
-                StartCoroutine(MoveMenuToTarget(menuTargetPosition, moveSpeed));
-                waitForSceneChange_Menu();
+                //menu.SetActive(true);
+                //StartCoroutine(MoveMenuToTarget(menuTargetPosition.transform.position, moveSpeed));
+                //waitForSceneChange_Menu();
+
+                break;
+
+            case GameMode.choosing:
 
                 break;
         }
@@ -473,124 +661,231 @@ public class T_new_gameController : MonoBehaviour
 
     public void waitForSceneChange_Menu()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("pressed enter!!");
-
-            if (menuIsOnItsPos == true)
-            {
-                if (!failed)
-                {
-                    Debug.Log("進む！");
-                    Debug.Log("LoadScene:Tutorial_1_Scene");
-                    SceneManager.LoadScene("Tutorial_1_Scene");
-
-                }
-            }
-
-            Debug.Log("menuIsOnItsPos:" + menuIsOnItsPos);
-
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("リトライ！");
-            failed = true;
-            currentMovementIndex = 0;
-            cannot_createLine = false;
-            cannnot_cancell = false;
-            _isHoriz_line_Created = false;
-            T_new_hoverArea T_new_hoverScript = FindObjectOfType<T_new_hoverArea>();
-            Destroy(T_new_hoverScript.currentLine);
-            character1.transform.position = character1_initial_pos;
-            character2.transform.position = character2_initial_pos;
-            text_mustEncounter_1.SetActive(true);
-            short_expla_rule.SetActive(true);
-            knight_before.SetActive(true);
-            knight_after.SetActive(false);
-            knight_dead.SetActive(false);
-            if (text_cleared != null)
-            {
-                text_cleared.SetActive(false);
-            }
-            if (text_failed != null)
-            {
-                text_failed.SetActive(false);
-            }
-            if (text_horizontalLineCreated.activeSelf)
-            {
-                text_horizontalLineCreated.SetActive(false);
-            }
-            if (text_noLineCreated.activeSelf)
-            {
-                text_noLineCreated.SetActive(false);
-            }
-            if (text_failed.activeSelf)
-            {
-                text_failed.SetActive(false);
-            }
-            if (text_cleared.activeSelf)
-            {
-                text_cleared.SetActive(false);
-            }
-            StartCoroutine(MoveMenuBack(menuBackPosition.position, moveSpeed));
-            currentGameMode = GameMode.PlayerPlaying;
+            reTry();
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            //Debug.Log("LoadScene:TitleScene");
-            //SceneManager.LoadScene("TitleScene");
-            Debug.Log("LoadScene:M");
-            SceneManager.LoadScene("M");
+            toMainScene();
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            Application.Quit(); // ゲームを閉じる
+            quitGame();
         }
     }
 
+    public void reTry()
+    {
+        Debug.Log("リトライ！");
+        failed = true;
+        currentMovementIndex = 0;
+        cannot_createLine = false;
+        cannnot_cancell = false;
+        _isHoriz_line_Created = false;
+        T_new_hoverArea T_new_hoverScript = FindObjectOfType<T_new_hoverArea>();
+        Destroy(T_new_hoverScript.currentLine);
+        character1.transform.position = character1_initial_pos;
+        character2.transform.position = character2_initial_pos;
+        text_mustEncounter_1.SetActive(true);
+        short_expla_rule.SetActive(true);
+        knight_before.SetActive(true);
+        knight_after.SetActive(false);
+        knight_dead.SetActive(false);
+        has_play_target_pd_Played = false;
+        has_beMoved_target_pd_Played = false;
+        has_Text_explainChara_pd_Played = false;
+        has_Text_explainCharaInfo_pd_Played = false;
+        has_show_two_lines_Played = false;
+        has_show_point_pd_Played = false;
+        has_text_end_icon_pd_Played = false;
+        has_text_charaMochibe_pd_Played = false;
+        has_text_mustEncounter_pd_Played = false;
+        has_text_failed_pd_Played = false;
+        has_text_cleared_pd_Played = false;
+        has_text_horizontalLineCreated_pd_Played = false;
+        has_text_noLineCreated_pd_Played = false;
+        has_s_knight_b_pd_Played = false;
+        has_s_king_b_pd_Played = false;
+        has_s_knight_c_pd_Played = false;
+        has_s_king_c_pd_Played = false;
+        has_s_knight_a_Played = false;
+        has_s_king_a_Played = false;
+        has_s_knight_d_pd_Played = false;
+        has_s_king_d_pd_Played = false;
+        has_dialogue_Played = false;
+        has_s_king_e_pd_Played = false;
+        has_s_knight_e_pd_Played = false;
+        has_s_king_f_pd_Played = false;
+        has_s_knight_f_pd_Played = false;
+        has_show_cursor_played = false;
+        if (text_cleared != null)
+        {
+            text_cleared.SetActive(false);
+        }
+        if (text_failed != null)
+        {
+            text_failed.SetActive(false);
+        }
+        if (text_horizontalLineCreated.activeSelf)
+        {
+            text_horizontalLineCreated.SetActive(false);
+        }
+        if (text_noLineCreated.activeSelf)
+        {
+            text_noLineCreated.SetActive(false);
+        }
+        if (text_failed.activeSelf)
+        {
+            text_failed.SetActive(false);
+        }
+        if (text_cleared.activeSelf)
+        {
+            text_cleared.SetActive(false);
+        }
+        if (s_knight_a.activeSelf)
+        {
+            s_knight_a.SetActive(false);
+        }
+        if (s_king_a.activeSelf)
+        {
+            s_king_a.SetActive(false);
+        }
+        if (s_knight_b.activeSelf)
+        {
+            s_knight_b.SetActive(false);
+        }
+        if (s_king_b.activeSelf)
+        {
+            s_king_b.SetActive(false);
+        }
+        if (s_knight_c.activeSelf)
+        {
+            s_knight_c.SetActive(false);
+        }
+        if (s_king_c.activeSelf)
+        {
+            s_king_c.SetActive(false);
+        }
+        if (s_knight_d.activeSelf)
+        {
+            s_knight_d.SetActive(false);
+        }
+        if (s_king_d.activeSelf)
+        {
+            s_king_d.SetActive(false);
+        }
+        if (s_knight_e.activeSelf)
+        {
+            s_knight_e.SetActive(false);
+        }
+        if (s_king_e.activeSelf)
+        {
+            s_king_e.SetActive(false);
+        }
+        if (s_knight_f.activeSelf)
+        {
+            s_knight_f.SetActive(false);
+        }
+        if (s_king_f.activeSelf)
+        {
+            s_king_f.SetActive(false);
+        }
+        if (dialogue.activeSelf)
+        {
+            dialogue.SetActive(false);
+        }
+        //StartCoroutine(MoveMenuBack(menuBackPosition.position, moveSpeed));
+        currentGameMode = GameMode.PlayerPlaying;
+    }
+
+    public void toMainScene()
+    {
+        //Debug.Log("LoadScene:TitleScene");
+        //SceneManager.LoadScene("TitleScene");
+        Debug.Log("LoadScene:M");
+        SceneManager.LoadScene("M");
+    }
+
+    public void quitGame()
+    {
+        Application.Quit(); // ゲームを閉じる
+    }
 
     public void failed_character_move_logic() // 横線が接続されてない場合、キャラクターたちの移動ロジック
     {
         switch (currentMovementIndex)
         {
             case 0:
-                StartMovement(new List<int> { 0, 0 }, new List<int> { 1, 1 });
                 if (text_mustEncounter_1.activeSelf)
                 {
                     text_mustEncounter_1.SetActive(false);
                 }
+                
+                StartMovement(new List<int> { 0, 0 }, new List<int> { 1, 1 });
                 break;
 
             case 1:
-                StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
-                text_noLineCreated.SetActive(false);
-                enterAlone.SetActive(true);
-
+                if (has_cleared_once)
+                {
+                    StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                    enterAlone.SetActive(true);
+                    break;
+                }
+                if (has_text_noLineCreated_pd_Started && !has_text_noLineCreated_pd_Played)
+                {
+                    text_noLineCreated_pd.time = text_noLineCreated_pd.duration;
+                    text_noLineCreated_pd.Evaluate();
+                }
+                else if (!has_text_noLineCreated_pd_Started && has_text_noLineCreated_pd_Played)
+                {
+                    StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
+                }
                 break;
 
             case 2:
+                text_noLineCreated.SetActive(false);
                 StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 enterAlone.SetActive(false);
                 cannot_createLine = true;
                 s_knight_e.SetActive(true);
-
+                has_s_knight_e_pd_Started = true;
                 break;
 
             case 3:
-                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
                 if (text_noLineCreated.activeSelf)
                 {
                     text_noLineCreated.SetActive(false);
                 }
-                s_knight_e.SetActive(false);
-                s_king_e.SetActive(true);
+                if(has_s_knight_e_pd_Started && !has_s_knight_e_pd_Played)
+                {
+                    s_knight_e_pd.time = s_knight_e_pd.duration;
+                    s_knight_e_pd.Evaluate();
+                }
+                else if(!has_s_knight_e_pd_Started && has_s_knight_e_pd_Played)
+                {
+                    StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                    s_knight_e.SetActive(false);
+                    s_king_e.SetActive(true);
+                    has_s_king_e_pd_Started = true;
+                }
 
                 break;
 
             case 4:
-                StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 5 });
-                s_king_e.SetActive(false);
-                enterAlone.SetActive(true);
+                if (has_s_king_e_pd_Started && !has_s_king_e_pd_Played)
+                {
+                    s_king_e_pd.time = s_king_e_pd.duration;
+                    s_king_e_pd.Evaluate();
+                }
+                else if(!has_s_king_e_pd_Started && has_s_king_e_pd_Played)
+                {
+                    StartMovement(new List<int> { 2, 6 }, new List<int> { 5, 5 });
+                    s_king_e.SetActive(false);
+                    enterAlone.SetActive(true);
+                }
+
                 break;
 
             case 5:
@@ -605,21 +900,32 @@ public class T_new_gameController : MonoBehaviour
                     text_horizontalLineCreated.SetActive(false);
                 }
                 s_knight_b.SetActive(true);
+                has_s_knight_b_pd_Started = true;
                 knight_before.SetActive(false);
                 knight_dead.SetActive(true);
                 enterAlone.SetActive(false);
                 break;
 
             case 6:
-                StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 7 });
-                s_knight_b.SetActive(false);
-                enterAlone.SetActive(true);
+                if (has_s_knight_b_pd_Started && !has_s_knight_b_pd_Played)
+                {
+                    s_knight_b_pd.time = s_knight_b_pd.duration;
+                    s_knight_b_pd.Evaluate();
+                }
+                else if(!has_s_knight_b_pd_Started && has_s_knight_b_pd_Played)
+                {
+                    StartMovement(new List<int> { 6, 6 }, new List<int> { 5, 7 });
+                    s_knight_b.SetActive(false);
+                    enterAlone.SetActive(true);
+
+                }
                 break;
 
             case 7:
                 StartMovement(new List<int> { 6, 6 }, new List<int> { 7, 7 });
                 enterAlone.SetActive(false);
                 s_king_b.SetActive(true);
+                has_s_king_b_pd_Started = true;
                 if (has_cleared_once)
                 {
                     failed = false;
@@ -628,10 +934,27 @@ public class T_new_gameController : MonoBehaviour
                 {
                     short_expla_rule.SetActive(false);
                 }
-                currentGameMode = GameMode.TextPlaying;
+                
                 break;
 
-
+            case 8:
+                if (has_s_king_b_pd_Started && !has_s_king_b_pd_Played)
+                {
+                    s_king_b_pd.time = s_king_b_pd.duration;
+                    s_king_b_pd.Evaluate();
+                }
+                else if(!has_s_king_b_pd_Started && has_s_king_b_pd_Played && has_text_failed_pd_Started && !has_text_failed_pd_Played)
+                {
+                    text_failed_pd.time = text_failed_pd.duration;
+                    text_failed_pd.Evaluate();
+                    
+                }
+                else
+                {
+                    Debug.Log("change to => GameMode.WaitForSceneChange");
+                    currentGameMode = GameMode.WaitForSceneChange;
+                }
+                break;
 
         }
     }
@@ -643,92 +966,129 @@ public class T_new_gameController : MonoBehaviour
             case 0:
                 StartMovement(new List<int> { 0, 2 }, new List<int> { 1, 5 });
 
-                if (text_horizontalLineCreated.activeSelf)
-                {
-                    text_horizontalLineCreated.SetActive(false);
-                }
-                if (text_mustEncounter_1.activeSelf)
-                {
-                    text_mustEncounter_1.SetActive(false);
-                }
-                enterAlone.SetActive(true);
                 break;
 
             case 1:
-                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
-                cannnot_cancell = true;
-                enterAlone.SetActive(false);
-                s_knight_f.SetActive(true);
-                if (text_horizontalLineCreated.activeSelf)
+                if (has_text_horizontalLineCreated_pd_Started && !has_text_horizontalLineCreated_pd_Played)
                 {
-                    text_horizontalLineCreated.SetActive(false);
+                    text_horizontalLineCreated_pd.time = text_horizontalLineCreated_pd.duration;
+                    text_horizontalLineCreated_pd.Evaluate();
+                }
+                else if (!has_text_horizontalLineCreated_pd_Started && has_text_horizontalLineCreated_pd_Played)
+                {
+                    StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                    if (text_horizontalLineCreated.activeSelf)
+                    {
+                        text_horizontalLineCreated.SetActive(false);
+                    }
+                    if (text_mustEncounter_1.activeSelf)
+                    {
+                        text_mustEncounter_1.SetActive(false);
+                    }
+                    enterAlone.SetActive(true);
                 }
                 break;
 
-            case 2:
-                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
-                if (text_horizontalLineCreated.activeSelf)
-                {
-                    text_horizontalLineCreated.SetActive(false);
-                }
-                
-                s_knight_f.SetActive(false);
-                s_king_f.SetActive(true);
 
+            case 2:
+                enterAlone.SetActive(false);
+                StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+                cannnot_cancell = true;
+                
+                s_knight_f.SetActive(true);
+                has_s_knight_f_pd_Started = true;
                 break;
 
             case 3:
-                StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
-                enterAlone.SetActive(true);
-                s_king_f.SetActive(false);
+                if (has_s_knight_f_pd_Started && !has_s_knight_f_pd_Played)
+                {
+                    s_knight_f_pd.time = s_knight_f_pd.duration;
+                    s_knight_f_pd.Evaluate();
+                }
+                else if(!has_s_knight_f_pd_Started && has_s_knight_f_pd_Played)
+                {
+                    StartMovement(new List<int> { 2, 2 }, new List<int> { 5, 5 });
+
+                    s_knight_f.SetActive(false);
+                    s_king_f.SetActive(true);
+                    has_s_king_f_pd_Started = true;
+                }
                 break;
 
             case 4:
-                StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 });
-                enterAlone.SetActive(false);
-                dialogue.SetActive(true);
-                currentGameMode = GameMode.TextPlaying;
-                knight_before.SetActive(false);
+                if (has_s_king_f_pd_Started && !has_s_king_f_pd_Played)
+                {
+                    s_king_f_pd.time = s_king_f_pd.duration;
+                    s_king_f_pd.Evaluate();
+                }
+                else if (!has_s_king_f_pd_Started && has_s_king_f_pd_Played)
+                {
+                    StartMovement(new List<int> { 2, 3 }, new List<int> { 5, 4 });
+                    enterAlone.SetActive(true);
+                    s_king_f.SetActive(false);
+                }
                 break;
 
             case 5:
-                
-                knight_after.SetActive(true);
-                dialogue.SetActive(false);
-                StartMovement(new List<int> { 3, 4 }, new List<int> { 4, 3 });
-                enterAlone.SetActive(true);
+                StartMovement(new List<int> { 3, 3 }, new List<int> { 4, 4 });
+                enterAlone.SetActive(false);
+                dialogue.SetActive(true);
+                has_dialogue_Started = true;
+                knight_before.SetActive(false);
                 break;
 
             case 6:
-                StartMovement(new List<int> { 4, 4 }, new List<int> { 3, 2 });
-
+                if (has_dialogue_Started && !has_dialogue_Played)
+                {
+                    dialogue_pd.time = dialogue_pd.duration;
+                    dialogue_pd.Evaluate();
+                }
+                else if(!has_dialogue_Started && has_dialogue_Played)
+                {
+                    knight_after.SetActive(true);
+                    dialogue.SetActive(false);
+                    StartMovement(new List<int> { 3, 4, 5 }, new List<int> { 4, 3, 2 });
+                    enterAlone.SetActive(true);
+                }
                 break;
 
             case 7:
-                StartMovement(new List<int> { 4, 4 }, new List<int> { 2, 2 });
+                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
                 enterAlone.SetActive(false);
                 s_king_d.SetActive(true);
+                has_s_king_d_pd_Started = true;
                 break;
 
             case 8:
-                StartMovement(new List<int> { 4, 5 }, new List<int> { 2, 2 });
-                s_king_d.SetActive(false);
-                enterAlone.SetActive(true);
+                if (has_s_king_d_pd_Started && !has_s_king_d_pd_Played)
+                {
+                    s_king_d_pd.time = s_king_d_pd.duration;
+                    s_king_d_pd.Evaluate();
+                }
+                else if (!has_s_king_d_pd_Started && has_s_king_d_pd_Played)
+                {
+                    StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
+                    s_king_d.SetActive(false);
+                    s_knight_d.SetActive(true);
+                    has_s_knight_d_pd_Started = true;
+                }
                 break;
 
             case 9:
-                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 2 });
-                s_knight_d.SetActive(true);
-                enterAlone.SetActive(false);
+                if (has_s_knight_d_pd_Started && !has_s_knight_d_pd_Played)
+                {
+                    s_knight_d_pd.time = s_knight_d_pd.duration;
+                    s_knight_d_pd.Evaluate();
+                }
+                else if (!has_s_knight_d_pd_Started && has_s_knight_d_pd_Played)
+                {
+                    StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 6 });
+                    s_knight_d.SetActive(false);
+                    enterAlone.SetActive(true);
+                }
                 break;
 
             case 10:
-                StartMovement(new List<int> { 5, 5 }, new List<int> { 2, 6 });
-                s_knight_d.SetActive(false);
-                enterAlone.SetActive(true);
-                break;
-
-            case 11:
                 StartMovement(new List<int> { 5, 5 }, new List<int> { 6, 6 });
                 if (text_noLineCreated.activeSelf)
                 {
@@ -739,18 +1099,29 @@ public class T_new_gameController : MonoBehaviour
                     text_horizontalLineCreated.SetActive(false);
                 }
                 s_king_c.SetActive(true);
+                has_s_king_c_pd_Started = true;
                 enterAlone.SetActive(false);
                 break;
 
-            case 12:
-                StartMovement(new List<int> { 5, 7 }, new List<int> { 6, 6 });
-                s_king_c.SetActive(false);
-                enterAlone.SetActive(true);
+            case 11:
+                if (has_s_king_c_pd_Started && !has_s_king_c_pd_Played)
+                {
+                    s_king_c_pd.time = s_king_c_pd.duration;
+                    s_king_c_pd.Evaluate();
+                }
+                else if (!has_s_king_c_pd_Started && has_s_king_c_pd_Played)
+                {
+                    StartMovement(new List<int> { 5, 7 }, new List<int> { 6, 6 });
+                    s_king_c.SetActive(false);
+                    enterAlone.SetActive(true);
+                }
                 break;
 
-            case 13:
+            case 12:
                 StartMovement(new List<int> { 7, 7 }, new List<int> { 6, 6 });
                 s_knight_c.SetActive(true);
+                has_s_knight_c_pd_Started = true;
+
                 enterAlone.SetActive(false);
                 failed = false;
                 if (!has_cleared_once)
@@ -761,7 +1132,25 @@ public class T_new_gameController : MonoBehaviour
                 {
                     short_expla_rule.SetActive(false);
                 }
-                currentGameMode = GameMode.TextPlaying;
+                break;
+
+            case 13:
+                if (has_s_knight_c_pd_Started && !has_s_knight_c_pd_Played)
+                {
+                    s_knight_c_pd.time = s_knight_c_pd.duration;
+                    s_knight_c_pd.Evaluate();
+                }
+                else if(!has_s_knight_c_pd_Started && has_s_knight_c_pd_Played && has_text_cleared_pd_Started && !has_text_cleared_pd_Played)
+                {
+                    text_cleared_pd.time = text_cleared_pd.duration;
+                    text_cleared_pd.Evaluate();
+                    
+                }
+                else
+                {
+                    Debug.Log("change to => GameMode.WaitForSceneChange");
+                    currentGameMode = GameMode.WaitForSceneChange;
+                }
                 break;
 
         }
@@ -771,61 +1160,73 @@ public class T_new_gameController : MonoBehaviour
     {
         if (director == play_target_pd)
         {
+            has_play_target_pd_Started = false;
             has_play_target_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+            
             Debug.Log("play_target_pd has be played.");
         }
         else if (director == beMoved_target_pd)
         {
+            enterAlone.SetActive(true);
+            has_beMoved_target_pd_Started = false;
             has_beMoved_target_pd_Played = true;
             character1.SetActive(true);
             character2.SetActive(true);
-            Text_explainChara.SetActive(true);
-            has_Text_explainChara_pd_Played = true;
+            
             Debug.Log("beMoved_target_pd has be played.");
         }
         else if (director == Text_explainChara_pd)
         {
+            has_Text_explainChara_pd_Started = false;
+            has_Text_explainChara_pd_Played = true;
             Debug.Log("Text_explainChara_pd has be played.");
         }
         else if (director == s_king_a_pd)
         {
+            has_s_king_a_Started = false;
             has_s_king_a_Played = true;
             Debug.Log("s_king_a_pd has be played.");
         }
         else if (director == s_knight_a_pd)
         {
+            has_s_knight_a_Started = false;
             has_s_knight_a_Played = true;
             Debug.Log("s_knight_a_pd has be played.");
         }
         else if (director == Text_explainCharaInfo_pd)
         {
+            has_Text_explainCharaInfo_pd_Started = false;
             has_Text_explainCharaInfo_pd_Played = true;
             Debug.Log("Text_explainCharaInfo_pd has be played.");
         }
         else if (director == show_two_lines_pd) // 縦線2本を説明するアニメーションが再生終わったら、
         {
+            has_show_two_lines_Started = false;
             has_show_two_lines_Played = true;
             lines.SetActive(true); // 本当の縦線2本を表示する
             Debug.Log("show_two_lines_pd has be played.");
         }
         else if (director == show_point_pd)
         {
+            has_show_point_pd_Started = false;
             has_show_point_pd_Played = true;
             Debug.Log("show_point_pd has be played.");
         }
         else if (director == text_end_icon_pd)
         {
+            has_text_end_icon_pd_Started = false;
             has_text_end_icon_pd_Played = true;
             Debug.Log("text_end_icon_pd has be played.");
         }
         else if (director == text_charaMochibe_pd)
         {
+            has_text_charaMochibe_pd_Started = false;
             has_text_charaMochibe_pd_Played = true;
             Debug.Log("text_charaMochibe_pd has be played.");
         }
         else if (director == text_mustEncounter_pd)
         {
+            has_text_mustEncounter_pd_Started = false;
             has_text_mustEncounter_pd_Played = true;
             Debug.Log("has_text_mustEncounter_pd_Played :" + has_text_mustEncounter_pd_Played );
             pleaseClick.SetActive(true);
@@ -833,18 +1234,21 @@ public class T_new_gameController : MonoBehaviour
         }
         else if (director == text_horizontalLineCreated_pd)
         {
+            has_text_horizontalLineCreated_pd_Started = false;
             has_text_horizontalLineCreated_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+            
             Debug.Log("text_horizontalLineCreated_pd has be played.");
         }
         else if (director == text_failed_pd)
         {
+            has_text_failed_pd_Started = false;
             has_text_failed_pd_Played = true;
             if (s_king_b != null)
             {
                 s_king_b.SetActive(false);
             }
             currentGameMode = GameMode.WaitForSceneChange;
+            enterAlone.SetActive(true);
             Debug.Log("text_failed_pd has be played.");
         }
         else if (director == pleaseClick_pd)
@@ -854,90 +1258,115 @@ public class T_new_gameController : MonoBehaviour
         }
         else if (director == text_noLineCreated_pd)
         {
+            has_text_noLineCreated_pd_Started = false;
             has_text_noLineCreated_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+            
             Debug.Log("text_noLineCreated_pd has be played.");
         }
         else if (director == s_knight_b_pd)
         {
+            has_s_knight_b_pd_Started = false;
             has_s_knight_b_pd_Played = true;
             currentGameMode = GameMode.PlayerPlaying;
             Debug.Log("s_knight_b_pd has be played.");
         }
         else if (director == s_king_b_pd)
         {
+            has_s_king_b_pd_Started = false;
             has_s_king_b_pd_Played = true;
             
             if (!has_cleared_once)
             {
                 text_failed.SetActive(true);
+                has_text_failed_pd_Started = true;
             }
             else if (has_cleared_once)
             {
                 currentGameMode = GameMode.WaitForSceneChange;
+                enterAlone.SetActive(true);
             }
             Debug.Log("s_king_b_pd has be played.");
         }
         else if (director == s_knight_c_pd)
         {
+            has_s_knight_c_pd_Started = false;
             has_s_knight_c_pd_Played = true;
-            text_cleared.SetActive(true);
             target_cirlcle.SetActive(true);
-
+            if (!has_cleared_once)
+            {
+                text_cleared.SetActive(true);
+                has_text_cleared_pd_Started = true;
+            }
+            else if (has_cleared_once)
+            {
+                currentGameMode = GameMode.WaitForSceneChange;
+                enterAlone.SetActive(true);
+            }
+            
             Debug.Log("s_knight_c_pd has be played.");
         }
         else if (director == s_king_c_pd)
         {
+            has_s_king_c_pd_Started = false;
             has_s_king_c_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+
             Debug.Log("s_king_c_pd has be played.");
         }
         else if (director == s_knight_d_pd)
         {
+            has_s_knight_d_pd_Started = false;
             has_s_knight_d_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+            
             Debug.Log("s_knight_d_pd has be played.");
         }
         else if (director == s_king_d_pd)
         {
+            has_s_king_d_pd_Started = false;
             has_s_king_d_pd_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
+            
             Debug.Log("s_king_d_pd has be played.");
         }
         else if (director == s_knight_f_pd)
         {
-            currentGameMode = GameMode.PlayerPlaying;
+            has_s_knight_f_pd_Started = false;
+            has_s_knight_f_pd_Played = true;
             Debug.Log("s_knight_f_pd has be played.");
         }
         else if (director == s_king_f_pd)
         {
-            currentGameMode = GameMode.PlayerPlaying;
+            has_s_king_f_pd_Started = false;
+            has_s_king_f_pd_Played = true;
+
             Debug.Log("s_king_f_pd has be played.");
         }
         else if (director == s_knight_e_pd)
         {
-            currentGameMode = GameMode.PlayerPlaying;
+            has_s_knight_e_pd_Started = false;
+            has_s_knight_e_pd_Played = true;
             Debug.Log("s_knight_e_pd has be played.");
         }
         else if (director == s_king_e_pd)
         {
-            currentGameMode = GameMode.PlayerPlaying;
+            has_s_king_e_pd_Started = false;
+            has_s_king_e_pd_Played = true;
             Debug.Log("s_king_e_pd has be played.");
         }
         else if (director == dialogue_pd)
         {
+            has_dialogue_Started = false;
             has_dialogue_Played = true;
-            currentGameMode = GameMode.PlayerPlaying;
             Debug.Log("dialogue_pd has be played.");
         }
         else if (director == text_cleared_pd)
         {
+            has_text_cleared_pd_Started = false;
             has_text_cleared_pd_Played = true;
             if (s_knight_c != null)
             {
                 s_knight_c.SetActive(false);
             }
             currentGameMode = GameMode.WaitForSceneChange;
+            enterAlone.SetActive(true);
             Debug.Log("text_cleared_pd has be played.");
         }
         else if (director == show_cursor_pd)
@@ -946,6 +1375,7 @@ public class T_new_gameController : MonoBehaviour
             CreateHoverAreaCharacter(character1, 1); // 騎士：１
             CreateHoverAreaCharacter(character2, 3); // 国王：３
             has_show_cursor_played = true;
+            has_show_cursor_started = false;
             Debug.Log("show_cursor_pd has be played.");
         }
         else if (director == expla_createLine_pd)
@@ -955,12 +1385,13 @@ public class T_new_gameController : MonoBehaviour
         }
         else if (director == createLine_show_point_2_pd)
         {
-
+            
             Debug.Log("createLine_show_point_2_pd has be played.");
         }
         else if (director == dialogue_pd)
         {
-            currentGameMode = GameMode.PlayerPlaying;
+            has_dialogue_Started = false;
+            has_dialogue_Played = true;
             Debug.Log("dialogue_pd has be played.");
         }
     }
@@ -1066,39 +1497,75 @@ public class T_new_gameController : MonoBehaviour
         Debug.Log($"Hover Area created at {midPoint} with size {boxCollider.size}");
     }
 
-    public void ChangeTextColor(TMP_Text tmp)
+
+    //IEnumerator MoveMenuToTarget(Vector3 targetPosition, float m_speed)
+    //{
+    //    while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
+    //    {
+    //        menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed);
+    //        yield return null;
+    //    }
+    //    menuIsOnItsPos = true;
+    //    menuBack = false;
+    //}
+
+    //IEnumerator MoveMenuBack(Vector3 targetPosition, float m_speed)
+    //{
+    //    while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
+    //    {
+    //        menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed * 6);
+    //        yield return null;
+    //    }
+    //    menuIsOnItsPos = false;
+    //    menuBack = true;
+    //    menu.SetActive(false);
+    //}
+
+    void OnMouseEnter()
     {
-        if (!has_cleared_once && failed)
-        {
-            tmp.color = Color.gray; // もし`failed`は`true`であれば，テキストの色を灰色に変える
-        }
-        if (!failed)
-        {
-            tmp.color = Color.white; // もし`failed`は`false`であれば，テキストの色を白色に変える
-        }
+        image_menu_hover_white.SetActive(true);
+        onMenu = true;
     }
 
-    IEnumerator MoveMenuToTarget(Vector3 targetPosition, float m_speed)
+    void OnMouseExit()
     {
-        while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
-        {
-            menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed);
-            yield return null;
-        }
-        menuIsOnItsPos = true;
-        menuBack = false;
+        image_menu_hover_white.SetActive(false);
+        onMenu = false;
     }
-
-    IEnumerator MoveMenuBack(Vector3 targetPosition, float m_speed)
+    // マウスがオブジェクト上にある際の処理
+    void OnMouseOver()
     {
-        while (Vector3.Distance(menu.transform.position, targetPosition) > 0.01f)
+        if (Input.GetMouseButtonDown(0))
         {
-            menu.transform.position = Vector3.MoveTowards(menu.transform.position, targetPosition, Time.deltaTime * m_speed * 6);
-            yield return null;
+            
+            if (menu_switch_on)
+            {
+                image_menu_button.SetActive(true);
+
+                //// 続ける
+                //Time.timeScale = 1; // ゲームを続ける
+                //Debug.Log("Game Resumed");
+                //targetPosition = menuBackPosition.position;
+                //Menu_is_Moving = true;
+                menu.SetActive(false);
+                menu_switch_on = false;
+            }
+            else if (!menu_switch_on)
+            {
+                image_menu_button.SetActive(false);
+
+                ////　一時停止する　
+                //Time.timeScale = 0; // ゲーム全体を一時停止する
+                //Debug.Log("Game Paused");
+                menu.SetActive(true);
+                //targetPosition = menuTargetPosition.transform.position;
+                //Menu_is_Moving = true;
+                waitForSceneChange_Menu();
+
+                menu_switch_on = true;
+            }
         }
-        menuIsOnItsPos = false;
-        menuBack = true;
-        menu.SetActive(false);
+
     }
 
     void OnDestroy()

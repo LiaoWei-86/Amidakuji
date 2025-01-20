@@ -28,19 +28,11 @@ public class M : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
-            SceneManager.LoadScene("JyoMaku_1.5_YiChi");
+            SceneManager.LoadScene("JyoMaku_0_king_dog");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+        else if (Input.GetKeyDown(KeyCode.T))
         {
-            SceneManager.LoadScene("Act_1_1.5");
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            SceneManager.LoadScene("Act_1_3.5");
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            SceneManager.LoadScene("Act_1_2.5");
+            SceneManager.LoadScene("Tutorial_NewVersion");
         }
     }
 }

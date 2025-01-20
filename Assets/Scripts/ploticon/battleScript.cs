@@ -62,11 +62,12 @@ public class battleScript : MonoBehaviour
 
     IEnumerator PlayTwice()
     {
+        yield return new WaitForSeconds(0.4f);
         // 1回目再生する
         AudioSource.PlayOneShot(sound);
 
         // サウンドが終わるまで待つ
-        yield return new WaitForSeconds(sound.length);
+        yield return new WaitForSeconds(0.8f);
 
         // 2回目再生する
         AudioSource.PlayOneShot(sound);

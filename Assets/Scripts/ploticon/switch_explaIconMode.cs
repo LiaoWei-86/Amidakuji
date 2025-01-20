@@ -8,12 +8,19 @@ public class switch_explaIconMode : MonoBehaviour
     public GameObject on_switch;
     public GameObject off_switch;
 
+    public bool mouseOn = false;
+
     public GameObject guillotine;
     public GameObject coin;
     public GameObject battle;
     public GameObject beer;
     public GameObject gift;
     public GameObject vomit;
+    public GameObject noMoney;
+    public GameObject fallDown;
+    public GameObject hanasu;
+    public GameObject wrench;
+    public GameObject noticeBoard;
 
     public battleScript _battle;
     public coinScript _coin;
@@ -21,6 +28,11 @@ public class switch_explaIconMode : MonoBehaviour
     public beerScript _beer;
     public giftScript _gift;
     public vomitScript _vomit;
+    public noMoneyScript _noMoney;
+    public fallDownScript _fallDown;
+    public hanasuScript _hanasu;
+    public wrenchScript _wrench;
+    public noticeBoardScript _noticeBoard;
 
     public bool current_mode_on = true;
 
@@ -60,6 +72,27 @@ public class switch_explaIconMode : MonoBehaviour
         {
             _vomit = FindObjectOfType<vomitScript>();
         }
+        if (_noMoney == null)
+        {
+            _noMoney = FindObjectOfType<noMoneyScript>();
+        }
+        if (_fallDown == null)
+        {
+            _fallDown = FindObjectOfType<fallDownScript>();
+        }
+        if (_hanasu == null)
+        {
+            _hanasu = FindObjectOfType<hanasuScript>();
+        }
+        if (_wrench == null)
+        {
+            _wrench = FindObjectOfType<wrenchScript>();
+        }
+
+        if (_noticeBoard == null)
+        {
+            _noticeBoard = FindObjectOfType<noticeBoardScript>();
+        }
     }
 
     private void OnMouseOver()
@@ -98,6 +131,26 @@ public class switch_explaIconMode : MonoBehaviour
                     {
                         _vomit.iconExplaMode = false;
                     }
+                    if (noMoney != null)
+                    {
+                        _noMoney.iconExplaMode = false;
+                    }
+                    if (fallDown != null)
+                    {
+                        _fallDown.iconExplaMode = false;
+                    }
+                    if (hanasu != null)
+                    {
+                        _hanasu.iconExplaMode = false;
+                    }
+                    if (_wrench != null)
+                    {
+                        _wrench.iconExplaMode = false;
+                    }
+                    if (_noticeBoard != null)
+                    {
+                        _noticeBoard.iconExplaMode = false;
+                    }
                 }
             }
             else if (!current_mode_on)
@@ -131,6 +184,26 @@ public class switch_explaIconMode : MonoBehaviour
                     {
                         _vomit.iconExplaMode = true;
                     }
+                    if (noMoney != null)
+                    {
+                        _noMoney.iconExplaMode = true;
+                    }
+                    if (fallDown != null)
+                    {
+                        _fallDown.iconExplaMode = true;
+                    }
+                    if (hanasu != null)
+                    {
+                        _hanasu.iconExplaMode = true;
+                    }
+                    if (_wrench != null)
+                    {
+                        _wrench.iconExplaMode = true;
+                    }
+                    if (_noticeBoard != null)
+                    {
+                        _noticeBoard.iconExplaMode = true;
+                    }
                 }
             }
         }
@@ -144,6 +217,8 @@ public class switch_explaIconMode : MonoBehaviour
         {
             frame.SetActive(true);
         }
+        mouseOn = true;
+
     }
 
     // マウスがオブジェクトから離れた際の処理
@@ -153,6 +228,7 @@ public class switch_explaIconMode : MonoBehaviour
         {
             frame.SetActive(false);
         }
+        mouseOn = false;
     }
 
     // Update is called once per frame

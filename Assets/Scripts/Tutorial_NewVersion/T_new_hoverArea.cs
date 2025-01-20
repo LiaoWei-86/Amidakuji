@@ -11,7 +11,7 @@ public class T_new_hoverArea : MonoBehaviour
     private GameObject tooltipPrefab; // ツールチップのプレハブを保持
     private GameObject tooltipInstance; // インスタンス化されたツールチップを保持
     public GameObject currentLine; // 現在の横線オブジェクトを保持
-
+    public bool onChoosing = false;
     public T_new_gameController T_new_GameController_script; // T_new_gameControllerスクリプトの参照を格納するため
 
     // Start is called before the first frame update
@@ -46,22 +46,27 @@ public class T_new_hoverArea : MonoBehaviour
             tooltipInstance = Instantiate(tooltipPrefab, transform.position, Quaternion.identity);
             Debug.Log($"Tooltip instantiated at {transform.position}");
         }
+        onChoosing = true;
+        //T_new_GameController_script.currentGameMode = T_new_gameController.GameMode.choosing;
     }
 
     // マウスがオブジェクトから離れた際の処理
     void OnMouseExit()
     {
+        onChoosing = false;
         if (tooltipInstance != null)
         {
             // 表示されているツールチップを削除
             Destroy(tooltipInstance);
             Debug.Log("Tooltip destroyed");
         }
+        //T_new_GameController_script.currentGameMode = T_new_gameController.GameMode.PlayerPlaying;
     }
 
     // マウスがオブジェクト上にある際の処理
     void OnMouseOver()
     {
+        
         // 左クリックで横線を生成
         if (Input.GetMouseButtonDown(0)) // 左クリックが押された時
         {
@@ -77,24 +82,22 @@ public class T_new_hoverArea : MonoBehaviour
 
                     if (pointA.name == "circle1")
                     {
+                        
                         T_new_GameController_script._isHoriz_line_Created = true;
                         Debug.Log("T_new_GameController_script.isHorizontal_1_LineCreated: " + T_new_GameController_script._isHoriz_line_Created);
 
-                        if (!T_new_GameController_script.has_cleared_once && !T_new_GameController_script.has_text_horizontalLineCreated_pd_Played)
+                        if (!T_new_GameController_script.has_cleared_once && !T_new_GameController_script.has_text_horizontalLineCreated_pd_Started && !T_new_GameController_script.has_text_horizontalLineCreated_pd_Played)
                         {
                             T_new_GameController_script.text_horizontalLineCreated.SetActive(true);
-                            T_new_GameController_script.currentGameMode = T_new_gameController.GameMode.TextPlaying;
+                            T_new_GameController_script.text_horizontalLineCreated_pd.Play();
+                            T_new_GameController_script.has_text_horizontalLineCreated_pd_Started = true;
                         }
-                       
-                        if (T_new_GameController_script.text_mustEncounter.activeSelf)
-                        {
-                            T_new_GameController_script.text_mustEncounter.SetActive(false);
-                        }
+
                         if (T_new_GameController_script.text_mustEncounter_1.activeSelf)
                         {
                             T_new_GameController_script.text_mustEncounter_1.SetActive(false);
                         }
-                        if (T_new_GameController_script.pleaseClick.activeSelf)
+                        if (T_new_GameController_script.pleaseClick != null && T_new_GameController_script.pleaseClick.activeSelf)
                         {
                             T_new_GameController_script.pleaseClick.SetActive(false);
                         }
@@ -159,7 +162,7 @@ public class T_new_hoverArea : MonoBehaviour
 
                        
                     }
-                    T_new_GameController_script.currentGameMode = T_new_gameController.GameMode.PlayerPlaying;
+                    //T_new_GameController_script.currentGameMode = T_new_gameController.GameMode.PlayerPlaying;
                 }
                 else if (T_new_GameController_script.cannnot_cancell)
                 {
